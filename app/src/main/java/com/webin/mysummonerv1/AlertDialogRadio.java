@@ -7,14 +7,19 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 
-public class AlertDialogRadio  extends DialogFragment{
+public class AlertDialogRadio extends DialogFragment{
 
     /** Declaring the interface, to invoke a callback function in the implementing activity class */
     AlertPositiveListener alertPositiveListener;
+    AlertNegativeListener alertNegativeListener;
 
     /** An interface to be implemented in the hosting activity for "OK" button click listener */
     interface AlertPositiveListener {
         public void onPositiveClick(int position);
+    }
+
+    interface AlertNegativeListener {
+        public void onNegativeClick(int position);
     }
 
     /** This is a callback method executed when this fragment is attached to an activity.
@@ -24,6 +29,7 @@ public class AlertDialogRadio  extends DialogFragment{
         super.onAttach(activity);
         try{
             alertPositiveListener = (AlertPositiveListener) activity;
+            alertNegativeListener = (AlertNegativeListener) activity;
         }catch(ClassCastException e){
             // The hosting activity does not implemented the interface AlertPositiveListener
             throw new ClassCastException(activity.toString() + " must implement AlertPositiveListener");
@@ -43,6 +49,15 @@ public class AlertDialogRadio  extends DialogFragment{
         }
     };
 
+    OnClickListener negativeListener = new OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            AlertDialog alert = (AlertDialog)dialog;
+            int position = alert.getListView().getCheckedItemPosition();
+            alertNegativeListener.onNegativeClick(position);
+        }
+    };
+
     /** This is a callback method which will be executed
      *  on creating this fragment
      */
@@ -57,7 +72,7 @@ public class AlertDialogRadio  extends DialogFragment{
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
 
         /** Setting a title for the window */
-        b.setTitle("Choose your version");
+        b.setTitle("Elegir Región :");
 
         /** Setting items to the alert dialog */
         b.setSingleChoiceItems(Android.code, position, null);
@@ -66,7 +81,7 @@ public class AlertDialogRadio  extends DialogFragment{
         b.setPositiveButton("OK",positiveListener);
 
         /** Setting a positive button and its listener */
-        b.setNegativeButton("Cancel", null);
+        b.setNegativeButton("Cancel", negativeListener);
 
         /** Creating the alert dialog window using the builder class */
         AlertDialog d = b.create();

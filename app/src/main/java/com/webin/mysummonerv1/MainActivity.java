@@ -2,6 +2,8 @@ package com.webin.mysummonerv1;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,179 +23,62 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AlertDialogRadio.AlertPositiveListener,AlertDialogRadio.AlertNegativeListener {
 
     Button btnDialog;
-    AlertDialog.Builder alertDialog;
-    ArrayList<String> myList;
+    AlertDialog alertDialog1;
+    CharSequence[] values = {"Korea","Lationamerica Norte","Lationamerica Sur","Brazil","North America"};
+    int position = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        myList = new ArrayList<String>();
-
-        myList.add("India");
-        myList.add("China");
-        myList.add("South Africa");
-        myList.add("USA");
-        myList.add("UK");
-        myList.add("Japan ");
-        myList.add("Canada");
-
-        alertDialog = new AlertDialog.Builder(MainActivity.this);
-
-        btnDialog = (Button) findViewById(R.id.btn_choose);
-
-        MostrarDialog();
-
+        openDialogServer();
     }
 
-    public void MostrarDialog(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
 
-                MainActivity.this);
+    public void openDialogServer() {
+        /** Getting the fragment manager */
+        FragmentManager manager = getFragmentManager();
 
-        LayoutInflater inflater = getLayoutInflater();
+        /** Instantiating the DialogFragment class */
+        AlertDialogRadio alert = new AlertDialogRadio();
 
-        // create view for add item in dialog
+        /** Creating a bundle object to store the selected item's index */
+        Bundle b  = new Bundle();
 
-        View convertView = (View) inflater.inflate(R.layout.row_server, null);
+        /** Storing the selected item's index in the bundle object */
+        b.putInt("position", position);
 
-        // on dialog cancel button listner
+        /** Setting the bundle object to the dialog fragment object */
+        alert.setArguments(b);
 
-        alertDialog.setNegativeButton("Cancel",
-
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog,
-
-                                        int which) {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                });
-
-
-
-        // add custom view in dialog
-
-        alertDialog.setView(convertView);
-
-        ListView lv = (ListView) convertView.findViewById(R.id.mylistview);
-
-        final AlertDialog alert = alertDialog.create();
-
-        alert.setTitle(" Select country...."); // Title
-
-        MyAdapter myadapter = new MyAdapter(MainActivity.this,
-
-                R.layout.listview_item, myList);
-
-        lv.setAdapter(myadapter);
-
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-
-            public void onItemClick(AdapterView<?> arg0, View arg1,
-
-                                    int position, long arg3) {
-
-                // TODO Auto-generated method stub
-
-                Toast.makeText(MainActivity.this,
-
-                        "You have selected -: " + myList.get(position),
-
-                        Toast.LENGTH_SHORT).show();
-
-                alert.cancel();
-
-            }
-
-        });
-
-        // show dialog
-
-        alert.show();
-
-
+        /** Creating the dialog fragment object, which will in turn open the alert dialog window */
+        alert.show(manager, "alert_dialog_radio");
     }
 
-    class MainListHolder {
-        private TextView tvText;
-    }
 
-    private class ViewHolder {
-        TextView tvSname;
-    }
-
-    class MyAdapter extends ArrayAdapter<String> {
-
-        LayoutInflater inflater;
-
-        Context myContext;
-
-        List<String> newList;
-
-        public MyAdapter(Context context, int resource, List<String> list) {
-
-            super(context, resource, list);
-
-            // TODO Auto-generated constructor stub
-
-            myContext = context;
-
-            newList = list;
-
-            inflater = LayoutInflater.from(context);
-
-        }
-
-        @Override
-        public View getView(final int position, View view, ViewGroup parent) {
-
-            final ViewHolder holder;
-
-            if (view == null) {
-
-                holder = new ViewHolder();
-
-                view = inflater.inflate(R.layout.listview_item, null);
-
-                holder.tvSname = (TextView) view.findViewById(R.id.tvtext_item);
-
-                view.setTag(holder);
-
-            } else {
-
-                holder = (ViewHolder) view.getTag();
-
-            }
-
-            holder.tvSname.setText(newList.get(position).toString());
-
-            return view;
-
-        }
-
-    }
-
-    /*
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public void onPositiveClick(int position) {
+        this.position = position;
 
-        // Inflate the menu; this adds items to the action bar if it is present.
+        /** Getting the reference of the textview from the main layout */
+        TextView tv = (TextView) findViewById(R.id.tv_android);
 
-        getMenuInflater().inflate(R.menu.main, menu);
-
-        return true;
-
+        Toast.makeText(MainActivity.this,"Check: "+Android.code[this.position],Toast.LENGTH_SHORT).show();
+        /** Setting the selected android version in the textview */
+        tv.setText("Your Choice : " + Android.code[this.position]);
     }
-    */
 
+    @Override
+    public void onNegativeClick(int position){
+        this.position = 0;
+        TextView tv = (TextView) findViewById(R.id.tv_android);
+
+        Toast.makeText(MainActivity.this,"Check: "+Android.code[this.position],Toast.LENGTH_SHORT).show();
+        /** Setting the selected android version in the textview */
+        tv.setText("Your Choice : " + Android.code[this.position]);
+    }
 }
