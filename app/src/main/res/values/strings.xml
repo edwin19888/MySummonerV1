@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MySummonerV1</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="str_btn_choose">Choose Android</string>
+    <string-array name="items_array">
+        <item>Lationamerica Norte</item>
+        <item>Lationamerica Sur</item>
+    </string-array>
+</resources>
