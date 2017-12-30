@@ -12,6 +12,20 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="DialogStyle">DialogStyleValue</style>
+    <style name="CustomDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:bottomBright">@color/white</item>
+        <item name="android:bottomDark">@color/white</item>
+        <item name="android:bottomMedium">@color/white</item>
+        <item name="android:centerBright">@color/white</item>
+        <item name="android:centerDark">@color/white</item>
+        <item name="android:centerMedium">@color/white</item>
+        <item name="android:fullBright">@color/orange</item>
+        <item name="android:fullDark">@color/orange</item>
+        <item name="android:topBright">@color/blue</item>
+        <item name="android:topDark">@color/blue</item>
+    </style>
 
+    <color name="white">#121111</color>
+    <color name="orange">#b65b11</color>
+    <color name="blue">#070ab7</color>
 </resources>
