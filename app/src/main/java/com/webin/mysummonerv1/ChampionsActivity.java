@@ -18,6 +18,8 @@ public class ChampionsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        setTitle("Campeones");
+
     }
 
 }

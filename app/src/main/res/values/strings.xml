@@ -27,6 +27,10 @@
     <string name="tvDrMundo">Dr. Mundo</string>
     <string name="tvDraven">Draven</string>
     <string name="tvEkko">Ekko</string>
+    <string name="tvElise">Elise</string>
+    <string name="tvEvelynn">Evelynn</string>
+    <string name="tvEzreal">Ezreal</string>
+    <string name="tvFiddlesticks">Fiddlesticks</string>
     <string-array name="items_array">
         <item>Lationamerica Norte</item>
         <item>Lationamerica Sur</item>
