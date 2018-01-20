@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.webin.mysummonerv1.SettingsActivity">
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayoutInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayoutCurrentVersion"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            >
+
+            <TextView
+                android:id="@+id/TextViewTitleCurrenVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:text="Versión Actual"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/TextViewCurrenVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/TextViewTitleCurrenVersion"
+                android:layout_marginEnd="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_toLeftOf="@+id/imageView1"
+                android:layout_toStartOf="@+id/imageView1"
+                android:text="1.0.0" />
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignBottom="@+id/TextViewCurrenVersion"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="11dp"
+                android:layout_marginRight="11dp"
+                android:background="@drawable/icon_check"
+                android:id="@+id/imageView1" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayoutCurrentServer"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_below="@+id/RelativeLayoutCurrentVersion">
+
+            <TextView
+                android:id="@+id/TextViewTitleCurrenServer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:text="Server"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/TextViewCurrenServer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/TextViewTitleCurrenServer"
+                android:layout_marginEnd="19dp"
+                android:layout_marginRight="19dp"
+                android:layout_toLeftOf="@+id/imageViewCurrentServer"
+                android:layout_toStartOf="@+id/imageViewCurrentServer"
+                android:text="LAS" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignBottom="@+id/TextViewCurrenServer"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="11dp"
+                android:layout_marginRight="11dp"
+                android:background="@drawable/icon_check"
+                android:id="@+id/imageViewCurrentServer" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_below="@+id/RelativeLayoutCurrentServer">
+
+            <TextView
+                android:id="@+id/TextViewTitleCurrenLanguage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:text="Idioma"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/TextViewCurrenLanguage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/TextViewTitleCurrenLanguage"
+                android:layout_marginEnd="19dp"
+                android:layout_marginRight="19dp"
+                android:layout_toLeftOf="@+id/imageViewCurrentLanguage"
+                android:layout_toStartOf="@+id/imageViewCurrentLanguage"
+                android:text="ES" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignBottom="@+id/TextViewCurrenLanguage"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="11dp"
+                android:layout_marginRight="11dp"
+                android:background="@drawable/icon_check"
+                android:id="@+id/imageViewCurrentLanguage" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="#00b1a1"
+        android:shape="line">
+
+        <ImageView
+            android:id="@+id/ivSearchSummoner"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="0dp"
+            android:src="@drawable/icon_search"
+            android:focusable="true"
+            android:clickable="true"/>
+        <ImageView
+            android:id="@+id/ivChampions"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="0dp"
+            android:src="@drawable/icon_champion"
+            android:focusable="true"
+            android:clickable="true"/>
+        <ImageView
+            android:id="@+id/ivSettings"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="0dp"
+            android:src="@drawable/icon_setting"
+            android:focusable="true"
+            android:clickable="true"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

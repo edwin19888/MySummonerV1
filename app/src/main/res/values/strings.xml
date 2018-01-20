@@ -31,6 +31,36 @@
     <string name="tvEvelynn">Evelynn</string>
     <string name="tvEzreal">Ezreal</string>
     <string name="tvFiddlesticks">Fiddlesticks</string>
+    <string name="tvFiora">Fiora</string>
+    <string name="tvFizz">Fizz</string>
+    <string name="tvGalio">Galio</string>
+    <string name="tvGangPlank">GangPlank</string>
+    <string name="tvGaren">Garen</string>
+    <string name="tvGnar">Gnar</string>
+    <string name="tvGragas">Gragas</string>
+    <string name="tvGraves">Graves</string>
+    <string name="tvHecarim">Hecarim</string>
+    <string name="tvHeimerdinger">Heimerdinger</string>
+    <string name="tvIllaoi">Illaoi</string>
+    <string name="tvIrelia">Irelia</string>
+    <string name="Info">Información</string>
+    <string name="vidaChampion">Vida:</string>
+    <string name="regVidaChampion">Regeneración de Vida:</string>
+    <string name="danoAtaqueChampion">Daño de Ataque:</string>
+    <string name="armaduraChampion">Armadura:</string>
+    <string name="velocidadAtaqueChampion">Velocidad de Ataque:</string>
+    <string name="resistenciaMagicaChampion">Resistencia Mágica:</string>
+    <string name="velocidadMovimientoChampion">Velocidad de Movimiento:</string>
+    <string name="Habilidades">Habilidades</string>
+    <string name="Aspectos">Aspectos</string>
+    <string name="CostoHabilidadQ">Costo:</string>
+    <string name="AlcanceHabilidadQ">Alcance:</string>
+    <string name="CostoHabilidadW">Costo:</string>
+    <string name="AlcanceHabilidadW">Alcance:</string>
+    <string name="CostoHabilidadE">Costo:</string>
+    <string name="AlcanceHabilidadE">Alcance:</string>
+    <string name="CostoHabilidadR">Costo:</string>
+    <string name="AlcanceHabilidadR">Alcance:</string>
     <string-array name="items_array">
         <item>Lationamerica Norte</item>
         <item>Lationamerica Sur</item>
