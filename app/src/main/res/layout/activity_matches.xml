@@ -10,6 +10,16 @@
         android:id="@+id/pb_Matches"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tvloading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cargando..."
+        android:textSize="20dp"
+        android:visibility="visible"
         android:layout_centerInParent="true"/>
 
     <android.support.v7.widget.RecyclerView

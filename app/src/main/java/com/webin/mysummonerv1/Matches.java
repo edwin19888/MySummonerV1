@@ -2,7 +2,7 @@ package com.webin.mysummonerv1;
 
 import android.support.annotation.NonNull;
 
-public class Matches{
+public class Matches implements Comparable{
 
     private Boolean win;
     private String gameMode;
@@ -160,4 +160,11 @@ public class Matches{
     }
 
 
+    @Override
+    public int compareTo(Object o) {
+        int compareage= (int)((Matches)o).getMatchId();
+        /* For Ascending order*/
+        return compareage - (int) this.matchId;
+
+    }
 }

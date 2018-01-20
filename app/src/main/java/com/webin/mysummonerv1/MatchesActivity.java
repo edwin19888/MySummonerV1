@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -27,6 +28,7 @@ public class MatchesActivity extends AppCompatActivity {
     private ApiRequest request;
     private Handler handler,handler2;
     private ProgressBar progressBarLoader;
+    private TextView textViewLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,9 @@ public class MatchesActivity extends AppCompatActivity {
         request = new ApiRequest(queue,this);
 
         progressBarLoader = (ProgressBar) findViewById(R.id.pb_Matches);
-        progressBarLoader.setVisibility(View.VISIBLE);
+        //progressBarLoader.setVisibility(View.VISIBLE);
+
+        textViewLoading = (TextView) findViewById(R.id.tvloading);
 
         Bundle bundle = getIntent().getExtras();
 
@@ -62,6 +66,7 @@ public class MatchesActivity extends AppCompatActivity {
         handler2.postDelayed(new Runnable() {
             @Override
           public void run() {
+                textViewLoading.setVisibility(View.VISIBLE);
                 request.getHistoryMatchesAccoundId(playerAccountId, new ApiRequest.HistoryCallback() {
                     @Override
                     public void onSuccess(final List<Long> matchesList) {
@@ -104,7 +109,7 @@ public class MatchesActivity extends AppCompatActivity {
             }
         }, 1000);
 
-        progressBarLoader.setVisibility(View.INVISIBLE);
+        //progressBarLoader.setVisibility(View.INVISIBLE);
         //listMatches = new ArrayList<>();
         //LlenarMatches();
         //Matches matches1 = new Matches(true,"Demo","Brand.png");
@@ -117,12 +122,12 @@ public class MatchesActivity extends AppCompatActivity {
 
     public void ViewRecycler(final List<Long> matchesList, final long playerId, final ApiRequest request){
 
-        progressBarLoader.setVisibility(View.VISIBLE);
+        //progressBarLoader.setVisibility(View.VISIBLE);
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-
+                textViewLoading.setVisibility(View.VISIBLE);
                 request.getHistoryMatchListsByMatchId(matchesList.get(0), playerId, new ApiRequest.HistoryCallbackMatch() {
                     @Override
                     public void onSuccess(Matches matches) {
@@ -274,12 +279,14 @@ public class MatchesActivity extends AppCompatActivity {
                 request.getHistoryMatchListsByMatchId(matchesList.get(9), playerId, new ApiRequest.HistoryCallbackMatch() {
                     @Override
                     public void onSuccess(Matches matches) {
+                        textViewLoading.setVisibility(View.VISIBLE);
                         listMatches.add(matches);
-                        progressBarLoader.setVisibility(View.VISIBLE);
-                        //Collections.sort(listMatches);
+                        //progressBarLoader.setVisibility(View.VISIBLE);
+                        Collections.sort(listMatches);
                         AdapterHistory adapterHistory = new AdapterHistory(listMatches,getApplicationContext());
                         recyclerViewMatches.setAdapter(adapterHistory);
-                        progressBarLoader.setVisibility(View.GONE);
+                        //progressBarLoader.setVisibility(View.GONE);
+                        textViewLoading.setVisibility(View.INVISIBLE);
                     }
 
                     @Override
@@ -296,7 +303,7 @@ public class MatchesActivity extends AppCompatActivity {
             }
         },1000);
 
-        progressBarLoader.setVisibility(View.VISIBLE);
+        //progressBarLoader.setVisibility(View.VISIBLE);
 
     }
 
