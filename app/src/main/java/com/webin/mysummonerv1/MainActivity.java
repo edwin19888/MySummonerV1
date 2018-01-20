@@ -19,8 +19,6 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
-    private int progressStatus = 0;
-    private TextView textView;
     View v;
 
     @Override
@@ -46,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 // Actions to do after 10 seconds
             }
-        }, 4000);
+        }, 2000);
 
     }
 

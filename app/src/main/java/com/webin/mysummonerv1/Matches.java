@@ -1,6 +1,8 @@
 package com.webin.mysummonerv1;
 
-public class Matches {
+import android.support.annotation.NonNull;
+
+public class Matches{
 
     private Boolean win;
     private String gameMode;
@@ -15,6 +17,7 @@ public class Matches {
     private Integer[] items = new Integer[7];
     private long duration,creation;
     private int gold;
+    private long matchId;
 
     public Integer[] getItems() {
         return items;
@@ -24,7 +27,7 @@ public class Matches {
         this.items = items;
     }
 
-    public Matches(Boolean win, String gameMode, String nameChamp, String spell1, String spell2, int kills, int deaths, int assists, int levelChamp, int cs, Integer[] items, long duration, long creation, int gold) {
+    public Matches(Boolean win, String gameMode, String nameChamp, String spell1, String spell2, int kills, int deaths, int assists, int levelChamp, int cs, Integer[] items, long duration, long creation, int gold, long matchId) {
         this.win = win;
         this.gameMode = gameMode;
         this.nameChamp = nameChamp;
@@ -39,6 +42,17 @@ public class Matches {
         this.duration = duration;
         this.creation = creation;
         this.gold = gold;
+        this.matchId = matchId;
+    }
+
+
+
+    public long getMatchId() {
+        return matchId;
+    }
+
+    public void setMatchId(long matchId) {
+        this.matchId = matchId;
     }
 
     public int getGold() {
@@ -144,4 +158,6 @@ public class Matches {
     public void setNameChamp(String nameChamp) {
         this.nameChamp = nameChamp;
     }
+
+
 }

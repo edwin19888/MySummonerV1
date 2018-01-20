@@ -105,42 +105,7 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
                     if(summoner[0].length() > 0){
                         usuario = summoner[0];
 
-                        request.checkPlayerName(usuario, new ApiRequest.CheckPlayerCallback() {
-                            @Override
-                            public void onSuccess(String name,long accountId, long id) {
-
-                                Intent intent = new Intent(PrincipalActivity.this,MatchesActivity.class);
-                                Bundle bundle = new Bundle();
-                                bundle.putString("USUARIO",name);
-                                bundle.putLong("ACCOUNTID",accountId);
-                                bundle.putLong("ID",id);
-                                intent.putExtras(bundle);
-                                startActivity(intent);
-                                overridePendingTransition(R.anim.left_in, R.anim.left_out);
-
-                            }
-
-                            @Override
-                            public void dontExist(String message) {
-                                Mensaje(message);
-                            }
-
-                            @Override
-                            public void onError(String message) {
-                                Mensaje(message);
-                            }
-
-                            @Override
-                            public void dontExistSummoner(String message) {
-                                Mensaje(message);
-                            }
-
-                            @Override
-                            public void errorUnknown(String message) {
-                                Mensaje(message);
-                            }
-                        });
-
+                        VolleyCheckUser(usuario,request);
 
                     }else{
                         Mensaje("Debe ingresar un usuario");
@@ -156,44 +121,10 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
         imageViewSearchUser.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                usuario = editTextSummoner.getText().toString();
                 if(usuario != null){
-
-                    request.checkPlayerName(usuario, new ApiRequest.CheckPlayerCallback() {
-                        @Override
-                        public void onSuccess(String name,long accountId, long id) {
-
-                            Intent intent = new Intent(PrincipalActivity.this,MatchesActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("USUARIO",name);
-                            bundle.putLong("ACCOUNTID",accountId);
-                            bundle.putLong("ID",id);
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-
-                        }
-
-                        @Override
-                        public void dontExist(String message) {
-                            Mensaje(message);
-                        }
-
-                        @Override
-                        public void onError(String message) {
-                            Mensaje(message);
-                        }
-
-                        @Override
-                        public void dontExistSummoner(String message) {
-                            Mensaje(message);
-                        }
-
-                        @Override
-                        public void errorUnknown(String message) {
-                            Mensaje(message);
-                        }
-                    });
-
+                    VolleyCheckUser(usuario,request);
                 }
                 else{
                     Mensaje("Debe ingresar un usuario");
@@ -278,5 +209,44 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
             Toast.makeText(this, "Vuelve a presionar para salir", Toast.LENGTH_SHORT).show();
         }
         tiempoPrimerClick = System.currentTimeMillis();
+    }
+
+    public void VolleyCheckUser(String usuario, ApiRequest request){
+
+        request.checkPlayerName(usuario, new ApiRequest.CheckPlayerCallback() {
+            @Override
+            public void onSuccess(String name,long accountId, long id) {
+
+                Intent intent = new Intent(PrincipalActivity.this,MatchesActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("USUARIO",name);
+                bundle.putLong("ACCOUNTID",accountId);
+                bundle.putLong("ID",id);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                overridePendingTransition(R.anim.left_in, R.anim.left_out);
+
+            }
+
+            @Override
+            public void dontExist(String message) {
+                Mensaje(message);
+            }
+
+            @Override
+            public void onError(String message) {
+                Mensaje(message);
+            }
+
+            @Override
+            public void dontExistSummoner(String message) {
+                Mensaje(message);
+            }
+
+            @Override
+            public void errorUnknown(String message) {
+                Mensaje(message);
+            }
+        });
     }
 }

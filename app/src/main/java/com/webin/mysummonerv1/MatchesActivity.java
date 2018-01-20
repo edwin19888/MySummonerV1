@@ -14,6 +14,7 @@ import com.android.volley.RequestQueue;
 import com.webin.mysummonerv1.request.ApiRequest;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MatchesActivity extends AppCompatActivity {
@@ -24,7 +25,7 @@ public class MatchesActivity extends AppCompatActivity {
     private Long playerAccountId,playerId;
     private RequestQueue queue;
     private ApiRequest request;
-    private Handler handler;
+    private Handler handler,handler2;
     private ProgressBar progressBarLoader;
 
     @Override
@@ -51,49 +52,35 @@ public class MatchesActivity extends AppCompatActivity {
             playerAccountId = bundle.getLong("ACCOUNTID");
             playerId = bundle.getLong("ID");
 
-            setTitle(playerName+" / "+playerAccountId);
+            setTitle(playerName);
 
         }else{
             //Redireccionar a PirncipalActivity
         }
 
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        handler2 = new Handler();
+        handler2.postDelayed(new Runnable() {
             @Override
-            public void run() {
-
+          public void run() {
                 request.getHistoryMatchesAccoundId(playerAccountId, new ApiRequest.HistoryCallback() {
                     @Override
-                    public void onSuccess(List<Long> matchesList) {
-                        String title = getTitle().toString();
+                    public void onSuccess(final List<Long> matchesList) {
 
                         if(matchesList.size() > 0) {
-                            setTitle(playerName+" / matchId:"+matchesList.get(0).toString());
-                            request.getHistoryMatchListsByMatchId(540409292, playerId, new ApiRequest.HistoryCallbackMatch() {
-                                @Override
-                                public void onSuccess(Matches matches) {
-                                    listMatches.add(matches);
-                                    //Matches matches1 = new Matches(true,"Demo","Brand.png","SummonerPoroRecall.png","SummonerDarkStarChampSelect2.png",1,1,1,15,5,new Integer[]{1001, 1001, 1001, 1001, 1001, 0, 0},1917,1516146329998);
-                                    //listMatches.add(matches1);
 
-                                    AdapterHistory adapterHistory = new AdapterHistory(listMatches,getApplicationContext());
-                                    recyclerViewMatches.setAdapter(adapterHistory);
-                                    progressBarLoader.setVisibility(View.GONE);
-                                }
+                            ViewRecycler(matchesList,playerId,request);
 
-                                @Override
-                                public void onError(String message) {
-                                    Mensaje(message);
-                                    progressBarLoader.setVisibility(View.GONE);
-                                }
+                            //handler = new Handler();
+                            //handler.postDelayed(new Runnable() {
+                            //    @Override
+                            //    public void run() {
 
-                                @Override
-                                public void noMatch(String message) {
-                                    Mensaje(message);
-                                    progressBarLoader.setVisibility(View.GONE);
-                                }
-                            });
 
+
+                            //    }
+                            //},10);
+
+                            setTitle(playerName);
                         }else{
                             setTitle("Not Found");
                         }
@@ -117,12 +104,7 @@ public class MatchesActivity extends AppCompatActivity {
             }
         }, 1000);
 
-
-
-
-
-
-
+        progressBarLoader.setVisibility(View.INVISIBLE);
         //listMatches = new ArrayList<>();
         //LlenarMatches();
         //Matches matches1 = new Matches(true,"Demo","Brand.png");
@@ -132,6 +114,195 @@ public class MatchesActivity extends AppCompatActivity {
         //recyclerViewMatches.setAdapter(adapterHistory);
 
     }
+
+    public void ViewRecycler(final List<Long> matchesList, final long playerId, final ApiRequest request){
+
+        progressBarLoader.setVisibility(View.VISIBLE);
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                request.getHistoryMatchListsByMatchId(matchesList.get(0), playerId, new ApiRequest.HistoryCallbackMatch() {
+                    @Override
+                    public void onSuccess(Matches matches) {
+                        listMatches.add(matches);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+
+                    }
+
+                    @Override
+                    public void noMatch(String message) {
+
+                    }
+                });
+
+
+                request.getHistoryMatchListsByMatchId(matchesList.get(1), playerId, new ApiRequest.HistoryCallbackMatch() {
+                    @Override
+                    public void onSuccess(Matches matches) {
+                        listMatches.add(matches);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+
+                    }
+
+                    @Override
+                    public void noMatch(String message) {
+
+                    }
+                });
+
+                request.getHistoryMatchListsByMatchId(matchesList.get(2), playerId, new ApiRequest.HistoryCallbackMatch() {
+                    @Override
+                    public void onSuccess(Matches matches) {
+                        listMatches.add(matches);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+
+                    }
+
+                    @Override
+                    public void noMatch(String message) {
+
+                    }
+                });
+
+                request.getHistoryMatchListsByMatchId(matchesList.get(3), playerId, new ApiRequest.HistoryCallbackMatch() {
+                    @Override
+                    public void onSuccess(Matches matches) {
+                        listMatches.add(matches);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+
+                    }
+
+                    @Override
+                    public void noMatch(String message) {
+
+                    }
+                });
+                request.getHistoryMatchListsByMatchId(matchesList.get(4), playerId, new ApiRequest.HistoryCallbackMatch() {
+                    @Override
+                    public void onSuccess(Matches matches) {
+                        listMatches.add(matches);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+
+                    }
+
+                    @Override
+                    public void noMatch(String message) {
+
+                    }
+                });
+                request.getHistoryMatchListsByMatchId(matchesList.get(5), playerId, new ApiRequest.HistoryCallbackMatch() {
+                    @Override
+                    public void onSuccess(Matches matches) {
+                        listMatches.add(matches);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+
+                    }
+
+                    @Override
+                    public void noMatch(String message) {
+
+                    }
+                });
+                request.getHistoryMatchListsByMatchId(matchesList.get(6), playerId, new ApiRequest.HistoryCallbackMatch() {
+                    @Override
+                    public void onSuccess(Matches matches) {
+                        listMatches.add(matches);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+
+                    }
+
+                    @Override
+                    public void noMatch(String message) {
+
+                    }
+                });
+                request.getHistoryMatchListsByMatchId(matchesList.get(7), playerId, new ApiRequest.HistoryCallbackMatch() {
+                    @Override
+                    public void onSuccess(Matches matches) {
+                        listMatches.add(matches);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+
+                    }
+
+                    @Override
+                    public void noMatch(String message) {
+
+                    }
+                });
+                request.getHistoryMatchListsByMatchId(matchesList.get(8), playerId, new ApiRequest.HistoryCallbackMatch() {
+                    @Override
+                    public void onSuccess(Matches matches) {
+                        listMatches.add(matches);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+
+                    }
+
+                    @Override
+                    public void noMatch(String message) {
+
+                    }
+                });
+                request.getHistoryMatchListsByMatchId(matchesList.get(9), playerId, new ApiRequest.HistoryCallbackMatch() {
+                    @Override
+                    public void onSuccess(Matches matches) {
+                        listMatches.add(matches);
+                        progressBarLoader.setVisibility(View.VISIBLE);
+                        //Collections.sort(listMatches);
+                        AdapterHistory adapterHistory = new AdapterHistory(listMatches,getApplicationContext());
+                        recyclerViewMatches.setAdapter(adapterHistory);
+                        progressBarLoader.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+
+                    }
+
+                    @Override
+                    public void noMatch(String message) {
+
+                    }
+                });
+
+            }
+        },1000);
+
+        progressBarLoader.setVisibility(View.VISIBLE);
+
+    }
+
+
+
+
 
 
     public void Mensaje(String msj){
