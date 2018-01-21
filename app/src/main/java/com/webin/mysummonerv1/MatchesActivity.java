@@ -109,7 +109,7 @@ public class MatchesActivity extends AppCompatActivity {
         LlenarViewRecyler(matchesList.get(7),playerId,request);
         LlenarViewRecyler(matchesList.get(8),playerId,request);
         LlenarViewRecyler(matchesList.get(9),playerId,request);
-        
+
     }
 
     private void LlenarViewRecyler(final Long aLong, final long playerId, final ApiRequest request) {
