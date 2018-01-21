@@ -1,6 +1,8 @@
 package com.webin.mysummonerv1;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +34,7 @@ public class ChampionsActivity extends AppCompatActivity {
     private GridAdapter gridAdapter;
     private Handler handler;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +43,15 @@ public class ChampionsActivity extends AppCompatActivity {
 
         setTitle("Campeones");
 
+        SharedPreferences prefs = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+        int mostrarServer = prefs.getInt("mostrarServer", 0);
+        String serverName = prefs.getString("serverName","Korea");
+        String plataforma = prefs.getString("plataforma","kr");
+        int idServer = prefs.getInt("idServer",0);
+
+
         queue = MySingleton.getInstance(this).getRequestQueue();
-        request = new ApiRequest(queue,this);
+        request = new ApiRequest(queue,this, plataforma);
 
         progressBarLoader = (ProgressBar) findViewById(R.id.pb_ChampionLoader);
         gridViewGallery = (GridView) findViewById(R.id.gv_ChampionGallery);

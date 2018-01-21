@@ -2,7 +2,7 @@ package com.webin.mysummonerv1;
 
 import android.support.annotation.NonNull;
 
-public class Matches{
+public class Matches implements Comparable{
 
     private Boolean win;
     private String gameMode;
@@ -18,6 +18,7 @@ public class Matches{
     private long duration,creation;
     private int gold;
     private long matchId;
+    private String mapName;
 
     public Integer[] getItems() {
         return items;
@@ -27,7 +28,7 @@ public class Matches{
         this.items = items;
     }
 
-    public Matches(Boolean win, String gameMode, String nameChamp, String spell1, String spell2, int kills, int deaths, int assists, int levelChamp, int cs, Integer[] items, long duration, long creation, int gold, long matchId) {
+    public Matches(Boolean win, String gameMode, String nameChamp, String spell1, String spell2, int kills, int deaths, int assists, int levelChamp, int cs, Integer[] items, long duration, long creation, int gold, long matchId, String mapName) {
         this.win = win;
         this.gameMode = gameMode;
         this.nameChamp = nameChamp;
@@ -43,9 +44,16 @@ public class Matches{
         this.creation = creation;
         this.gold = gold;
         this.matchId = matchId;
+        this.mapName = mapName;
     }
 
+    public String getMapName() {
+        return mapName;
+    }
 
+    public void setMapName(String mapName) {
+        this.mapName = mapName;
+    }
 
     public long getMatchId() {
         return matchId;
@@ -160,4 +168,10 @@ public class Matches{
     }
 
 
+    @Override
+    public int compareTo(Object o) {
+        int compareage= (int)((Matches)o).getMatchId();
+        return compareage - (int) this.matchId;
+
+    }
 }

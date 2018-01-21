@@ -45,19 +45,19 @@ public class AdapterHistory extends RecyclerView.Adapter<AdapterHistory.ViewHold
             holder.relativeLayoutWinOrLose.setBackgroundColor(context.getResources().getColor(R.color.win_row));
             //holder.relativeLayoutDetails.setBackgroundColor(context.getResources().getColor(R.color.win_row));
             holder.textViewWinOrDefeat.setTextColor(context.getResources().getColor(R.color.win_title));
-            holder.textViewWinOrDefeat.setText("VICTORIA");
+            holder.textViewWinOrDefeat.setText("V");
         }else{
             holder.viewWin.setBackgroundColor(context.getResources().getColor(R.color.lose));
             holder.relativeLayoutWinOrLose.setBackgroundColor(context.getResources().getColor(R.color.lose_row));
             //holder.relativeLayoutDetails.setBackgroundColor(context.getResources().getColor(R.color.lose_row));
             holder.textViewWinOrDefeat.setTextColor(context.getResources().getColor(R.color.lose_title));
-            holder.textViewWinOrDefeat.setText("DERROTA");
+            holder.textViewWinOrDefeat.setText("D");
         }
         //Log.d("Populating Inicio", oneMatch.getNameChamp());
         //Picasso.with(context).setLoggingEnabled(true);
         Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/"+oneMatch.getNameChamp()).into(holder.imageViewChamp);
         //Log.d("Populating Fin", oneMatch.getNameChamp());
-        holder.textViewGameMode.setText(oneMatch.getGameMode());
+        holder.textViewGameMode.setText(oneMatch.getMapName());
         Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/spell/"+oneMatch.getSpell1()).into(holder.imageViewSpell1);
         Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/spell/"+oneMatch.getSpell2()).into(holder.imageViewSpell2);
 

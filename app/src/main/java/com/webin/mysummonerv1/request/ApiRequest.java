@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.webin.mysummonerv1.Matches;
+import com.webin.mysummonerv1.MatchesActivity;
 import com.webin.mysummonerv1.MySingleton;
 
 import org.json.JSONArray;
@@ -31,13 +32,14 @@ public class ApiRequest {
 
     private RequestQueue queue;
     private Context context;
-    private static final String API_KEY = "RGAPI-8996b9c4-d0a7-4c74-a74f-e1c923b858a6";
-    private String region = "la2";
+    private static final String API_KEY = "RGAPI-4c418511-9e73-4ff4-bcca-0381d7ff5c1b";
+    private String region;
     private ArrayList<Matches> arrayListMatches = new ArrayList<>();
 
-    public ApiRequest(RequestQueue queue, Context context){
+    public ApiRequest(RequestQueue queue, Context context, String plataforma){
         this.queue = queue;
         this.context = context;
+        this.region = plataforma;
     }
 
     public void checkPlayerName(final String summonerName, final CheckPlayerCallback callback){
@@ -137,6 +139,29 @@ public class ApiRequest {
 
         return champName;
 
+    }
+
+    public String getMapName(int mapId) throws JSONException{
+
+        String json = getJsonFile(context,"map-es_mx.json");
+        String mapName = "Default";
+        JSONObject map = null;
+
+        map = new JSONObject(json);
+        JSONObject data = map.getJSONObject("data");
+        Iterator<String> keys = data.keys();
+        while (keys.hasNext()){
+            String key = keys.next();
+            JSONObject inner = data.getJSONObject(key);
+            int mapIdjson = inner.getInt("mapId");
+            String mapNameJson = inner.getString("mapName");
+            if(mapId == mapIdjson){
+                mapName = mapNameJson;
+                break;
+            }
+
+        }
+        return mapName;
     }
 
     public String getSummonerSpellName(int spellId) throws JSONException{
@@ -276,6 +301,7 @@ public class ApiRequest {
                         long matchDuration = response.getLong("gameDuration");
                         long matchCreation = response.getLong("gameCreation");
                         String typeMatch = response.getString("gameMode");
+                        int mapId = response.getInt("mapId");
                         int champId = 0;
                         int sum1 = 0;
                         int sum2 = 0;
@@ -383,8 +409,9 @@ public class ApiRequest {
                         String champName = getChampionName(champId);
                         String sum1Name = getSummonerSpellName(sum1);
                         String sum2Name = getSummonerSpellName(sum2);
+                        String mapName = getMapName(mapId);
 
-                        Matches matches = new Matches(win,typeMatch,champName,sum1Name,sum2Name,kills,deaths,assists,champLevel,cs,items,matchDuration,matchCreation,gold,matchId);
+                        Matches matches = new Matches(win,typeMatch,champName,sum1Name,sum2Name,kills,deaths,assists,champLevel,cs,items,matchDuration,matchCreation,gold,matchId,mapName);
                         callback.onSuccess(matches);
 
 
@@ -422,158 +449,6 @@ public class ApiRequest {
         void noMatch(String message);
     }
 
-    public void getHistoryMatchListsByArrayMatchId(List<Long> matches, final long id) {
-
-        JsonObjectRequest request = null;
-        for (int c = 0; c < matches.size(); c++) {
-
-            String url = "https://" + region + ".api.riotgames.com/lol/match/v3/matches/" + matches.get(c) + "?api_key=" + API_KEY;
-            Log.d("url=", url);
-            request = new JsonObjectRequest(Request.Method.GET, url, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-
-                    List<Integer> teamWinners = new ArrayList<>();
-                    List<Integer> teamLossers = new ArrayList<>();
-                    Integer[] items = new Integer[7];
-
-                    if (response.length() > 0) {
-                        try {
-                            Log.d("APP RESPONSE=", response + "");
-                            long matchId = response.getLong("gameId");
-                            long matchDuration = response.getLong("gameDuration");
-                            long matchCreation = response.getLong("gameCreation");
-                            String typeMatch = response.getString("gameMode");
-                            int champId = 0;
-                            int sum1 = 0;
-                            int sum2 = 0;
-                            int teamId = 0;
-                            int participantId = 0;
-                            String summonerName = null;
-                            int kills = 0;
-                            int deaths = 0;
-                            int assists = 0;
-                            boolean win = false;
-                            int gold = 0;
-                            int cs = 0;
-                            int champLevel = 0;
-
-                            JSONArray participantIdentities = response.getJSONArray("participantIdentities");
-
-                            for (int i = 0; i < participantIdentities.length(); i++) {
-                                JSONObject parIdent = participantIdentities.getJSONObject(i);
-                                int participantIdparIdent = parIdent.getInt("participantId");
-                                JSONObject player = parIdent.getJSONObject("player");
-                                int summonerId = player.getInt("summonerId");
-
-                                if (id == summonerId) {
-                                    summonerName = player.getString("summonerName");
-                                    participantId = parIdent.getInt("participantId");
-
-                                }
-                            }
-
-                            JSONArray participants = response.getJSONArray("participants");
-
-                            for (int j = 0; j < participants.length(); j++) {
-                                JSONObject participant = participants.getJSONObject(j);
-                                int participantIdparticipants = participant.getInt("participantId");
-
-                                if (participantId == participantIdparticipants) {
-                                    teamId = participant.getInt("teamId");
-                                    sum1 = participant.getInt("spell1Id");
-                                    sum2 = participant.getInt("spell2Id");
-                                    champId = participant.getInt("championId");
-
-                                    JSONObject stats = participant.getJSONObject("stats");
-                                    for (int k = 0; k < 7; k++) {
-                                        String item = "item" + k;
-                                        items[k] = stats.getInt(String.valueOf(item));
-                                    }
-                                    kills = stats.getInt("kills");
-                                    deaths = stats.getInt("deaths");
-                                    assists = stats.getInt("assists");
-                                    gold = stats.getInt("goldEarned");
-                                    cs = stats.getInt("totalMinionsKilled");
-                                    champLevel = stats.getInt("champLevel");
-
-                                }
-                            }
-
-                            JSONArray teams = response.getJSONArray("teams");
-
-                            for (int l = 0; l < teams.length(); l++) {
-                                JSONObject team = teams.getJSONObject(l);
-                                int teamIdJsonteams = team.getInt("teamId");
-
-                                if (teamIdJsonteams == teamId) {
-                                    String winStatus = team.getString("win");
-                                    if (winStatus.equals("Fail")) {
-                                        win = false;
-                                    }
-
-                                    if (winStatus.equals("Win")) {
-                                        win = true;
-                                    }
-                                }
-                            }
-
-                            /*Para definir TeamWinner o TeamLossers*/
-                            JSONArray participantsteams = response.getJSONArray("participants");
-
-                            for (int j = 0; j < participantsteams.length(); j++) {
-                                JSONObject participantTeam = participantsteams.getJSONObject(j);
-                                int participantIdparticipants = participantTeam.getInt("participantId");
-
-                                int teamIdxPlayerId = participantTeam.getInt("teamId");
-
-                                if (win) {
-                                    if (teamIdxPlayerId == teamId) {
-                                        teamWinners.add(participantTeam.getInt("championId"));
-                                    } else {
-                                        teamLossers.add(participantTeam.getInt("championId"));
-                                    }
-                                } else {
-                                    if (teamIdxPlayerId != teamId) {
-                                        teamWinners.add(participantTeam.getInt("championId"));
-                                    } else {
-                                        teamLossers.add(participantTeam.getInt("championId"));
-                                    }
-                                }
-                            }
-
-                            if (win) {
-                                teamWinners.add(champId);
-                            } else {
-                                teamLossers.add(champId);
-                            }
-
-                            String champName = getChampionName(champId);
-                            String sum1Name = getSummonerSpellName(sum1);
-                            String sum2Name = getSummonerSpellName(sum2);
-
-                            Matches matches = new Matches(win, typeMatch, champName, sum1Name, sum2Name, kills, deaths, assists, champLevel, cs, items, matchDuration, matchCreation, gold,matchId);
-
-                            arrayListMatches.add(matches);
-
-                        } catch (JSONException e) {
-                            Log.d("APP:", "EXEPTION HISTORY  2 = " + e);
-                            e.printStackTrace();
-                        }
-                    } else {
-                        Log.d("APP","NO MATCH FOUND");
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("APP", "ERROR FOUND = " + error);
-                }
-            });
-        }
-        //queue.add(request);
-        MySingleton.getInstance(context).addToRequestQueue(request);
-    }
 
     public ArrayList<Matches> getArrayListMatches(){
 

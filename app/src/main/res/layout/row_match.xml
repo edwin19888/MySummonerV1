@@ -83,24 +83,12 @@
                     android:textSize="12dp" />
 
                 <TextView
-                    android:id="@+id/tvWinOrDefeat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="23dp"
-                    android:layout_marginRight="23dp"
-                    android:layout_toLeftOf="@+id/tvGameCreation"
-                    android:layout_toStartOf="@+id/tvGameCreation"
-                    android:text="DERROTA"
-                    android:textColor="#ff0101" />
-
-                <TextView
                     android:id="@+id/tvGameCreation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/tvGameDurationn"
                     android:layout_alignBottom="@+id/tvGameDurationn"
-                    android:layout_marginEnd="21dp"
+                    android:layout_marginEnd="5dp"
                     android:layout_marginRight="21dp"
                     android:layout_toLeftOf="@+id/tvGameDurationn"
                     android:layout_toStartOf="@+id/tvGameDurationn"
@@ -301,6 +289,16 @@
                     </ImageView>
                 </android.support.v7.widget.CardView>
 
+                <TextView
+                    android:id="@+id/tvWinOrDefeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/cvItem05"
+                    android:layout_toRightOf="@+id/cvItem05"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="5dp"
+                    android:text="D" />
+
 
             </RelativeLayout>
 
@@ -361,7 +359,9 @@
                 </RelativeLayout>
 
 
-            </RelativeLayout>
+
+
+        </RelativeLayout>
 
     </RelativeLayout>
     <TextView

@@ -55,6 +55,7 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
         SharedPreferences prefs = getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
         int mostrarServer = prefs.getInt("mostrarServer", 0);
         String serverName = prefs.getString("serverName","Korea");
+        String plataforma = prefs.getString("plataforma","kr");
         int idServer = prefs.getInt("idServer",0);
 
         super.onCreate(savedInstanceState);
@@ -62,7 +63,7 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//no girar activity
 
         queue = MySingleton.getInstance(this).getRequestQueue();
-        request = new ApiRequest(queue,this);
+        request = new ApiRequest(queue,this,plataforma);
 
 
         imageViewChampion = (ImageView) findViewById(R.id.ivChampions);
@@ -164,9 +165,29 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
     @Override
     public void onPositiveClick(int position) {
         this.position = position;
+        String plataforma = "kr";
 
         /** Getting the reference of the textview from the main layout */
         String serverSelection = Android.code[this.position];
+        switch (this.position){
+            case 0:
+                plataforma = "kr";
+                break;
+            case 1:
+                plataforma = "la1";
+                break;
+            case 2:
+                plataforma = "la2";
+                break;
+            case 3:
+                plataforma = "br1";
+                break;
+            case 4:
+                plataforma = "na1";
+                break;
+            default:
+                plataforma = "kr";
+        }
 
         //Toast.makeText(PrincipalActivity.this,"Check: "+Android.code[this.position],Toast.LENGTH_SHORT).show();
         /** Setting the selected android version in the textview */
@@ -185,7 +206,7 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
     @Override
     public void onNegativeClick(int position){
         this.position = 0;
-
+        String plataforma = "kr";
 
         Toast.makeText(PrincipalActivity.this,"Check: "+Android.code[this.position],Toast.LENGTH_SHORT).show();
         /** Setting the selected android version in the textview */
@@ -197,6 +218,7 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
         editor.putString("serverName", serverSelection);
         editor.putInt("mostrarServer", 1);
         editor.putInt("idServer",position);
+        editor.putString("kr",plataforma);
         editor.commit();
     }
 

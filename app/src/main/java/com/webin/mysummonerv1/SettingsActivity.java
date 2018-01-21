@@ -95,9 +95,28 @@ public class SettingsActivity extends AppCompatActivity implements AlertDialogRa
     @Override
     public void onPositiveClick(int position) {
         this.position = position;
-
+        String plataforma = "kr";
         /** Getting the reference of the textview from the main layout */
         String serverSelection = Android.code[this.position];
+        switch (this.position){
+            case 0:
+                plataforma = "kr";
+                break;
+            case 1:
+                plataforma = "la1";
+                break;
+            case 2:
+                plataforma = "la2";
+                break;
+            case 3:
+                plataforma = "br1";
+                break;
+            case 4:
+                plataforma = "na1";
+                break;
+            default:
+                plataforma = "kr";
+        }
 
         //Toast.makeText(SettingsActivity.this,"Check: "+Android.code[this.position],Toast.LENGTH_SHORT).show();
         /** Setting the selected android version in the textview */
@@ -110,6 +129,7 @@ public class SettingsActivity extends AppCompatActivity implements AlertDialogRa
         editor.putString("serverName", serverSelection);
         editor.putInt("mostrarServer", 1);
         editor.putInt("idServer",position);
+        editor.putString("plataforma",plataforma);
         editor.commit();
 
         textViewCurrentServer.setText(serverSelection);
