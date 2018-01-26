@@ -304,13 +304,13 @@
 
                 <RelativeLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="15dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/rlDetalleUno"
                     android:layout_marginLeft="5dp">
 
                     <TextView
                         android:id="@+id/tvKDA"
-                        android:layout_width="wrap_content"
+                        android:layout_width="55dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentLeft="true"
@@ -318,42 +318,60 @@
                         android:textSize="12dp"
                         android:text="6/11/13" />
 
+                    <TextView
+                        android:id="@+id/tvTypeKill"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/tvKDA"
+                        android:layout_toRightOf="@+id/tvKDA"
+                        android:background="@drawable/border_tv_typekills"
+                        android:gravity="center_vertical"
+                        android:textAlignment="center"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12dp"
+                        android:visibility="visible" />
+
 
                     <ImageView
                         android:id="@+id/ivCS"
                         android:layout_width="15dp"
                         android:layout_height="18dp"
+                        android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/ivGold"
                         android:layout_marginRight="10dp"
-                        android:background="@drawable/minion"
-                        android:layout_alignParentRight="true" />
+                        android:background="@drawable/minion" />
 
                     <TextView
                         android:id="@+id/tvCSPlayer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
                         android:layout_toLeftOf="@+id/ivCS"
                         android:layout_toStartOf="@+id/ivCS"
-                        android:textSize="12dp"
-                        android:text="322" />
+                        android:text="322"
+                        android:textSize="12dp" />
 
                     <ImageView
                         android:id="@+id/ivGold"
                         android:layout_width="10dp"
                         android:layout_height="15dp"
+                        android:layout_alignParentBottom="true"
                         android:layout_toLeftOf="@+id/tvCSPlayer"
                         android:layout_toStartOf="@+id/tvCSPlayer"
-                        android:layout_marginRight="5dp"
                         android:background="@drawable/gold" />
 
                     <TextView
                         android:id="@+id/tvGold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
                         android:layout_toLeftOf="@+id/ivGold"
                         android:layout_toStartOf="@+id/ivGold"
-                        android:textSize="12dp"
-                        android:text="16.5K" />
+                        android:text="16.5K"
+                        android:textSize="12dp" />
 
 
                 </RelativeLayout>

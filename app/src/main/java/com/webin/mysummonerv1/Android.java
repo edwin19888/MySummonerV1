@@ -6,6 +6,8 @@ public class Android {
             "Lationamerica Norte",
             "Lationamerica Sur",
             "Brazil",
-            "North America"
+            "North America",
+            "Turquia",
+            "Europe Nordic & East"
     };
 }

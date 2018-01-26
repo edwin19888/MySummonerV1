@@ -44,6 +44,17 @@ public class Helper {
         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
         df.setTimeZone(tz);
         time = df.format(new Date(millis));
+
+        String[] array = time.split(":");
+        if(array[0].equals("00")){
+
+            time = array[1]+"m "+array[2]+"s";
+
+        }else{
+            time = array[0]+"h "+array[1]+"m "+array[2]+"s";
+        }
+
+
         return time;
     }
 
@@ -94,4 +105,53 @@ public class Helper {
 
     }
 
+    public static String getTypeKills(int doubleKills, int tripleKills, int quadraKills, int pentaKills){
+
+        String typeKills = null;
+
+        if(doubleKills == 0 && tripleKills == 0 && quadraKills == 0 && pentaKills == 0){
+            typeKills = null;
+        }else{
+
+            if(pentaKills > 0) {
+                typeKills = "Penta Kill";
+            } else {
+                //pentaKills=0
+                if (quadraKills > 0) {
+                    typeKills = "Quadra Kill";
+                } else {
+                    //quadraKills=0
+                    if (tripleKills > 0) {
+                        typeKills = "Triple Kill";
+                    } else {
+                        //tripleKills=0
+                        if (doubleKills > 0) {
+                            typeKills = "Double Kill";
+                        }
+                    }
+                }
+            }
+        }
+
+        return typeKills;
+    }
+
+    public static int getImageRank(String league){
+
+        int image = R.drawable.unranked;
+
+        if(league.equals("DIAMOND")){
+            image = R.drawable.diamond;
+        }
+
+        return image;
+    }
+
+    public static String getLeagueName(String str) {
+        if (str == null || str.isEmpty()) {
+            return "";
+        } else {
+            return  Character.toUpperCase(str.charAt(0)) + str.substring(1, str.length()).toLowerCase();
+        }
+    }
 }

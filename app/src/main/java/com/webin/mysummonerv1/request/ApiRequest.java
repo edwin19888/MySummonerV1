@@ -6,13 +6,18 @@ import android.util.Log;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.RedirectError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.webin.mysummonerv1.Leagues;
 import com.webin.mysummonerv1.Matches;
 import com.webin.mysummonerv1.MatchesActivity;
 import com.webin.mysummonerv1.MySingleton;
@@ -32,7 +37,7 @@ public class ApiRequest {
 
     private RequestQueue queue;
     private Context context;
-    private static final String API_KEY = "RGAPI-4c418511-9e73-4ff4-bcca-0381d7ff5c1b";
+    private static final String API_KEY = "RGAPI-fa6f8b5b-1596-435b-8cda-53b4df9f0cce";
     private String region;
     private ArrayList<Matches> arrayListMatches = new ArrayList<>();
 
@@ -44,7 +49,10 @@ public class ApiRequest {
 
     public void checkPlayerName(final String summonerName, final CheckPlayerCallback callback){
 
-        String url = "https://"+region+".api.riotgames.com/lol/summoner/v3/summoners/by-name/"+summonerName+"?api_key="+API_KEY;
+        String summ= summonerName.replace(" ","%20");
+
+        String url = "https://"+region+".api.riotgames.com/lol/summoner/v3/summoners/by-name/"+summ+"?api_key="+API_KEY;
+        Log.d("APP URL=",url+"");
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new Response.Listener<JSONObject>() {
             @Override
@@ -69,15 +77,24 @@ public class ApiRequest {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if(error instanceof NetworkError){
-                    callback.onError("Verifique su conexión a Internet.");
-                }else if(error instanceof ServerError){
-                    callback.dontExistSummoner("Invocador no existe en esta región");
+                if(error instanceof AuthFailureError){
+                    callback.onError("AuthFailureError");
+                }else if(error instanceof NetworkError){
+                    callback.onError("NetworkError");
                 }else if(error instanceof NoConnectionError){
-                    callback.dontExist("Url not found");
-                }else{
-                    callback.errorUnknown("Error Server");
+                    callback.onError("NoConnectionError");
+                }else if(error instanceof ParseError){
+                    callback.onError("ParseError");
+                }else if(error instanceof RedirectError){
+                    callback.onError("RedirectError");
+                }else if(error instanceof ServerError){
+                    callback.onError("ServerError");
+                }else if(error instanceof TimeoutError){
+                    callback.onError("TimeoutError");
+                }else {
+                    callback.onError(error.getMessage());
                 }
+
                 Log.d("APP", "ERROR = " + error);
 
             }
@@ -138,6 +155,27 @@ public class ApiRequest {
         }
 
         return champName;
+
+    }
+
+    public String getQueueName(int queueId) throws JSONException{
+        String json = getJsonFile(context,"queue.json");
+        String queueName="";
+        JSONObject queue = null;
+        queue = new JSONObject(json);
+        Iterator<String> keys = queue.keys();
+        while (keys.hasNext()){
+            String key = keys.next();
+            JSONObject inner = queue.getJSONObject(key);
+            int id = inner.getInt("key");
+            String nameQueue = inner.getString("descripcion");
+            if(id == queueId){
+                queueName = nameQueue;
+                break;
+            }
+        }
+
+        return queueName;
 
     }
 
@@ -223,15 +261,32 @@ public class ApiRequest {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                callback.onError("Imposible de conectar.");
 
-                Log.d("APP ERROR",error.getMessage());
+                if(error instanceof AuthFailureError){
+                    callback.onError("AuthFailureError");
+                }else if(error instanceof NetworkError){
+                    callback.onError("NetworkError");
+                }else if(error instanceof NoConnectionError){
+                    callback.onError("NoConnectionError");
+                }else if(error instanceof ParseError){
+                    callback.onError("ParseError");
+                }else if(error instanceof RedirectError){
+                    callback.onError("RedirectError");
+                }else if(error instanceof ServerError){
+                    callback.onError("ServerError");
+                }else if(error instanceof TimeoutError){
+                    callback.onError("TimeoutError");
+                }else {
+                    callback.onError(error.getMessage());
+                }
+
+                Log.d("APP", "ERROR = " + error.getMessage());
             }
         });
 
         MySingleton.getInstance(context).addToRequestQueue(request);
         //queue.add(request);
-        Log.d("APP FINAL","Termino");
+        //Log.d("APP FINAL","Termino");
     }
 
 
@@ -296,25 +351,28 @@ public class ApiRequest {
 
                 if (response.length() > 0){
                     try {
-                        Log.d("APP RESPONSE=",response+"");
+                        Log.d("APP RESPONSE=", response + "");
                         long matchId = response.getLong("gameId");
                         long matchDuration = response.getLong("gameDuration");
                         long matchCreation = response.getLong("gameCreation");
                         String typeMatch = response.getString("gameMode");
+                        int queueId = response.getInt("queueId");
                         int mapId = response.getInt("mapId");
                         int champId = 0;
                         int sum1 = 0;
                         int sum2 = 0;
                         int teamId = 0;
-                        int participantId=0;
-                        String summonerName=null;
+                        int participantId = 0;
+                        String summonerName = null;
                         int kills = 0;
                         int deaths = 0;
                         int assists = 0;
                         boolean win = false;
-                        int gold=0;
+                        int gold = 0;
                         int cs = 0;
                         int champLevel = 0;
+                        int doubleKills = 0, tripleKills = 0, quadraKills = 0, pentaKills = 0;
+                        String typeKills = "";
 
                         JSONArray participantIdentities = response.getJSONArray("participantIdentities");
 
@@ -354,7 +412,10 @@ public class ApiRequest {
                                 gold = stats.getInt("goldEarned");
                                 cs = stats.getInt("totalMinionsKilled");
                                 champLevel = stats.getInt("champLevel");
-
+                                doubleKills = stats.getInt("doubleKills");
+                                tripleKills = stats.getInt("tripleKills");
+                                quadraKills = stats.getInt("quadraKills");
+                                pentaKills = stats.getInt("pentaKills");
                             }
                         }
 
@@ -406,12 +467,16 @@ public class ApiRequest {
                             teamLossers.add(champId);
                         }
 
+
+
+
                         String champName = getChampionName(champId);
                         String sum1Name = getSummonerSpellName(sum1);
                         String sum2Name = getSummonerSpellName(sum2);
                         String mapName = getMapName(mapId);
+                        String queueName = getQueueName(queueId);
 
-                        Matches matches = new Matches(win,typeMatch,champName,sum1Name,sum2Name,kills,deaths,assists,champLevel,cs,items,matchDuration,matchCreation,gold,matchId,mapName);
+                        Matches matches = new Matches(win,typeMatch,champName,sum1Name,sum2Name,kills,deaths,assists,champLevel,cs,items,matchDuration,matchCreation,gold,matchId,mapName,doubleKills,tripleKills,quadraKills,pentaKills,queueName);
                         callback.onSuccess(matches);
 
 
@@ -457,6 +522,57 @@ public class ApiRequest {
         }
 
         return null;
+    }
+
+    public void getPlayerLeague(long summonerId, final CallbackLeague callbackLeague){
+
+        String url = "https://"+region+".api.riotgames.com/lol/league/v3/positions/by-summoner/"+summonerId+"?api_key="+API_KEY;
+        Log.d("APP URLLEAGUE=",url+"");
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                int largo = response.length();
+                try {
+                    ArrayList<Leagues> leaguesArrayList = new ArrayList<>();
+                    Log.d("JsonArray",response.toString());
+                    for(int i=0;i<response.length();i++){
+                        JSONObject jresponse = response.getJSONObject(i);
+
+                        String leagueName = jresponse.getString("leagueName");
+                        String tier = jresponse.getString("tier");
+                        String queueType = jresponse.getString("queueType");
+                        String rank = jresponse.getString("rank");
+                        int wins = jresponse.getInt("wins");
+                        int losses = jresponse.getInt("losses");
+                        int leaguePoints = jresponse.getInt("leaguePoints");
+                        Leagues leagues = new Leagues(leagueName,tier,queueType,rank,wins,losses,leaguePoints);
+                        leaguesArrayList.add(leagues);
+                        Log.d("APP tier",tier);
+                    }
+                    callbackLeague.onSuccess(leaguesArrayList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    callbackLeague.onUnranked(largo);
+                }
+                //Log.d("APP RESPONSE=",response+"");
+                //Log.d("APP largo=",largo+"");
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("APP ERROR=",error+"");
+                callbackLeague.onError("SinData");
+            }
+        });
+
+        MySingleton.getInstance(context).addToRequestQueue(request);
+    }
+
+    public interface CallbackLeague{
+        void onSuccess(ArrayList<Leagues> leaguesArrayList);
+        void onError(String message);
+        void onUnranked(int largo);
     }
 
 }

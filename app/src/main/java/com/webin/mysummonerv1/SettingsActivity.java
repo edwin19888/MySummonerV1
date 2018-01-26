@@ -17,7 +17,6 @@ public class SettingsActivity extends AppCompatActivity implements AlertDialogRa
     ImageView imageViewChampion,imageViewSearch;
     TextView textViewCurrentServer;
     ImageView imageViewCurrentServer;
-    CharSequence[] values = {"Korea","Lationamerica Norte","Lationamerica Sur","Brazil","North America"};
     int position = 0;
     private static final int INTERVALO = 2000; //2 segundos para salir
     private long tiempoPrimerClick;
@@ -113,6 +112,12 @@ public class SettingsActivity extends AppCompatActivity implements AlertDialogRa
                 break;
             case 4:
                 plataforma = "na1";
+                break;
+            case 5:
+                plataforma = "tr1";
+                break;
+            case 6:
+                plataforma = "eun1";
                 break;
             default:
                 plataforma = "kr";

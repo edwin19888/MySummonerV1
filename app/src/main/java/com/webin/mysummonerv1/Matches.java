@@ -19,6 +19,8 @@ public class Matches implements Comparable{
     private int gold;
     private long matchId;
     private String mapName;
+    private int doubleKills,tripleKills,quadraKills,pentaKills;
+    private String queueName;
 
     public Integer[] getItems() {
         return items;
@@ -28,7 +30,7 @@ public class Matches implements Comparable{
         this.items = items;
     }
 
-    public Matches(Boolean win, String gameMode, String nameChamp, String spell1, String spell2, int kills, int deaths, int assists, int levelChamp, int cs, Integer[] items, long duration, long creation, int gold, long matchId, String mapName) {
+    public Matches(Boolean win, String gameMode, String nameChamp, String spell1, String spell2, int kills, int deaths, int assists, int levelChamp, int cs, Integer[] items, long duration, long creation, int gold, long matchId, String mapName, int doubleKills, int tripleKills, int quadraKills, int pentaKills, String queueName) {
         this.win = win;
         this.gameMode = gameMode;
         this.nameChamp = nameChamp;
@@ -45,6 +47,51 @@ public class Matches implements Comparable{
         this.gold = gold;
         this.matchId = matchId;
         this.mapName = mapName;
+        this.doubleKills = doubleKills;
+        this.tripleKills = tripleKills;
+        this.quadraKills = quadraKills;
+        this.pentaKills = pentaKills;
+        this.queueName = queueName;
+    }
+
+    public String getQueueName() {
+        return queueName;
+    }
+
+    public void setQueueName(String queueName) {
+        this.queueName = queueName;
+    }
+
+    public int getDoubleKills() {
+        return doubleKills;
+    }
+
+    public void setDoubleKills(int doubleKills) {
+        this.doubleKills = doubleKills;
+    }
+
+    public int getTripleKills() {
+        return tripleKills;
+    }
+
+    public void setTripleKills(int tripleKills) {
+        this.tripleKills = tripleKills;
+    }
+
+    public int getQuadraKills() {
+        return quadraKills;
+    }
+
+    public void setQuadraKills(int quadraKills) {
+        this.quadraKills = quadraKills;
+    }
+
+    public int getPentaKills() {
+        return pentaKills;
+    }
+
+    public void setPentaKills(int pentaKills) {
+        this.pentaKills = pentaKills;
     }
 
     public String getMapName() {
@@ -170,8 +217,8 @@ public class Matches implements Comparable{
 
     @Override
     public int compareTo(Object o) {
-        int compareage= (int)((Matches)o).getMatchId();
-        return compareage - (int) this.matchId;
+        int compareage= (int)((Matches)o).getCreation();
+        return compareage - (int) this.creation;
 
     }
 }

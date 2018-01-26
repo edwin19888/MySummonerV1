@@ -57,7 +57,7 @@ public class AdapterHistory extends RecyclerView.Adapter<AdapterHistory.ViewHold
         //Picasso.with(context).setLoggingEnabled(true);
         Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/"+oneMatch.getNameChamp()).into(holder.imageViewChamp);
         //Log.d("Populating Fin", oneMatch.getNameChamp());
-        holder.textViewGameMode.setText(oneMatch.getMapName());
+        holder.textViewGameMode.setText(oneMatch.getQueueName());
         Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/spell/"+oneMatch.getSpell1()).into(holder.imageViewSpell1);
         Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/spell/"+oneMatch.getSpell2()).into(holder.imageViewSpell2);
 
@@ -83,7 +83,15 @@ public class AdapterHistory extends RecyclerView.Adapter<AdapterHistory.ViewHold
 
         holder.textViewCreation.setText(Helper.getDateOfLong(oneMatch.getCreation()));
         holder.textViewGold.setText(Helper.getRedondear(oneMatch.getGold()));
+        String dataKill = Helper.getTypeKills(oneMatch.getDoubleKills(),oneMatch.getTripleKills(),oneMatch.getQuadraKills(),oneMatch.getPentaKills());
 
+        if (dataKill != null) {
+            holder.textViewTypeKills.setVisibility(View.VISIBLE);
+            holder.textViewTypeKills.setText(dataKill);
+        }else{
+            holder.textViewTypeKills.setVisibility(View.INVISIBLE);
+            holder.textViewTypeKills.setText("");
+        }
     }
 
     @Override
@@ -95,7 +103,7 @@ public class AdapterHistory extends RecyclerView.Adapter<AdapterHistory.ViewHold
 
         View viewWin;
         ImageView imageViewChamp,imageViewSpell1,imageViewSpell2,imageViewItem00,imageViewItem01,imageViewItem02,imageViewItem03,imageViewItem04,imageViewItem05;
-        TextView textViewGameMode,textViewKDA,textViewLevel,textViewCS,textViewDuration,textViewCreation,textViewWinOrDefeat,textViewGold;
+        TextView textViewGameMode,textViewKDA,textViewLevel,textViewCS,textViewDuration,textViewCreation,textViewWinOrDefeat,textViewGold,textViewTypeKills;
         RelativeLayout relativeLayoutWinOrLose,relativeLayoutDetails;
 
         public ViewHolderHistory(View itemView) {
@@ -124,6 +132,7 @@ public class AdapterHistory extends RecyclerView.Adapter<AdapterHistory.ViewHold
             textViewWinOrDefeat = (TextView) itemView.findViewById(R.id.tvWinOrDefeat);
             textViewGold = (TextView) itemView.findViewById(R.id.tvGold);
             textViewDuration = (TextView) itemView.findViewById(R.id.tvGameDurationn);
+            textViewTypeKills = (TextView) itemView.findViewById(R.id.tvTypeKill);
 
         }
     }

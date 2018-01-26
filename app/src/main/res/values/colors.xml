@@ -13,4 +13,6 @@
     <color name="lose_row">#ecb8b4</color>
     <color name="win_title">#5fae03</color>
     <color name="lose_title">#F44336</color>
+    <color name="background_color">#3e3e40</color>
+    <color name="border_color">#210c0c</color>
 </resources>

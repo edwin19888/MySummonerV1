@@ -1,33 +1,20 @@
 package com.webin.mysummonerv1;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +26,6 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
     EditText editTextSummoner;
     ImageView imageViewChampion,imageViewSetting,imageViewSearchUser;
 
-    CharSequence[] values = {"Korea","Lationamerica Norte","Lationamerica Sur","Brazil","North America"};
     int position = 0;
     private static final int INTERVALO = 2000; //2 segundos para salir
     private long tiempoPrimerClick;
@@ -47,6 +33,7 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
 
     private RequestQueue queue;
     private ApiRequest request;
+    String[] summoner = new String[1];
 
 
     @Override
@@ -64,7 +51,6 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
 
         queue = MySingleton.getInstance(this).getRequestQueue();
         request = new ApiRequest(queue,this,plataforma);
-
 
         imageViewChampion = (ImageView) findViewById(R.id.ivChampions);
         imageViewChampion.setOnClickListener(new OnClickListener() {
@@ -92,9 +78,11 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
             openDialogServer();
         }
 
-        final String[] summoner = new String[1];
+
 
         editTextSummoner = (EditText) findViewById(R.id.etSummoner);
+
+
         editTextSummoner.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -165,7 +153,7 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
     @Override
     public void onPositiveClick(int position) {
         this.position = position;
-        String plataforma = "kr";
+        String plataforma;
 
         /** Getting the reference of the textview from the main layout */
         String serverSelection = Android.code[this.position];
@@ -185,6 +173,12 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
             case 4:
                 plataforma = "na1";
                 break;
+            case 5:
+                plataforma = "tr1";
+                break;
+            case 6:
+                plataforma = "eun1";
+                break;
             default:
                 plataforma = "kr";
         }
@@ -200,6 +194,7 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
         editor.putString("serverName", serverSelection);
         editor.putInt("mostrarServer", 1);
         editor.putInt("idServer",position);
+        editor.putString("plataforma",plataforma);
         editor.commit();
     }
 
@@ -226,6 +221,7 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
     public void onBackPressed(){
         if (tiempoPrimerClick + INTERVALO > System.currentTimeMillis()){
             super.onBackPressed();
+            finish();
             return;
         }else {
             Toast.makeText(this, "Vuelve a presionar para salir", Toast.LENGTH_SHORT).show();
@@ -257,7 +253,29 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
 
             @Override
             public void onError(String message) {
-                Mensaje(message);
+
+                String msg;
+
+                if(message.equals("AuthFailureError")){
+                    msg = "Error en la petición";
+                }else if(message.equals("NetworkError")){
+                    msg = "Verifique su conexión a Internet";
+                }else if(message.equals("NoConnectionError")){
+                    msg = "Error en la conexión";
+                }else if(message.equals("ParseError")){
+                    msg = "Error al procesar información";
+                }else if(message.equals("RedirectError")){
+                    msg = "Error en respuesta del servidor";
+                }else if(message.equals("ServerError")){
+                    msg = "Usuario no existe en esta región";
+                }else if(message.equals("TimeoutError")){
+                    msg = "Tiempo de espera agotado";
+                }else {
+                    msg = "Error desconocido";
+                }
+
+                Log.d("APP ERROR : ",message);
+                Mensaje(msg);
             }
 
             @Override
