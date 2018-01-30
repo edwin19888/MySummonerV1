@@ -1,53 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.webin.mysummonerv1.MatchesActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/relativeLayoutInfoPlayer"
-                android:layout_width="wrap_content"
-                android:layout_height="250dp"
-                android:background="@drawable/info">
-
-            </ImageView>
-
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#000000">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:textColor="#FFFFFF"
-                android:text="Clasificatorias" />
-
-        </RelativeLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="120dp">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/RecyclerViewLeagues"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </android.support.v7.widget.RecyclerView>
-        </LinearLayout>
         <TextView
             android:id="@+id/tvDivision01"
             android:layout_width="fill_parent"
@@ -74,9 +32,4 @@
                 android:layout_height="wrap_content">
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
-
-
-
-
-    </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+</RelativeLayout>

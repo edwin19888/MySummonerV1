@@ -1,0 +1,327 @@
+{
+   "0": {
+      "mapName": "Custom games",
+      "descripcion": "",
+      "key": 0
+   },
+   "2": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "5v5 Blind Pick games",
+      "key": 2
+   },
+   "4": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "5v5 Ranked Solo games",
+      "key": 4
+   },
+   "6": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "5v5 Ranked Premade games",
+      "key": 6
+   },
+   "7": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Co-op vs AI games",
+      "key": 7
+   },
+   "8": {
+      "mapName": "Twisted Treeline",
+      "descripcion": "3v3 Normal games",
+      "key": 8
+   },
+   "9": {
+      "mapName": "Twisted Treeline",
+      "descripcion": "3v3 Ranked Flex games",
+      "key": 9
+   },
+   "14": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "5v5 Draft Pick games",
+      "key": 14
+   },
+   "16": {
+      "mapName": "Crystal Scar",
+      "descripcion": "5v5 Dominion Blind Pick games",
+      "key": 16
+   },
+   "17": {
+      "mapName": "Crystal Scar",
+      "descripcion": "5v5 Dominion Draft Pick games",
+      "key": 17
+   },
+   "25": {
+      "mapName": "Crystal Scar",
+      "descripcion": "Dominion Co-op vs AI games",
+      "key": 25
+   },
+   "31": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Co-op vs AI Intro Bot games",
+      "key": 31
+   },
+   "32": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Co-op vs AI Beginner Bot games",
+      "key": 32
+   },
+   "33": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Co-op vs AI Intermediate Bot games",
+      "key": 33
+   },
+   "41": {
+      "mapName": "Twisted Treeline",
+      "descripcion": "3v3 Ranked Team games",
+      "key": 41
+   },
+   "42": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "5v5 Ranked Team games",
+      "key": 42
+   },
+   "52": {
+      "mapName": "Twisted Treeline",
+      "descripcion": "Co-op vs AI games",
+      "key": 52
+   },
+   "61": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "5v5 Team Builder games",
+      "key": 61
+   },
+   "65": {
+      "mapName": "Howling Abyss",
+      "descripcion": "5v5 ARAM games",
+      "key": 65
+   },
+   "70": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Uno para Todos",
+      "key": 70
+   },
+   "72": {
+      "mapName": "Howling Abyss",
+      "descripcion": "1v1 Snowdown Showdown games",
+      "key": 72
+   },
+   "73": {
+      "mapName": "Howling Abyss",
+      "descripcion": "2v2 Snowdown Showdown games",
+      "key": 73
+   },
+   "75": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Hexakill",
+      "key": 75
+   },
+   "76": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "URF",
+      "key": 76
+   },
+   "78": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Mirrored One for All",
+      "key": 78
+   },
+   "83": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Co-op vs AI Ultra Rapid Fire games",
+      "key": 83
+   },
+   "91": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Doom Bots Rank 1 games",
+      "key": 91
+   },
+   "92": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Doom Bots Rank 2 games",
+      "key": 92
+   },
+   "93": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Doom Bots Rank 5 games",
+      "key": 93
+   },
+   "96": {
+      "mapName": "Crystal Scar",
+      "descripcion": "Ascensi�n",
+      "key": 96
+   },
+   "98": {
+      "mapName": "Twisted Treeline",
+      "descripcion": "Hexakill: Bosque Retorcido",
+      "key": 98
+   },
+   "100": {
+      "mapName": "Butcher's Bridge",
+      "descripcion": "5v5 ARAM games",
+      "key": 100
+   },
+   "300": {
+      "mapName": "Howling Abyss",
+      "descripcion": "Leyenda del Rey Poro",
+      "key": 300
+   },
+   "310": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Reclutamiento N�mesis",
+      "key": 310
+   },
+   "313": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Black Market Brawlers games",
+      "key": 313
+   },
+   "315": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Asedio del Nexo",
+      "key": 315
+   },
+   "317": {
+      "mapName": "Crystal Scar",
+      "descripcion": "Este no es Dominion",
+      "key": 317
+   },
+   "318": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "ARURF games",
+      "key": 318
+   },
+   "325": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "All Random games",
+      "key": 325
+   },
+   "400": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "NORMAL",
+      "key": 400
+   },
+   "410": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "5v5 Ranked Dynamic games",
+      "key": 410
+   },
+   "420": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Clasificatoria Solo 5vs5",
+      "key": 420
+   },
+   "430": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "NORMAL",
+      "key": 430
+   },
+   "440": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Clasificatoria Flexible 5vs5",
+      "key": 440
+   },
+   "450": {
+      "mapName": "Howling Abyss",
+      "descripcion": "ARAM",
+      "key": 450
+   },
+   "460": {
+      "mapName": "Twisted Treeline",
+      "descripcion": "3v3 Blind Pick games",
+      "key": 460
+   },
+   "470": {
+      "mapName": "Twisted Treeline",
+      "descripcion": "3v3 Ranked Flex games",
+      "key": 470
+   },
+   "600": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Blood Hunt Assassin games",
+      "key": 600
+   },
+   "610": {
+      "mapName": "Cosmic Ruins",
+      "descripcion": "Dark Star: Singularity games",
+      "key": 610
+   },
+   "800": {
+      "mapName": "Twisted Treeline",
+      "descripcion": "Co-op vs. AI Intermediate Bot games",
+      "key": 800
+   },
+   "810": {
+      "mapName": "Twisted Treeline",
+      "descripcion": "Co-op vs. AI Intro Bot games",
+      "key": 810
+   },
+   "820": {
+      "mapName": "Twisted Treeline",
+      "descripcion": "Co-op vs. AI Beginner Bot games",
+      "key": 820
+   },
+   "830": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Co-op vs. AI Intro Bot games",
+      "key": 830
+   },
+   "840": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Co-op vs. AI Beginner Bot games",
+      "key": 840
+   },
+   "850": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Co-op vs. AI Intermediate Bot games",
+      "key": 850
+   },
+   "900": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "ARURF games",
+      "key": 900
+   },
+   "910": {
+      "mapName": "Crystal Scar",
+      "descripcion": "Ascensi�n",
+      "key": 910
+   },
+   "920": {
+      "mapName": "Howling Abyss",
+      "descripcion": "Rey Poro",
+      "key": 920
+   },
+   "940": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Asedio del Nexo",
+      "key": 940
+   },
+   "950": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Doom Bots Voting games",
+      "key": 950
+   },
+   "960": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "Doom Bots Standard games",
+      "key": 960
+   },
+   "980": {
+      "mapName": "Valoran City Park",
+      "descripcion": "Star Guardian Invasion: Normal games",
+      "key": 980
+   },
+   "990": {
+      "mapName": "Valoran City Park",
+      "descripcion": "Star Guardian Invasion: Onslaught games",
+      "key": 990
+   },
+   "1000": {
+      "mapName": "Overcharge",
+      "descripcion": "PROJECT: Hunters games",
+      "key": 1000
+   },
+   "1010": {
+      "mapName": "Summoner's Rift",
+      "descripcion": "URFAR Nevado",
+      "key": 1010
+   }
+}

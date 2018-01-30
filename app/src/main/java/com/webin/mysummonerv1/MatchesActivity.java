@@ -56,8 +56,8 @@ public class MatchesActivity extends AppCompatActivity {
         recyclerViewMatches = (RecyclerView) findViewById(R.id.RecyclerViewMatches);
         recyclerViewMatches.setLayoutManager(new LinearLayoutManager(this));
 
-        recyclerViewLeagues = (RecyclerView) findViewById(R.id.RecyclerViewLeagues);
-        recyclerViewLeagues.setLayoutManager(new LinearLayoutManager(this));
+        //recyclerViewLeagues = (RecyclerView) findViewById(R.id.RecyclerViewLeagues);
+        //recyclerViewLeagues.setLayoutManager(new LinearLayoutManager(this));
 
         queue = MySingleton.getInstance(this.getApplicationContext()).getRequestQueue();
         request = new ApiRequest(queue,this, plataforma);
@@ -76,6 +76,7 @@ public class MatchesActivity extends AppCompatActivity {
             //Redireccionar a PirncipalActivity
         }
 
+        /*
         request.getPlayerLeague(playerId, new ApiRequest.CallbackLeague() {
             @Override
             public void onSuccess(ArrayList<Leagues> leaguesArrayList) {
@@ -101,7 +102,7 @@ public class MatchesActivity extends AppCompatActivity {
 
             }
         });
-
+        */
 
         request.getHistoryMatchesAccoundId(playerAccountId, new ApiRequest.HistoryCallback() {
             @Override
