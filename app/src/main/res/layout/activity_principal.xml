@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/themenew">
 
     <LinearLayout
         android:orientation="vertical"
@@ -29,15 +30,15 @@
         android:layout_width="fill_parent"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
-        android:background="#00b1a1"
+        android:background="#192943"
         android:shape="line">
 
         <ImageView
             android:id="@+id/ivSearchSummoner"
-            android:layout_width="130dp"
+            android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="0dp"
-            android:src="@drawable/icon_search"
+            android:src="@android:drawable/ic_menu_search"
             android:focusable="true"
             android:clickable="true"/>
         <ImageView

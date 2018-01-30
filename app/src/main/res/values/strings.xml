@@ -11,6 +11,7 @@
     <string name="velocidadAtaqueChampion">Velocidad de Ataque:</string>
     <string name="resistenciaMagicaChampion">Resistencia Mágica:</string>
     <string name="velocidadMovimientoChampion">Velocidad de Movimiento:</string>
+    <string name="app_recent_matches">Historial de Partidas</string>
     <string-array name="items_array">
         <item>Lationamerica Norte</item>
         <item>Lationamerica Sur</item>

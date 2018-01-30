@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.Build;
 import android.os.Handler;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
+import com.squareup.picasso.Picasso;
 import com.webin.mysummonerv1.adapter.AdapterLeague;
 import com.webin.mysummonerv1.request.ApiRequest;
 
@@ -34,9 +37,8 @@ public class MatchesActivity extends AppCompatActivity {
     private Long playerAccountId,playerId;
     private RequestQueue queue;
     private ApiRequest request;
-    private Handler handler,handler2;
-    private TextView textViewLoading;
-    private ImageView imageViewLoading;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private ImageView ivChampPointsFirst;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,10 @@ public class MatchesActivity extends AppCompatActivity {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//no girar activity
 
-        textViewLoading = (TextView) findViewById(R.id.tvLoading);
+        getSupportActionBar().hide();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        ivChampPointsFirst = (ImageView) findViewById(R.id.ivChampPointsFirst);
 
         recyclerViewMatches = (RecyclerView) findViewById(R.id.RecyclerViewMatches);
         recyclerViewMatches.setLayoutManager(new LinearLayoutManager(this));
@@ -76,6 +81,27 @@ public class MatchesActivity extends AppCompatActivity {
             //Redireccionar a PirncipalActivity
         }
 
+
+
+        request.getPlayerChampMastery(playerId, new ApiRequest.CallbackChampMastery() {
+            @Override
+            public void onSuccess(ArrayList<PlayerChampionMastery> arrayListPlayerChampMast) {
+                ArrayList<PlayerChampionMastery> playerChampionMasteryArrayList;
+                playerChampionMasteryArrayList = arrayListPlayerChampMast;
+                Collections.sort(playerChampionMasteryArrayList);
+                String champName = playerChampionMasteryArrayList.get(0).getChampName();
+                String image = champName.replace(".png","_0.jpg");
+                //collapsingToolbarLayout.setTitle("Historial de partidas");
+                Picasso.with(getApplicationContext()).setLoggingEnabled(true);
+                Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+image).into(ivChampPointsFirst);
+
+            }
+
+            @Override
+            public void onError(String messaje) {
+
+            }
+        });
         /*
         request.getPlayerLeague(playerId, new ApiRequest.CallbackLeague() {
             @Override
@@ -119,14 +145,11 @@ public class MatchesActivity extends AppCompatActivity {
             @Override
             public void noMatches(String message) {
                 Mensaje(message);
-                textViewLoading.setText("ERROR FOUND");
-                textViewLoading.setVisibility(View.VISIBLE);
+
             }
 
             @Override
             public void onError(String message) {
-                textViewLoading.setText("ERROR FOUND");
-                textViewLoading.setVisibility(View.VISIBLE);
 
                 String msg;
 
@@ -167,7 +190,6 @@ public class MatchesActivity extends AppCompatActivity {
         LlenarViewRecyler(matchesList.get(7),playerId,request);
         LlenarViewRecyler(matchesList.get(8),playerId,request);
         LlenarViewRecyler(matchesList.get(9),playerId,request);
-        textViewLoading.setEnabled(false);
         /*
         LlenarViewRecyler(matchesList.get(10),playerId,request);
         LlenarViewRecyler(matchesList.get(11),playerId,request);
@@ -198,14 +220,12 @@ public class MatchesActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(String message) {
-                        textViewLoading.setText("ERROR FOUND");
-                        textViewLoading.setVisibility(View.VISIBLE);
+
                     }
 
                     @Override
                     public void noMatch(String message) {
-                        textViewLoading.setText("ERROR FOUND");
-                        textViewLoading.setVisibility(View.VISIBLE);
+
                     }
                 });
 

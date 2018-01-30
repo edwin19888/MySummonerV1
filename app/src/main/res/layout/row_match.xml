@@ -325,7 +325,6 @@
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@+id/tvKDA"
                         android:layout_toRightOf="@+id/tvKDA"
-                        android:background="@drawable/border_tv_typekills"
                         android:gravity="center_vertical"
                         android:textAlignment="center"
                         android:textColor="#FFFFFF"

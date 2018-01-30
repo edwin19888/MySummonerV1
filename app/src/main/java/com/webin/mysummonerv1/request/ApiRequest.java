@@ -21,6 +21,7 @@ import com.webin.mysummonerv1.Leagues;
 import com.webin.mysummonerv1.Matches;
 import com.webin.mysummonerv1.MatchesActivity;
 import com.webin.mysummonerv1.MySingleton;
+import com.webin.mysummonerv1.PlayerChampionMastery;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +38,7 @@ public class ApiRequest {
 
     private RequestQueue queue;
     private Context context;
-    private static final String API_KEY = "RGAPI-f15d5b18-4135-497c-83c4-e43ccf4ceb78";
+    private static final String API_KEY = "RGAPI-4e35d885-372f-47b8-8bb1-7db6f8c492ef";
     private String region;
     private ArrayList<Matches> arrayListMatches = new ArrayList<>();
 
@@ -573,6 +574,54 @@ public class ApiRequest {
         void onSuccess(ArrayList<Leagues> leaguesArrayList);
         void onError(String message);
         void onUnranked(int largo);
+    }
+
+    public void getPlayerChampMastery(long summonerId, final CallbackChampMastery callbackChampMastery){
+        String url = "https://"+region+".api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/"+summonerId+"?api_key="+API_KEY;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    ArrayList<PlayerChampionMastery> arrayListPlayerChampMast = new ArrayList<>();
+                    Log.d("JsonArray",response.toString());
+                    for(int i=0;i<3;i++){
+                        JSONObject jresponse = response.getJSONObject(0);
+
+                        int championId = jresponse.getInt("championId");
+                        int championLevel = jresponse.getInt("championLevel");
+                        int championPoints = jresponse.getInt("championPoints");
+                        long championPointsSinceLastLevel = jresponse.getLong("championPointsSinceLastLevel");
+                        long championPointsUntilNextLevel = jresponse.getLong("championPointsUntilNextLevel");
+                        boolean chestGranted = jresponse.getBoolean("chestGranted");
+                        long lastPlayTime = jresponse.getLong("lastPlayTime");
+                        long playerId = jresponse.getLong("playerId");
+                        int tokensEarned = jresponse.getInt("tokensEarned");
+                        String champName = getChampionName(championId);
+
+                        PlayerChampionMastery playerChampionMastery = new PlayerChampionMastery(chestGranted,championLevel,championPoints,tokensEarned,championId,playerId,championPointsUntilNextLevel,championPointsSinceLastLevel,lastPlayTime,champName);
+                        arrayListPlayerChampMast.add(playerChampionMastery);
+                        //Log.d("APP tier",tier);
+                    }
+                    callbackChampMastery.onSuccess(arrayListPlayerChampMast);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    callbackChampMastery.onError("Error");
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callbackChampMastery.onError("Error");
+            }
+        });
+
+        MySingleton.getInstance(context).addToRequestQueue(request);
+    }
+
+    public interface CallbackChampMastery{
+        void onSuccess( ArrayList<PlayerChampionMastery> arrayListPlayerChampMast);
+        void onError(String messaje);
     }
 
 }
