@@ -233,13 +233,15 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
 
         request.checkPlayerName(usuario, new ApiRequest.CheckPlayerCallback() {
             @Override
-            public void onSuccess(String name,long accountId, long id) {
+            public void onSuccess(String name,long accountId, long id, int profileIconId, long summonerLevel) {
 
                 Intent intent = new Intent(PrincipalActivity.this,MatchesActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("USUARIO",name);
                 bundle.putLong("ACCOUNTID",accountId);
                 bundle.putLong("ID",id);
+                bundle.putInt("PROFILEICONID",profileIconId);
+                bundle.putLong("SUMMONERLEVEL",summonerLevel);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 overridePendingTransition(R.anim.left_in, R.anim.left_out);

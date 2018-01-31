@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Handler;
@@ -22,23 +26,24 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.squareup.picasso.Picasso;
-import com.webin.mysummonerv1.adapter.AdapterLeague;
 import com.webin.mysummonerv1.request.ApiRequest;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+
 
 public class MatchesActivity extends AppCompatActivity {
 
     ArrayList<Matches> listMatches = new ArrayList<>();
     RecyclerView recyclerViewMatches,recyclerViewLeagues;
     private String playerName;
-    private Long playerAccountId,playerId;
+    private Long playerAccountId,playerId,summonerLevel;
+    private int profileIconId;
     private RequestQueue queue;
     private ApiRequest request;
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private ImageView ivChampPointsFirst;
+    private ImageView ivChampPointsFirst,ivProfileIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,7 @@ public class MatchesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         ivChampPointsFirst = (ImageView) findViewById(R.id.ivChampPointsFirst);
+        ivProfileIcon = (ImageView) findViewById(R.id.ivProfileIcon);
 
         recyclerViewMatches = (RecyclerView) findViewById(R.id.RecyclerViewMatches);
         recyclerViewMatches.setLayoutManager(new LinearLayoutManager(this));
@@ -74,6 +80,14 @@ public class MatchesActivity extends AppCompatActivity {
             playerName = bundle.getString("USUARIO");
             playerAccountId = bundle.getLong("ACCOUNTID");
             playerId = bundle.getLong("ID");
+
+            if(bundle.getInt("PROFILEICONID") > 0){
+                profileIconId = bundle.getInt("PROFILEICONID");
+            }
+            if(bundle.getLong("SUMMONERLEVEL") >= 0){
+                summonerLevel = bundle.getLong("SUMMONERLEVEL");
+            }
+
 
             setTitle(playerName);
 
@@ -93,7 +107,13 @@ public class MatchesActivity extends AppCompatActivity {
                 String image = champName.replace(".png","_0.jpg");
                 //collapsingToolbarLayout.setTitle("Historial de partidas");
                 Picasso.with(getApplicationContext()).setLoggingEnabled(true);
-                Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+image).into(ivChampPointsFirst);
+
+                //Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+image).transform(new BlurTransformation(getApplicationContext())).into(ivChampPointsFirst);
+                //Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+image).into(ivChampPointsFirst);
+                Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ziggs_0.jpg").into(ivChampPointsFirst);
+                Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/profileicon/"+profileIconId+".png").into(ivProfileIcon);
+                ivChampPointsFirst.setColorFilter(brightIt(-10));
+
 
             }
 
@@ -242,5 +262,22 @@ public class MatchesActivity extends AppCompatActivity {
         finish();
         Intent intPrincipal = new Intent(MatchesActivity.this,PrincipalActivity.class);
         startActivity(intPrincipal);
+    }
+
+    public static ColorMatrixColorFilter brightIt(int fb) {
+        ColorMatrix cmB = new ColorMatrix();
+        cmB.set(new float[] {
+                1, 0, 0, 0, fb,
+                0, 1, 0, 0, fb,
+                0, 0, 1, 0, fb,
+                0, 0, 0, 1, 0   });
+
+        ColorMatrix colorMatrix = new ColorMatrix();
+        colorMatrix.set(cmB);
+//Canvas c = new Canvas(b2);
+//Paint paint = new Paint();
+        ColorMatrixColorFilter f = new ColorMatrixColorFilter(colorMatrix);
+//paint.setColorFilter(f);
+        return f;
     }
 }

@@ -65,7 +65,9 @@ public class ApiRequest {
                     String name = response.getString("name");
                     Long id = response.getLong("id");
                     Long accountId = response.getLong("accountId");
-                    callback.onSuccess(name, accountId, id);
+                    int profileIconId = response.getInt("profileIconId");
+                    long summonerLevel = response.getLong("summonerLevel");
+                    callback.onSuccess(name, accountId, id, profileIconId, summonerLevel);
 
                 } catch (JSONException e) {
                     Log.d("APP", "EXCEPTION =" + e);
@@ -105,7 +107,7 @@ public class ApiRequest {
     }
 
     public interface CheckPlayerCallback{
-        void onSuccess(String name, long accountId ,long id);
+        void onSuccess(String name, long accountId ,long id, int profileIconId, long summonerLevel);
         void dontExist(String message);
         void onError(String message);
         void dontExistSummoner(String message);
