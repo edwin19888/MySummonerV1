@@ -1,16 +1,13 @@
 package com.webin.mysummonerv1;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.graphics.drawable.AnimationDrawable;
-import android.os.Build;
-import android.os.Handler;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,19 +15,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.squareup.picasso.Picasso;
 import com.webin.mysummonerv1.request.ApiRequest;
+
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 
 public class MatchesActivity extends AppCompatActivity {
@@ -43,7 +40,11 @@ public class MatchesActivity extends AppCompatActivity {
     private RequestQueue queue;
     private ApiRequest request;
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private ImageView ivChampPointsFirst,ivProfileIcon;
+    private ImageView ivChampPointsFirst,ivProfileIcon,ivFirstChampion,ivSecondChampion,ivThirdChampion;
+    private TextView tvDataNotFound,tvChampionLevel,tvPlayerName,tvRankedInfo,tvWinLosses,tvLoadingData;
+    private AppBarLayout app_bar;
+    private ProgressDialog progressDialog=null;
+    private CollapsingToolbarLayout collapsing_toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,16 +54,30 @@ public class MatchesActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
         int mostrarServer = prefs.getInt("mostrarServer", 0);
         String serverName = prefs.getString("serverName","Korea");
-        String plataforma = prefs.getString("plataforma","kr");
+        final String plataforma = prefs.getString("plataforma","kr");
         int idServer = prefs.getInt("idServer",0);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//no girar activity
 
         getSupportActionBar().hide();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         ivChampPointsFirst = (ImageView) findViewById(R.id.ivChampPointsFirst);
         ivProfileIcon = (ImageView) findViewById(R.id.ivProfileIcon);
+        tvDataNotFound = (TextView) findViewById(R.id.tvDataNotFound);
+        tvChampionLevel = (TextView) findViewById(R.id.tvChampionLevel);
+        tvPlayerName = (TextView) findViewById(R.id.tvPlayerName);
+        tvRankedInfo = (TextView) findViewById(R.id.tvRankedInfo);
+        tvWinLosses = (TextView) findViewById(R.id.tvWinLosses);
+        ivFirstChampion = (ImageView) findViewById(R.id.ivFirstChampion);
+        ivSecondChampion = (ImageView) findViewById(R.id.ivSecondChampion);
+        ivThirdChampion = (ImageView) findViewById(R.id.ivThirdChampion);
+        app_bar = (AppBarLayout) findViewById(R.id.app_bar);
+        tvLoadingData = (TextView) findViewById(R.id.tvLoadingData);
+
 
         recyclerViewMatches = (RecyclerView) findViewById(R.id.RecyclerViewMatches);
         recyclerViewMatches.setLayoutManager(new LinearLayoutManager(this));
@@ -89,31 +104,45 @@ public class MatchesActivity extends AppCompatActivity {
             }
 
 
-            setTitle(playerName);
+            setTitle(playerName.toUpperCase());
+            //collapsing_toolbar.setTitle(playerName);
+
 
         }else{
             //Redireccionar a PirncipalActivity
         }
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Please wait (2/2)");
+        progressDialog.setMessage("Cargando Datos ...");
+        progressDialog.show();
 
 
         request.getPlayerChampMastery(playerId, new ApiRequest.CallbackChampMastery() {
             @Override
             public void onSuccess(ArrayList<PlayerChampionMastery> arrayListPlayerChampMast) {
+
+
                 ArrayList<PlayerChampionMastery> playerChampionMasteryArrayList;
                 playerChampionMasteryArrayList = arrayListPlayerChampMast;
                 Collections.sort(playerChampionMasteryArrayList);
                 String champName = playerChampionMasteryArrayList.get(0).getChampName();
                 String image = champName.replace(".png","_0.jpg");
-                //collapsingToolbarLayout.setTitle("Historial de partidas");
                 Picasso.with(getApplicationContext()).setLoggingEnabled(true);
-
-                //Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+image).transform(new BlurTransformation(getApplicationContext())).into(ivChampPointsFirst);
-                //Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+image).into(ivChampPointsFirst);
-                Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ziggs_0.jpg").into(ivChampPointsFirst);
+                Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+image).into(ivChampPointsFirst);
                 Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/profileicon/"+profileIconId+".png").into(ivProfileIcon);
-                ivChampPointsFirst.setColorFilter(brightIt(-10));
+                tvChampionLevel.setText(String.valueOf(summonerLevel));
+                tvPlayerName.setText(playerName.toUpperCase());
+                int alphaAmount = 90; // some value 0-255 where 0 is fully transparent and 255 is fully opaque
+                ivChampPointsFirst.setAlpha(alphaAmount);
 
+                String firstChampion = playerChampionMasteryArrayList.get(0).getChampName();
+                String secondChampion = playerChampionMasteryArrayList.get(1).getChampName();
+                String thirdChampion = playerChampionMasteryArrayList.get(2).getChampName();
+
+                Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/"+firstChampion).into(ivFirstChampion);
+                Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/"+secondChampion).into(ivSecondChampion);
+                Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/"+thirdChampion).into(ivThirdChampion);
 
             }
 
@@ -122,17 +151,33 @@ public class MatchesActivity extends AppCompatActivity {
 
             }
         });
-        /*
+
+
         request.getPlayerLeague(playerId, new ApiRequest.CallbackLeague() {
             @Override
             public void onSuccess(ArrayList<Leagues> leaguesArrayList) {
 
+                String rank = "";
+                String tier = "Unranked";
+                int wins = 0;
+                int losses = 0;
                 ArrayList<Leagues> leagues;
                 leagues = leaguesArrayList;
 
-                AdapterLeague adapterLeague = new AdapterLeague(leagues,getApplicationContext());
-                recyclerViewLeagues.setAdapter(adapterLeague);
+                for (int i=0;i<leagues.size();i++){
+                    if(leagues.get(i).getQueueType().equals("RANKED_SOLO_5x5")){
+                        rank = leagues.get(i).getRank();
+                        tier = leagues.get(i).getTier();
+                        wins = leagues.get(i).getWins();
+                        losses = leagues.get(i).getLosses();
+                    }
+                }
 
+                if(wins == 0 && losses == 0)
+                    tvWinLosses.setVisibility(View.INVISIBLE);
+
+                tvRankedInfo.setText(tier+" "+rank);
+                tvWinLosses.setText(wins+"W "+losses+"L");
                 //AdapterHistory adapterHistory = new AdapterHistory(listMatches,getApplicationContext());
                 //recyclerViewMatches.setAdapter(adapterHistory);
 
@@ -140,21 +185,21 @@ public class MatchesActivity extends AppCompatActivity {
 
             @Override
             public void onError(String message) {
-
+                tvRankedInfo.setText("Unranked");
             }
 
             @Override
             public void onUnranked(int largo) {
-
+                tvRankedInfo.setText("Unranked");
             }
         });
-        */
+
 
         request.getHistoryMatchesAccoundId(playerAccountId, new ApiRequest.HistoryCallback() {
             @Override
             public void onSuccess(final List<Long> matchesList) {
-                if(matchesList.size() > 0) {
 
+                if(matchesList.size() > 0) {
                     ViewRecycler(matchesList,playerId,request);
                     setTitle(playerName);
                 }else{
@@ -184,7 +229,8 @@ public class MatchesActivity extends AppCompatActivity {
                 }else if(message.equals("RedirectError")){
                     msg = "Error en respuesta del servidor";
                 }else if(message.equals("ServerError")){
-                    msg = "Error en servidor";
+                    msg = null;
+                    tvDataNotFound.setText("Partidas no encontradas");
                 }else if(message.equals("TimeoutError")){
                     msg = "Tiempo de espera agotado";
                 }else {
@@ -196,20 +242,32 @@ public class MatchesActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+
     }
 
     public void ViewRecycler(final List<Long> matchesList, final long playerId, final ApiRequest request){
 
-        LlenarViewRecyler(matchesList.get(0),playerId,request);
-        LlenarViewRecyler(matchesList.get(1),playerId,request);
-        LlenarViewRecyler(matchesList.get(2),playerId,request);
-        LlenarViewRecyler(matchesList.get(3),playerId,request);
-        LlenarViewRecyler(matchesList.get(4),playerId,request);
-        LlenarViewRecyler(matchesList.get(5),playerId,request);
-        LlenarViewRecyler(matchesList.get(6),playerId,request);
-        LlenarViewRecyler(matchesList.get(7),playerId,request);
-        LlenarViewRecyler(matchesList.get(8),playerId,request);
-        LlenarViewRecyler(matchesList.get(9),playerId,request);
+                /*
+                LlenarViewRecyler(0,matchesList.get(0),playerId,request);
+                LlenarViewRecyler(1,matchesList.get(1),playerId,request);
+                LlenarViewRecyler(2,matchesList.get(2),playerId,request);
+                LlenarViewRecyler(3,matchesList.get(3),playerId,request);
+                LlenarViewRecyler(4,matchesList.get(4),playerId,request);
+                LlenarViewRecyler(5,matchesList.get(5),playerId,request);
+                LlenarViewRecyler(6,matchesList.get(6),playerId,request);
+                LlenarViewRecyler(7,matchesList.get(7),playerId,request);
+                LlenarViewRecyler(8,matchesList.get(8),playerId,request);
+                LlenarViewRecyler(9,matchesList.get(9),playerId,request);
+                */
+
+        for (int i = 0; i < matchesList.size()-10; i++) {
+            LlenarViewRecyler(i,matchesList.get(i),playerId,request);
+        }
+
+
         /*
         LlenarViewRecyler(matchesList.get(10),playerId,request);
         LlenarViewRecyler(matchesList.get(11),playerId,request);
@@ -225,36 +283,48 @@ public class MatchesActivity extends AppCompatActivity {
 
     }
 
-    private void LlenarViewRecyler(final Long aLong, final long playerId, final ApiRequest request) {
+
+
+
+
+
+    private void LlenarViewRecyler(final int indice, final Long aLong, final long playerId, final ApiRequest request) {
 
         request.getHistoryMatchListsByMatchId(aLong, playerId, new ApiRequest.HistoryCallbackMatch() {
-                    @Override
-                    public void onSuccess(Matches matches) {
+            @Override
+            public void onSuccess(Matches matches) {
 
-                        listMatches.add(matches);
-                        Collections.sort(listMatches);
-                        AdapterHistory adapterHistory = new AdapterHistory(listMatches,getApplicationContext());
-                        recyclerViewMatches.setAdapter(adapterHistory);
+                listMatches.add(matches);
+                Collections.sort(listMatches);
+                AdapterHistory adapterHistory = new AdapterHistory(listMatches,getApplicationContext());
+                recyclerViewMatches.setAdapter(adapterHistory);
+                if(indice == 9) {
 
-                    }
+                    app_bar.setVisibility(View.VISIBLE);
+                    recyclerViewMatches.setVisibility(View.VISIBLE);
+                    progressDialog.dismiss();
+                    getSupportActionBar().show();
+                }
 
-                    @Override
-                    public void onError(String message) {
+            }
 
-                    }
+            @Override
+            public void onError(String message) {
 
-                    @Override
-                    public void noMatch(String message) {
+            }
 
-                    }
-                });
+            @Override
+            public void noMatch(String message) {
 
-
-
+            }
+        });
     }
 
     public void Mensaje(String msj){
-        Toast.makeText(MatchesActivity.this,""+ msj,Toast.LENGTH_SHORT).show();
+        if (msj != null){
+            Toast.makeText(MatchesActivity.this,""+ msj,Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
@@ -280,4 +350,26 @@ public class MatchesActivity extends AppCompatActivity {
 //paint.setColorFilter(f);
         return f;
     }
+
+    public static ColorMatrixColorFilter setContrast(float contrast) {
+        float scale = contrast + 1.f;
+        float translate = (-.5f * scale + .5f) * 255.f;
+        float[] array = new float[] {
+                scale, 0, 0, 0, translate,
+                0, scale, 0, 0, translate,
+                0, 0, scale, 0, translate,
+                0, 0, 0, 1, 0};
+        ColorMatrix matrix = new ColorMatrix(array);
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+        return filter;
+    }
+
+    protected void onPause() {
+        super.onPause();
+        progressDialog.dismiss();
+
+    }
+
+
+
 }

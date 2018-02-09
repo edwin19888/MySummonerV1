@@ -26,11 +26,11 @@
     </LinearLayout>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
-        android:background="#192943"
+        android:background="#02111D"
         android:shape="line">
 
         <ImageView
@@ -38,28 +38,33 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="0dp"
-            android:src="@android:drawable/ic_menu_search"
+            android:src="@drawable/icon_search"
             android:focusable="true"
             android:clickable="true"/>
         <ImageView
             android:id="@+id/ivChampions"
-            android:layout_width="130dp"
+            android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="0dp"
-            android:src="@drawable/icon_champion"
+            android:layout_toRightOf="@+id/ivSearchSummoner"
+            android:src="@drawable/icon_champions"
             android:focusable="true"
             android:clickable="true"/>
+
+
         <ImageView
             android:id="@+id/ivSettings"
-            android:layout_width="130dp"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="0dp"
-            android:src="@drawable/icon_setting"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:clickable="true"
             android:focusable="true"
-            android:clickable="true"/>
+            android:src="@drawable/icon_setting" />
 
 
-    </LinearLayout>
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_marginTop="120dp"
@@ -76,6 +81,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/noborder"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
             android:hint="Buscar Invocador"
             android:imeOptions="actionSearch"
             android:padding="8dp"

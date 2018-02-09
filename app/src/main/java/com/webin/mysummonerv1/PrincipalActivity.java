@@ -245,7 +245,7 @@ public class PrincipalActivity extends AppCompatActivity implements AlertDialogR
                 intent.putExtras(bundle);
                 startActivity(intent);
                 overridePendingTransition(R.anim.left_in, R.anim.left_out);
-                finish();
+                //finish();
             }
 
             @Override

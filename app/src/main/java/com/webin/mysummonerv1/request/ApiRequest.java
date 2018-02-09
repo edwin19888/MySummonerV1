@@ -1,5 +1,6 @@
 package com.webin.mysummonerv1.request;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
@@ -38,7 +39,7 @@ public class ApiRequest {
 
     private RequestQueue queue;
     private Context context;
-    private static final String API_KEY = "RGAPI-4e35d885-372f-47b8-8bb1-7db6f8c492ef";
+    private static final String API_KEY = "RGAPI-a22d996f-b76f-4851-8fdb-f446941dd689";
     private String region;
     private ArrayList<Matches> arrayListMatches = new ArrayList<>();
 
@@ -49,7 +50,7 @@ public class ApiRequest {
     }
 
     public void checkPlayerName(final String summonerName, final CheckPlayerCallback callback){
-
+        final ProgressDialog dialog = ProgressDialog.show(context, "Please wait (1/2)", "Procesando Perfil.........");
         String summ= summonerName.replace(" ","%20");
 
         String url = "https://"+region+".api.riotgames.com/lol/summoner/v3/summoners/by-name/"+summ+"?api_key="+API_KEY;
@@ -67,11 +68,14 @@ public class ApiRequest {
                     Long accountId = response.getLong("accountId");
                     int profileIconId = response.getInt("profileIconId");
                     long summonerLevel = response.getLong("summonerLevel");
+
                     callback.onSuccess(name, accountId, id, profileIconId, summonerLevel);
+                    dialog.dismiss();
 
                 } catch (JSONException e) {
                     Log.d("APP", "EXCEPTION =" + e);
                     e.printStackTrace();
+                    dialog.dismiss();
                 }
 
 
@@ -99,11 +103,14 @@ public class ApiRequest {
                 }
 
                 Log.d("APP", "ERROR = " + error);
+                dialog.dismiss();
 
             }
         });
 
-        MySingleton.getInstance(context).addToRequestQueue(request);
+        //MySingleton.getInstance(context).addToRequestQueue(request);
+
+        queue.add(request);
     }
 
     public interface CheckPlayerCallback{
@@ -233,6 +240,7 @@ public class ApiRequest {
 
     public void getHistoryMatchesAccoundId(long accountId, final HistoryCallback callback){
 
+
         String url = "https://"+region+".api.riotgames.com/lol/match/v3/matchlists/by-account/"+accountId+"/recent?api_key="+API_KEY;
         Log.d("APP URL", "" + url);
         final List<Long> matchesList = new ArrayList<Long>();
@@ -252,12 +260,15 @@ public class ApiRequest {
                         }
                         callback.onSuccess(matchesList);
 
+
                     } catch (JSONException e) {
                         Log.d("APP:","EXCEPTION HISTORY 1 = " + e);
                         e.printStackTrace();
+
                     }
                 }else {
                     callback.noMatches("No found match for player");
+
                 }
 
             }
@@ -284,11 +295,13 @@ public class ApiRequest {
                 }
 
                 Log.d("APP", "ERROR = " + error.getMessage());
+
             }
         });
 
-        MySingleton.getInstance(context).addToRequestQueue(request);
-        //queue.add(request);
+        //MySingleton.getInstance(context).addToRequestQueue(request);
+
+        queue.add(request);
         //Log.d("APP FINAL","Termino");
     }
 
@@ -486,9 +499,11 @@ public class ApiRequest {
                     } catch (JSONException e) {
                         Log.d("APP:","EXEPTION HISTORY  2 = " + e);
                         e.printStackTrace();
+
                     }
                 }else{
                     callback.noMatch("No found match");
+
                 }
             }
         }, new Response.ErrorListener() {
@@ -507,8 +522,10 @@ public class ApiRequest {
 
         });
 
-        //queue.add(request);
-        MySingleton.getInstance(context).addToRequestQueue(request);
+
+        queue.add(request);
+        //MySingleton.getInstance(context).addToRequestQueue(request);
+
     }
 
     public interface HistoryCallbackMatch{
@@ -569,7 +586,8 @@ public class ApiRequest {
             }
         });
 
-        MySingleton.getInstance(context).addToRequestQueue(request);
+        //MySingleton.getInstance(context).addToRequestQueue(request);
+        queue.add(request);
     }
 
     public interface CallbackLeague{
@@ -579,8 +597,9 @@ public class ApiRequest {
     }
 
     public void getPlayerChampMastery(long summonerId, final CallbackChampMastery callbackChampMastery){
-        String url = "https://"+region+".api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/"+summonerId+"?api_key="+API_KEY;
 
+        String url = "https://"+region+".api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/"+summonerId+"?api_key="+API_KEY;
+        Log.d("APP URL",url+"");
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -588,7 +607,7 @@ public class ApiRequest {
                     ArrayList<PlayerChampionMastery> arrayListPlayerChampMast = new ArrayList<>();
                     Log.d("JsonArray",response.toString());
                     for(int i=0;i<3;i++){
-                        JSONObject jresponse = response.getJSONObject(0);
+                        JSONObject jresponse = response.getJSONObject(i);
 
                         int championId = jresponse.getInt("championId");
                         int championLevel = jresponse.getInt("championLevel");
@@ -606,19 +625,24 @@ public class ApiRequest {
                         //Log.d("APP tier",tier);
                     }
                     callbackChampMastery.onSuccess(arrayListPlayerChampMast);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                     callbackChampMastery.onError("Error");
+
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 callbackChampMastery.onError("Error");
+
             }
         });
 
-        MySingleton.getInstance(context).addToRequestQueue(request);
+        //MySingleton.getInstance(context).addToRequestQueue(request);
+
+        queue.add(request);
     }
 
     public interface CallbackChampMastery{

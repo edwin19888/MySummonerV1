@@ -127,16 +127,16 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
-        android:background="#00b1a1"
+        android:background="#02111D"
         android:shape="line">
 
         <ImageView
             android:id="@+id/ivSearchSummoner"
-            android:layout_width="130dp"
+            android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="0dp"
             android:src="@drawable/icon_search"
@@ -144,22 +144,27 @@
             android:clickable="true"/>
         <ImageView
             android:id="@+id/ivChampions"
-            android:layout_width="130dp"
+            android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="0dp"
-            android:src="@drawable/icon_champion"
+            android:layout_toRightOf="@+id/ivSearchSummoner"
+            android:src="@drawable/icon_champions"
             android:focusable="true"
             android:clickable="true"/>
+
+
         <ImageView
             android:id="@+id/ivSettings"
-            android:layout_width="130dp"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="0dp"
-            android:src="@drawable/icon_setting"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:clickable="true"
             android:focusable="true"
-            android:clickable="true"/>
+            android:src="@drawable/icon_setting" />
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

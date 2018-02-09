@@ -11,7 +11,7 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:fitsSystemWindows="false">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -66,13 +66,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/ivProfileIcon"
-                    android:layout_marginLeft="23dp"
-                    android:layout_marginStart="23dp"
-                    android:layout_marginTop="13dp"
+                    android:layout_marginLeft="21dp"
+                    android:layout_marginStart="21dp"
+                    android:textSize="20dp"
                     android:layout_toEndOf="@+id/ivProfileIcon"
                     android:layout_toRightOf="@+id/ivProfileIcon"
-                    android:text="Player"
-                    android:textSize="20dp" />
+                    android:text="Player" />
 
                 <TextView
                     android:id="@+id/tvRankedInfo"
@@ -81,8 +80,9 @@
                     android:layout_alignLeft="@+id/tvPlayerName"
                     android:layout_alignStart="@+id/tvPlayerName"
                     android:layout_below="@+id/tvPlayerName"
-                    android:text="Unranked"
-                    android:textSize="10dp" />
+                    android:layout_marginTop="0dp"
+                    android:textSize="10dp"
+                    android:text="Unranked" />
 
                 <TextView
                     android:id="@+id/tvWinLosses"
@@ -98,7 +98,7 @@
                     android:id="@+id/cvFirstChampion"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:layout_alignParentBottom="true"
+                    android:layout_alignTop="@+id/cvSecondChampion"
                     android:layout_centerHorizontal="true"
                     android:innerRadius="0dp"
                     android:shape="ring"
@@ -109,9 +109,9 @@
                         android:id="@+id/ivFirstChampion"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
-                        android:layout_alignLeft="@+id/cvFirstChampion"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignStart="@+id/cvFirstChampion"></ImageView>
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true">
+                    </ImageView>
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
@@ -134,18 +134,16 @@
                         android:layout_alignLeft="@+id/cvSecondChampion"
                         android:layout_alignParentBottom="true"
                         android:layout_alignStart="@+id/cvSecondChampion"
-                        android:layout_marginBottom="11dp">
-
-                    </ImageView>
+                        android:layout_marginBottom="11dp"></ImageView>
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/cvThirdChampion"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/cvFirstChampion"
                     android:layout_marginEnd="33dp"
                     android:layout_marginRight="33dp"
                     android:innerRadius="0dp"
@@ -158,11 +156,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"></ImageView>
+                        android:layout_centerHorizontal="true">
+                    </ImageView>
                 </android.support.v7.widget.CardView>
+
+
+
             </RelativeLayout>
 
-
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"
+                android:minHeight="?attr/actionBarSize"
+                app:layout_scrollFlags="scroll|enterAlways"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
         <TextView

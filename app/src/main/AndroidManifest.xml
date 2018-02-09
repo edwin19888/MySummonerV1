@@ -21,7 +21,17 @@
         <activity android:name=".ChampionsActivity" />
         <activity android:name=".PrincipalActivity" />
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".MatchesActivity"></activity>
+        <activity
+            android:name=".MatchesActivity"
+            android:parentActivityName=".PrincipalActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PrincipalActivity" />
+        </activity>
+        <activity android:name=".ProgressActivity" />
+        <activity android:name=".ProfilePlayerActivity" />
+        <activity android:name=".PrincipalProfileActivity" />
+        <activity android:name=".OtherActivity"></activity>
     </application>
 
 </manifest>

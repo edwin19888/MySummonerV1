@@ -16,4 +16,5 @@
         <item>Lationamerica Norte</item>
         <item>Lationamerica Sur</item>
     </string-array>
+    <string name="title_activity_new_principal">NewPrincipalActivity</string>
 </resources>
