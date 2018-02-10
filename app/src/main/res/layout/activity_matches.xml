@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#192943"
     tools:context="com.webin.mysummonerv1.MatchesActivity">
 
 
@@ -12,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="invisible"
-        android:fitsSystemWindows="false">
+        android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
@@ -21,7 +22,7 @@
             app:contentScrim="#192943"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:titleEnabled="false">
+            app:collapsedTitleTextAppearance="@android:color/transparent">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -94,74 +95,15 @@
                     android:textSize="10dp"
                     android:text="0W 0L" />
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cvFirstChampion"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:innerRadius="0dp"
-                    android:shape="ring"
-                    android:thicknessRatio="1.9"
-                    app:cardCornerRadius="30dp">
 
-                    <ImageView
-                        android:id="@+id/ivFirstChampion"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:layout_alignLeft="@+id/cvFirstChampion"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignStart="@+id/cvFirstChampion"></ImageView>
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cvSecondChampion"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_alignEnd="@+id/ivProfileIcon"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignRight="@+id/ivProfileIcon"
-                    android:layout_marginBottom="21dp"
-                    android:innerRadius="0dp"
-                    android:shape="ring"
-                    android:thicknessRatio="1.9"
-                    app:cardCornerRadius="30dp">
-
-                    <ImageView
-                        android:id="@+id/ivSecondChampion"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:layout_alignLeft="@+id/cvSecondChampion"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignStart="@+id/cvSecondChampion"
-                        android:layout_marginBottom="11dp">
-
-                    </ImageView>
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cvThirdChampion"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginEnd="33dp"
-                    android:layout_marginRight="33dp"
-                    android:innerRadius="0dp"
-                    android:shape="ring"
-                    android:thicknessRatio="1.9"
-                    app:cardCornerRadius="30dp">
-
-                    <ImageView
-                        android:id="@+id/ivThirdChampion"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"></ImageView>
-                </android.support.v7.widget.CardView>
             </RelativeLayout>
-
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbarMatches"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:title="Demo">
+            </android.support.v7.widget.Toolbar>
 
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -172,26 +114,22 @@
             android:textColor="#FFFFFF"
             android:textSize="20dp"/>
 
-
-
-
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="?attr/actionBarSize"
-        android:layout_alignParentBottom="true">
-
-    </LinearLayout>
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="0dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <ProgressBar
+            android:id="@+id/prLoadingInfoPlayer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="150dp"
+            android:minWidth="150dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
         <TextView
             android:id="@+id/tvDataNotFound"
             android:layout_width="wrap_content"
@@ -201,9 +139,9 @@
             android:id="@+id/tvLoadingData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-    </LinearLayout>
 
 
+    </RelativeLayout>
 
 
 

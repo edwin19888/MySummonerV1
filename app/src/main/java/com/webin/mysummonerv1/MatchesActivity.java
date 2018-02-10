@@ -7,16 +7,24 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,11 +48,11 @@ public class MatchesActivity extends AppCompatActivity {
     private RequestQueue queue;
     private ApiRequest request;
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private ImageView ivChampPointsFirst,ivProfileIcon,ivFirstChampion,ivSecondChampion,ivThirdChampion;
+    private ImageView ivChampPointsFirst,ivProfileIcon;
     private TextView tvDataNotFound,tvChampionLevel,tvPlayerName,tvRankedInfo,tvWinLosses,tvLoadingData;
     private AppBarLayout app_bar;
-    private ProgressDialog progressDialog=null;
     private CollapsingToolbarLayout collapsing_toolbar;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +67,10 @@ public class MatchesActivity extends AppCompatActivity {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//no girar activity
 
-        getSupportActionBar().hide();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        Toolbar toolbarMatches = (Toolbar) findViewById(R.id.toolbarMatches);
+        setSupportActionBar(toolbarMatches);
+        if(getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
@@ -72,9 +81,6 @@ public class MatchesActivity extends AppCompatActivity {
         tvPlayerName = (TextView) findViewById(R.id.tvPlayerName);
         tvRankedInfo = (TextView) findViewById(R.id.tvRankedInfo);
         tvWinLosses = (TextView) findViewById(R.id.tvWinLosses);
-        ivFirstChampion = (ImageView) findViewById(R.id.ivFirstChampion);
-        ivSecondChampion = (ImageView) findViewById(R.id.ivSecondChampion);
-        ivThirdChampion = (ImageView) findViewById(R.id.ivThirdChampion);
         app_bar = (AppBarLayout) findViewById(R.id.app_bar);
         tvLoadingData = (TextView) findViewById(R.id.tvLoadingData);
 
@@ -105,18 +111,12 @@ public class MatchesActivity extends AppCompatActivity {
 
 
             setTitle(playerName.toUpperCase());
-            //collapsing_toolbar.setTitle(playerName);
+            toolbarMatches.setTitle(playerName);
 
 
         }else{
             //Redireccionar a PirncipalActivity
         }
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Please wait (2/2)");
-        progressDialog.setMessage("Cargando Datos ...");
-        progressDialog.show();
-
 
         request.getPlayerChampMastery(playerId, new ApiRequest.CallbackChampMastery() {
             @Override
@@ -136,13 +136,6 @@ public class MatchesActivity extends AppCompatActivity {
                 int alphaAmount = 90; // some value 0-255 where 0 is fully transparent and 255 is fully opaque
                 ivChampPointsFirst.setAlpha(alphaAmount);
 
-                String firstChampion = playerChampionMasteryArrayList.get(0).getChampName();
-                String secondChampion = playerChampionMasteryArrayList.get(1).getChampName();
-                String thirdChampion = playerChampionMasteryArrayList.get(2).getChampName();
-
-                Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/"+firstChampion).into(ivFirstChampion);
-                Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/"+secondChampion).into(ivSecondChampion);
-                Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/"+thirdChampion).into(ivThirdChampion);
 
             }
 
@@ -267,6 +260,23 @@ public class MatchesActivity extends AppCompatActivity {
             LlenarViewRecyler(i,matchesList.get(i),playerId,request);
         }
 
+        progressBar = (ProgressBar) findViewById(R.id.prLoadingInfoPlayer);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+
+            Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
+            DrawableCompat.setTint(wrapDrawable, ContextCompat.getColor(this, R.color.button_pressed));
+            progressBar.setIndeterminateDrawable(DrawableCompat.unwrap(wrapDrawable));
+        } else {
+            progressBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this, R.color.button_pressed), PorterDuff.Mode.SRC_IN);
+        }
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                progressBar.setVisibility(View.INVISIBLE);
+                // Actions to do after 10 seconds
+            }
+        }, 20000);
 
         /*
         LlenarViewRecyler(matchesList.get(10),playerId,request);
@@ -302,8 +312,7 @@ public class MatchesActivity extends AppCompatActivity {
 
                     app_bar.setVisibility(View.VISIBLE);
                     recyclerViewMatches.setVisibility(View.VISIBLE);
-                    progressDialog.dismiss();
-                    getSupportActionBar().show();
+                    //getSupportActionBar().show();
                 }
 
             }
@@ -330,7 +339,7 @@ public class MatchesActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         finish();
-        Intent intPrincipal = new Intent(MatchesActivity.this,PrincipalActivity.class);
+        Intent intPrincipal = new Intent(MatchesActivity.this,HomeActivity.class);
         startActivity(intPrincipal);
     }
 
@@ -363,13 +372,6 @@ public class MatchesActivity extends AppCompatActivity {
         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
         return filter;
     }
-
-    protected void onPause() {
-        super.onPause();
-        progressDialog.dismiss();
-
-    }
-
 
 
 }

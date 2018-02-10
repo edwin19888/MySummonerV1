@@ -7,75 +7,86 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class SettingsActivity extends AppCompatActivity implements AlertDialogRadio.AlertPositiveListener,AlertDialogRadio.AlertNegativeListener {
+public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.AlertPositiveListener,AlertDialogRadio.AlertNegativeListener {
 
-    ImageView imageViewChampion,imageViewSearch;
-    TextView textViewCurrentServer;
-    ImageView imageViewCurrentServer;
-
-    int position = 0;
     private static final int INTERVALO = 2000; //2 segundos para salir
     private long tiempoPrimerClick;
+    int position = 0;
+
+    ImageView imageViewChampion,imageViewSetting;
+    RelativeLayout rlHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//no girar activity
-
-        setTitle("Información");
+        setContentView(R.layout.activity_home);
 
         SharedPreferences prefs = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
         int mostrarServer = prefs.getInt("mostrarServer", 0);
         String serverName = prefs.getString("serverName","Korea");
+        final String plataforma = prefs.getString("plataforma","kr");
+        int idServer = prefs.getInt("idServer",0);
 
-        final RelativeLayout rlSettings = (RelativeLayout) findViewById(R.id.rlSettings);
-        textViewCurrentServer = (TextView) findViewById(R.id.TextViewCurrenServer);
-        textViewCurrentServer.setText(serverName);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//no girar activity
+
+        rlHome = (RelativeLayout) findViewById(R.id.rlHome);
 
         imageViewChampion = (ImageView) findViewById(R.id.ivChampions);
         imageViewChampion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rlSettings.setVisibility(View.INVISIBLE);
-                Intent i = new Intent(SettingsActivity.this,ChampionsActivity.class);
+                rlHome.setVisibility(View.INVISIBLE);
+                Intent i = new Intent(HomeActivity.this,ChampionsActivity.class);
                 startActivity(i);
-                overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                overridePendingTransition(R.anim.left_in, R.anim.left_out);
                 finish();
             }
         });
 
-        imageViewSearch = (ImageView) findViewById(R.id.ivSearchSummoner);
-        imageViewSearch.setOnClickListener(new View.OnClickListener() {
+        imageViewSetting = (ImageView) findViewById(R.id.ivSettings);
+        imageViewSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rlSettings.setVisibility(View.INVISIBLE);
-                Intent i = new Intent(SettingsActivity.this,HomeActivity.class);
-                startActivity(i);
-                overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                rlHome.setVisibility(View.INVISIBLE);
+                Intent s = new Intent(HomeActivity.this,SettingsActivity.class);
+                startActivity(s);
+                overridePendingTransition(R.anim.left_in, R.anim.left_out);
                 finish();
             }
         });
+        if (mostrarServer == 0) {
+            openDialogServer();
+        }
 
-        imageViewCurrentServer = (ImageView) findViewById(R.id.imageViewCurrentServer);
+    }
 
-        imageViewCurrentServer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDialogServer();
-            }
-        });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_action_bar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                startActivity(new Intent(this, OtherActivity.class));
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void openDialogServer() {
-        SharedPreferences prefs = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
-        int idServer = prefs.getInt("idServer",0);
         /** Getting the fragment manager */
         FragmentManager manager = getFragmentManager();
 
@@ -86,7 +97,7 @@ public class SettingsActivity extends AppCompatActivity implements AlertDialogRa
         Bundle b  = new Bundle();
 
         /** Storing the selected item's index in the bundle object */
-        b.putInt("position", idServer);
+        b.putInt("position", position);
 
         /** Setting the bundle object to the dialog fragment object */
         alert.setArguments(b);
@@ -99,7 +110,8 @@ public class SettingsActivity extends AppCompatActivity implements AlertDialogRa
     @Override
     public void onPositiveClick(int position) {
         this.position = position;
-        String plataforma = "kr";
+        String plataforma;
+
         /** Getting the reference of the textview from the main layout */
         String serverSelection = Android.code[this.position];
         switch (this.position){
@@ -128,7 +140,7 @@ public class SettingsActivity extends AppCompatActivity implements AlertDialogRa
                 plataforma = "kr";
         }
 
-        //Toast.makeText(SettingsActivity.this,"Check: "+Android.code[this.position],Toast.LENGTH_SHORT).show();
+        //Toast.makeText(PrincipalActivity.this,"Check: "+Android.code[this.position],Toast.LENGTH_SHORT).show();
         /** Setting the selected android version in the textview */
         //tv.setText("Your Choice : " + Android.code[this.position]);
 
@@ -141,29 +153,32 @@ public class SettingsActivity extends AppCompatActivity implements AlertDialogRa
         editor.putInt("idServer",position);
         editor.putString("plataforma",plataforma);
         editor.commit();
-
-        textViewCurrentServer.setText(serverSelection);
     }
 
     @Override
     public void onNegativeClick(int position){
-        /*
         this.position = 0;
+        String plataforma = "kr";
 
+        Toast.makeText(HomeActivity.this,"Check: "+Android.code[this.position],Toast.LENGTH_SHORT).show();
+        /** Setting the selected android version in the textview */
+        //tv.setText("Your Choice : " + Android.code[this.position]);
         String serverSelection = "Korea";
         SharedPreferences prefs =
                 getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("serverName", serverSelection);
         editor.putInt("mostrarServer", 1);
+        editor.putInt("idServer",position);
+        editor.putString("kr",plataforma);
         editor.commit();
-        */
     }
 
     @Override
     public void onBackPressed(){
         if (tiempoPrimerClick + INTERVALO > System.currentTimeMillis()){
             super.onBackPressed();
+            finish();
             return;
         }else {
             Toast.makeText(this, "Vuelve a presionar para salir", Toast.LENGTH_SHORT).show();

@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
+import android.net.wifi.hotspot2.pps.HomeSp;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_screen);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar_cyclic);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void changetoapp(View v){
         progressBar.setVisibility(View.INVISIBLE);
-        startActivity(new Intent(this, PrincipalActivity.class));
+        startActivity(new Intent(this, HomeActivity.class));
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();
     }

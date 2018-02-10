@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -34,7 +35,6 @@ public class ChampionsActivity extends AppCompatActivity {
     private GridAdapter gridAdapter;
     private Handler handler;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +56,7 @@ public class ChampionsActivity extends AppCompatActivity {
         progressBarLoader = (ProgressBar) findViewById(R.id.pb_ChampionLoader);
         gridViewGallery = (GridView) findViewById(R.id.gv_ChampionGallery);
         progressBarLoader.setVisibility(View.VISIBLE);
+        final RelativeLayout rlChampions = (RelativeLayout) findViewById(R.id.rlChampions);
 
         handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -85,9 +86,10 @@ public class ChampionsActivity extends AppCompatActivity {
         imageViewSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ChampionsActivity.this,PrincipalActivity.class);
+                rlChampions.setVisibility(View.INVISIBLE);
+                Intent i = new Intent(ChampionsActivity.this,HomeActivity.class);
                 startActivity(i);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                overridePendingTransition(R.anim.right_in, R.anim.right_out);
                 finish();
             }
         });
@@ -96,9 +98,10 @@ public class ChampionsActivity extends AppCompatActivity {
         imageViewSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                rlChampions.setVisibility(View.INVISIBLE);
                 Intent i = new Intent(ChampionsActivity.this,SettingsActivity.class);
                 startActivity(i);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                overridePendingTransition(R.anim.left_in, R.anim.left_out);
                 finish();
             }
         });

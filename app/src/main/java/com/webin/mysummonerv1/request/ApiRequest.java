@@ -50,7 +50,6 @@ public class ApiRequest {
     }
 
     public void checkPlayerName(final String summonerName, final CheckPlayerCallback callback){
-        final ProgressDialog dialog = ProgressDialog.show(context, "Please wait (1/2)", "Procesando Perfil.........");
         String summ= summonerName.replace(" ","%20");
 
         String url = "https://"+region+".api.riotgames.com/lol/summoner/v3/summoners/by-name/"+summ+"?api_key="+API_KEY;
@@ -70,12 +69,12 @@ public class ApiRequest {
                     long summonerLevel = response.getLong("summonerLevel");
 
                     callback.onSuccess(name, accountId, id, profileIconId, summonerLevel);
-                    dialog.dismiss();
+
 
                 } catch (JSONException e) {
                     Log.d("APP", "EXCEPTION =" + e);
                     e.printStackTrace();
-                    dialog.dismiss();
+
                 }
 
 
@@ -103,7 +102,7 @@ public class ApiRequest {
                 }
 
                 Log.d("APP", "ERROR = " + error);
-                dialog.dismiss();
+
 
             }
         });
