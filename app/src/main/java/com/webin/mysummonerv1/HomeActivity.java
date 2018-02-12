@@ -32,9 +32,10 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
 
         SharedPreferences prefs = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
         int mostrarServer = prefs.getInt("mostrarServer", 0);
-        String serverName = prefs.getString("serverName","Korea");
-        final String plataforma = prefs.getString("plataforma","kr");
+        String serverName = prefs.getString("serverName","Lationamerica Norte");
+        final String plataforma = prefs.getString("plataforma","la1");
         int idServer = prefs.getInt("idServer",0);
+        String rss = prefs.getString("rss","lan");
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//no girar activity
 
@@ -68,7 +69,7 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
         }
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        ReadRss readRss = new ReadRss(this, recyclerView);
+        ReadRss readRss = new ReadRss(this, recyclerView,rss);
         readRss.execute();
     }
 
@@ -115,34 +116,22 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
     @Override
     public void onPositiveClick(int position) {
         this.position = position;
-        String plataforma;
+        String plataforma,rss;
 
         /** Getting the reference of the textview from the main layout */
         String serverSelection = Android.code[this.position];
         switch (this.position){
             case 0:
-                plataforma = "kr";
+                plataforma = "la1";
+                rss = "lan";
                 break;
             case 1:
-                plataforma = "la1";
-                break;
-            case 2:
                 plataforma = "la2";
-                break;
-            case 3:
-                plataforma = "br1";
-                break;
-            case 4:
-                plataforma = "na1";
-                break;
-            case 5:
-                plataforma = "tr1";
-                break;
-            case 6:
-                plataforma = "eun1";
+                rss = "las";
                 break;
             default:
-                plataforma = "kr";
+                plataforma = "la1";
+                rss = "lan";
         }
 
         //Toast.makeText(PrincipalActivity.this,"Check: "+Android.code[this.position],Toast.LENGTH_SHORT).show();
@@ -157,25 +146,27 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
         editor.putInt("mostrarServer", 1);
         editor.putInt("idServer",position);
         editor.putString("plataforma",plataforma);
+        editor.putString("rss",rss);
         editor.commit();
     }
 
     @Override
     public void onNegativeClick(int position){
         this.position = 0;
-        String plataforma = "kr";
+        String plataforma = "la1",rss="lan";
 
         Toast.makeText(HomeActivity.this,"Check: "+Android.code[this.position],Toast.LENGTH_SHORT).show();
         /** Setting the selected android version in the textview */
         //tv.setText("Your Choice : " + Android.code[this.position]);
-        String serverSelection = "Korea";
+        String serverSelection = "Lationamerica Norte";
         SharedPreferences prefs =
                 getSharedPreferences("MisPreferencias",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("serverName", serverSelection);
         editor.putInt("mostrarServer", 1);
         editor.putInt("idServer",position);
-        editor.putString("kr",plataforma);
+        editor.putString("plataforma",plataforma);
+        editor.putString("rss",rss);
         editor.commit();
     }
 

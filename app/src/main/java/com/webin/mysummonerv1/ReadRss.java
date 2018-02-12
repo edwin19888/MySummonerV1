@@ -27,15 +27,17 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class ReadRss extends AsyncTask<Void, Void, Void> {
     Context context;
-    String address = "http://www.sciencemag.org/rss/news_current.xml";
+    String address,rss;
     ProgressDialog progressDialog;
     ArrayList<FeedItem> feedItems;
     RecyclerView recyclerView;
     URL url;
 
-    public ReadRss(Context context, RecyclerView recyclerView) {
+
+    public ReadRss(Context context, RecyclerView recyclerView, String rss) {
         this.recyclerView = recyclerView;
         this.context = context;
+        this.rss = rss;
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Loading...");
     }
@@ -85,7 +87,22 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
                         if (cureent.getNodeName().equalsIgnoreCase("title")) {
                             item.setTitle(cureent.getTextContent());
                         } else if (cureent.getNodeName().equalsIgnoreCase("description")) {
-                            item.setDescription(cureent.getTextContent());
+                            String dataToImage = cureent.getTextContent();
+                            String dataToSubTitle = cureent.getTextContent();
+                            //Log.d("description=",cureent.getTextContent()+"");
+
+                            //Url imagen
+                            int intIndexini = dataToImage.indexOf("src=");
+                            int intIndexfin = dataToImage.substring(intIndexini, dataToImage.length()).indexOf(" ");
+                            String url = "https://"+rss+".leagueoflegends.com"+dataToImage.substring(intIndexini, dataToImage.length()).substring(5,intIndexfin-1);
+                            item.setThumbnailUrl(url);
+
+                            //Data descripcion
+                            int iniIndexDesc = dataToSubTitle.indexOf("hidden");
+                            int finIndexDesc = dataToSubTitle.substring(iniIndexDesc, dataToSubTitle.length()).indexOf("</div>");
+                            String subtitle = dataToSubTitle.substring(iniIndexDesc, dataToSubTitle.length()).substring(8,finIndexDesc);
+                            item.setDescription(subtitle);
+
                         } else if (cureent.getNodeName().equalsIgnoreCase("pubDate")) {
                             item.setPubDate(cureent.getTextContent());
                         } else if (cureent.getNodeName().equalsIgnoreCase("link")) {
@@ -107,7 +124,8 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
     //This method will download rss feed document from specified url
     public Document Getdata() {
         try {
-            url = new URL(address);
+            String link = "https://"+rss+".leagueoflegends.com/es/rss.xml";
+            url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             InputStream inputStream = connection.getInputStream();

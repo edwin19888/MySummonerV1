@@ -33,7 +33,8 @@ public class SettingsActivity extends AppCompatActivity implements AlertDialogRa
 
         SharedPreferences prefs = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
         int mostrarServer = prefs.getInt("mostrarServer", 0);
-        String serverName = prefs.getString("serverName","Korea");
+        String serverName = prefs.getString("serverName","Lationamerica Norte");
+        String rss = prefs.getString("rss","lan");
 
         final RelativeLayout rlSettings = (RelativeLayout) findViewById(R.id.rlSettings);
         textViewCurrentServer = (TextView) findViewById(R.id.TextViewCurrenServer);
@@ -99,33 +100,21 @@ public class SettingsActivity extends AppCompatActivity implements AlertDialogRa
     @Override
     public void onPositiveClick(int position) {
         this.position = position;
-        String plataforma = "kr";
+        String plataforma,rss;
         /** Getting the reference of the textview from the main layout */
         String serverSelection = Android.code[this.position];
         switch (this.position){
             case 0:
-                plataforma = "kr";
+                plataforma = "la1";
+                rss = "lan";
                 break;
             case 1:
-                plataforma = "la1";
-                break;
-            case 2:
                 plataforma = "la2";
-                break;
-            case 3:
-                plataforma = "br1";
-                break;
-            case 4:
-                plataforma = "na1";
-                break;
-            case 5:
-                plataforma = "tr1";
-                break;
-            case 6:
-                plataforma = "eun1";
+                rss = "las";
                 break;
             default:
-                plataforma = "kr";
+                plataforma = "la1";
+                rss = "lan";
         }
 
         //Toast.makeText(SettingsActivity.this,"Check: "+Android.code[this.position],Toast.LENGTH_SHORT).show();
@@ -140,6 +129,7 @@ public class SettingsActivity extends AppCompatActivity implements AlertDialogRa
         editor.putInt("mostrarServer", 1);
         editor.putInt("idServer",position);
         editor.putString("plataforma",plataforma);
+        editor.putString("rss",rss);
         editor.commit();
 
         textViewCurrentServer.setText(serverSelection);
