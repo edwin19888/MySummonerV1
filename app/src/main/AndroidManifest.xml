@@ -24,14 +24,18 @@
         <activity android:name=".SettingsActivity" />
         <activity
             android:name=".MatchesActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
         </activity>
         <activity android:name=".ProgressActivity" />
         <activity android:name=".ProfilePlayerActivity" />
         <activity android:name=".PrincipalProfileActivity" />
         <activity android:name=".OtherActivity" />
-        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".HomeActivity">
+        </activity>
     </application>
 
 </manifest>

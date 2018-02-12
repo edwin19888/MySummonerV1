@@ -65,6 +65,8 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
             openDialogServer();
         }
 
+        ReadRss readRss = new ReadRss(this);
+        readRss.execute();
     }
 
     @Override

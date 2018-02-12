@@ -49,7 +49,7 @@ public class MatchesActivity extends AppCompatActivity {
     private ApiRequest request;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ImageView ivChampPointsFirst,ivProfileIcon;
-    private TextView tvDataNotFound,tvChampionLevel,tvPlayerName,tvRankedInfo,tvWinLosses,tvLoadingData;
+    private TextView tvDataNotFound,tvChampionLevel,tvPlayerName,tvRankedInfo,tvWinLosses,tvToolbarTitle,tvLoadingData;
     private AppBarLayout app_bar;
     private CollapsingToolbarLayout collapsing_toolbar;
     private ProgressBar progressBar;
@@ -69,11 +69,18 @@ public class MatchesActivity extends AppCompatActivity {
 
         Toolbar toolbarMatches = (Toolbar) findViewById(R.id.toolbarMatches);
         setSupportActionBar(toolbarMatches);
-        if(getSupportActionBar() != null)
+
+        if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+
+        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
+        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
+
         ivChampPointsFirst = (ImageView) findViewById(R.id.ivChampPointsFirst);
         ivProfileIcon = (ImageView) findViewById(R.id.ivProfileIcon);
         tvDataNotFound = (TextView) findViewById(R.id.tvDataNotFound);
@@ -110,12 +117,22 @@ public class MatchesActivity extends AppCompatActivity {
             }
 
 
-            setTitle(playerName.toUpperCase());
-            toolbarMatches.setTitle(playerName);
+            collapsingToolbarLayout.setTitle(playerName.toUpperCase());
+            //tvToolbarTitle.setText(playerName);
 
 
         }else{
             //Redireccionar a PirncipalActivity
+        }
+
+        progressBar = (ProgressBar) findViewById(R.id.prLoadingInfoPlayer);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+
+            Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
+            DrawableCompat.setTint(wrapDrawable, ContextCompat.getColor(this, R.color.button_pressed));
+            progressBar.setIndeterminateDrawable(DrawableCompat.unwrap(wrapDrawable));
+        } else {
+            progressBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this, R.color.button_pressed), PorterDuff.Mode.SRC_IN);
         }
 
         request.getPlayerChampMastery(playerId, new ApiRequest.CallbackChampMastery() {
@@ -144,6 +161,16 @@ public class MatchesActivity extends AppCompatActivity {
 
             }
         });
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                progressBar.setVisibility(View.INVISIBLE);
+                // Actions to do after 10 seconds
+            }
+        }, 5000);
+
+
 
 
         request.getPlayerLeague(playerId, new ApiRequest.CallbackLeague() {
@@ -260,23 +287,7 @@ public class MatchesActivity extends AppCompatActivity {
             LlenarViewRecyler(i,matchesList.get(i),playerId,request);
         }
 
-        progressBar = (ProgressBar) findViewById(R.id.prLoadingInfoPlayer);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
-            Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
-            DrawableCompat.setTint(wrapDrawable, ContextCompat.getColor(this, R.color.button_pressed));
-            progressBar.setIndeterminateDrawable(DrawableCompat.unwrap(wrapDrawable));
-        } else {
-            progressBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this, R.color.button_pressed), PorterDuff.Mode.SRC_IN);
-        }
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                progressBar.setVisibility(View.INVISIBLE);
-                // Actions to do after 10 seconds
-            }
-        }, 20000);
 
         /*
         LlenarViewRecyler(matchesList.get(10),playerId,request);
@@ -292,11 +303,6 @@ public class MatchesActivity extends AppCompatActivity {
         */
 
     }
-
-
-
-
-
 
     private void LlenarViewRecyler(final int indice, final Long aLong, final long playerId, final ApiRequest request) {
 

@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context="com.webin.mysummonerv1.HomeActivity">
 
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/recyclerview"
+        />
+
     <RelativeLayout
         android:id="@+id/rlHome"
         android:layout_width="fill_parent"
