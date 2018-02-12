@@ -15,7 +15,6 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 

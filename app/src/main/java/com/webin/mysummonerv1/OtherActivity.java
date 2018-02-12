@@ -1,9 +1,12 @@
 package com.webin.mysummonerv1;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -89,6 +92,39 @@ public class OtherActivity extends AppCompatActivity{
         request.checkPlayerName(usuario, new ApiRequest.CheckPlayerCallback() {
             @Override
             public void onSuccess(String name,long accountId, long id, int profileIconId, long summonerLevel) {
+
+                String texto = name;
+
+                ConexionToSQLiteHelper cnx = new ConexionToSQLiteHelper(getApplicationContext(),ConexionToSQLiteHelper.DB_NAME,null,ConexionToSQLiteHelper.v_db);
+                SQLiteDatabase db = cnx.getWritableDatabase();
+
+
+                ContentValues nuevo_registro = new ContentValues();
+                nuevo_registro.put("data",texto);
+
+                db.insert("busquedas",null,nuevo_registro);
+
+                String[] campos = new String[] {"id","data", "date_insert"};
+                String username = null,fecha=null;
+                int idUser = 0;
+
+                Cursor c = db.query("busquedas", campos, "", null, null, null, null);
+
+                //Nos aseguramos de que existe al menos un registro
+                if (c.moveToFirst()) {
+                    //Recorremos el cursor hasta que no haya más registros
+                    do {
+                        idUser= c.getInt(0);
+                        username = c.getString(1);
+                        fecha = c.getString(2);
+                        Log.d("SQLite idUser=",idUser+"");
+                        Log.d("SQLite username=",username+"");
+                        Log.d("SQLite fecha=",fecha+"");
+                    } while(c.moveToNext());
+                }
+                db.close();
+
+
 
                 Intent intent = new Intent(OtherActivity.this,MatchesActivity.class);
                 Bundle bundle = new Bundle();

@@ -19,7 +19,7 @@
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:contentScrim="#192943"
+            app:contentScrim="#02111D"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:expandedTitleMarginStart="48dp"
@@ -138,13 +138,10 @@
             android:id="@+id/tvDataNotFound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"/>
-        <TextView
-            android:id="@+id/tvLoadingData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
+            android:visibility="invisible"
+            android:textSize="25dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
 

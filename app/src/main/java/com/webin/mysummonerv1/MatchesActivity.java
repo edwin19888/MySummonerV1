@@ -49,7 +49,7 @@ public class MatchesActivity extends AppCompatActivity {
     private ApiRequest request;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ImageView ivChampPointsFirst,ivProfileIcon;
-    private TextView tvDataNotFound,tvChampionLevel,tvPlayerName,tvRankedInfo,tvWinLosses,tvToolbarTitle,tvLoadingData;
+    private TextView tvDataNotFound,tvChampionLevel,tvPlayerName,tvRankedInfo,tvWinLosses,tvToolbarTitle;
     private AppBarLayout app_bar;
     private CollapsingToolbarLayout collapsing_toolbar;
     private ProgressBar progressBar;
@@ -89,8 +89,6 @@ public class MatchesActivity extends AppCompatActivity {
         tvRankedInfo = (TextView) findViewById(R.id.tvRankedInfo);
         tvWinLosses = (TextView) findViewById(R.id.tvWinLosses);
         app_bar = (AppBarLayout) findViewById(R.id.app_bar);
-        tvLoadingData = (TextView) findViewById(R.id.tvLoadingData);
-
 
         recyclerViewMatches = (RecyclerView) findViewById(R.id.RecyclerViewMatches);
         recyclerViewMatches.setLayoutManager(new LinearLayoutManager(this));
@@ -152,8 +150,6 @@ public class MatchesActivity extends AppCompatActivity {
                 tvPlayerName.setText(playerName.toUpperCase());
                 int alphaAmount = 90; // some value 0-255 where 0 is fully transparent and 255 is fully opaque
                 ivChampPointsFirst.setAlpha(alphaAmount);
-
-
             }
 
             @Override
@@ -169,9 +165,6 @@ public class MatchesActivity extends AppCompatActivity {
                 // Actions to do after 10 seconds
             }
         }, 5000);
-
-
-
 
         request.getPlayerLeague(playerId, new ApiRequest.CallbackLeague() {
             @Override
@@ -250,22 +243,19 @@ public class MatchesActivity extends AppCompatActivity {
                     msg = "Error en respuesta del servidor";
                 }else if(message.equals("ServerError")){
                     msg = null;
+                    tvDataNotFound.setVisibility(View.VISIBLE);
                     tvDataNotFound.setText("Partidas no encontradas");
+                    app_bar.setVisibility(View.VISIBLE);
                 }else if(message.equals("TimeoutError")){
                     msg = "Tiempo de espera agotado";
                 }else {
                     msg = "Error desconocido";
                 }
-
                 Log.d("APP ERROR : ",message);
                 Mensaje(msg);
 
             }
         });
-
-
-
-
     }
 
     public void ViewRecycler(final List<Long> matchesList, final long playerId, final ApiRequest request){
@@ -287,8 +277,6 @@ public class MatchesActivity extends AppCompatActivity {
             LlenarViewRecyler(i,matchesList.get(i),playerId,request);
         }
 
-
-
         /*
         LlenarViewRecyler(matchesList.get(10),playerId,request);
         LlenarViewRecyler(matchesList.get(11),playerId,request);
@@ -301,7 +289,6 @@ public class MatchesActivity extends AppCompatActivity {
         LlenarViewRecyler(matchesList.get(18),playerId,request);
         LlenarViewRecyler(matchesList.get(19),playerId,request);
         */
-
     }
 
     private void LlenarViewRecyler(final int indice, final Long aLong, final long playerId, final ApiRequest request) {
@@ -320,17 +307,16 @@ public class MatchesActivity extends AppCompatActivity {
                     recyclerViewMatches.setVisibility(View.VISIBLE);
                     //getSupportActionBar().show();
                 }
-
             }
 
             @Override
             public void onError(String message) {
-
+                Mensaje(message);
             }
 
             @Override
             public void noMatch(String message) {
-
+                Mensaje(message);
             }
         });
     }
@@ -338,8 +324,10 @@ public class MatchesActivity extends AppCompatActivity {
     public void Mensaje(String msj){
         if (msj != null){
             Toast.makeText(MatchesActivity.this,""+ msj,Toast.LENGTH_SHORT).show();
+            finish();
+            Intent intPrincipal = new Intent(MatchesActivity.this,HomeActivity.class);
+            startActivity(intPrincipal);
         }
-
     }
 
     @Override

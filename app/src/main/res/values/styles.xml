@@ -14,7 +14,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="ExpandedText" parent="android:TextAppearance">
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">#121111</item>
         <item name="android:textSize">20sp</item>
     </style>
 

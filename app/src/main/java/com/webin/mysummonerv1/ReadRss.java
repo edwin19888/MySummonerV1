@@ -39,7 +39,7 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
         this.context = context;
         this.rss = rss;
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage("Cargando Noticias ...");
     }
 
     //before fetching of rss statrs show progress to user

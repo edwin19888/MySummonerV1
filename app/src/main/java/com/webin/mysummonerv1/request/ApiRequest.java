@@ -39,7 +39,7 @@ public class ApiRequest {
 
     private RequestQueue queue;
     private Context context;
-    private static final String API_KEY = "RGAPI-b93dfdc1-ad5e-4774-8ddc-5585c7089d06";
+    private static final String API_KEY = "RGAPI-821aaeb0-2c0b-455e-aeb2-278e018276a4";
     private String region;
     private ArrayList<Matches> arrayListMatches = new ArrayList<>();
 
@@ -498,7 +498,7 @@ public class ApiRequest {
                     } catch (JSONException e) {
                         Log.d("APP:","EXEPTION HISTORY  2 = " + e);
                         e.printStackTrace();
-
+                        callback.onError("Error en Json");
                     }
                 }else{
                     callback.noMatch("No found match");
