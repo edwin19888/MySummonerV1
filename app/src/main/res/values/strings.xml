@@ -17,6 +17,5 @@
         <item>Lationamerica Sur</item>
     </string-array>
     <string name="title_activity_new_principal">NewPrincipalActivity</string>
-    <string name="app_name">RssReader</string>
     <string name="action_settings">Settings</string>
 </resources>

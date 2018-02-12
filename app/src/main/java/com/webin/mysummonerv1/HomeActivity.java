@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
 
     ImageView imageViewChampion,imageViewSetting;
     RelativeLayout rlHome;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,8 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
             openDialogServer();
         }
 
-        ReadRss readRss = new ReadRss(this);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        ReadRss readRss = new ReadRss(this, recyclerView);
         readRss.execute();
     }
 
