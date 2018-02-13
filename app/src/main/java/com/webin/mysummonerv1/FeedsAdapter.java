@@ -5,13 +5,17 @@ package com.webin.mysummonerv1;
  */
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -19,9 +23,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-/**
- * Created by rishabh on 26-02-2016.
- */
 public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.MyViewHolder> {
     ArrayList<FeedItem>feedItems;
     Context context;
@@ -37,17 +38,25 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         YoYo.with(Techniques.FadeIn).playOn(holder.cardView);
-        FeedItem current=feedItems.get(position);
+        final FeedItem current=feedItems.get(position);
         holder.Title.setText(current.getTitle());
         holder.Description.setText(current.getDescription());
         holder.Date.setText(current.getPubDate());
         Picasso.with(context).load(current.getThumbnailUrl()).into(holder.Thumbnail);
 
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse(current.getLink());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                context.startActivity(intent);
+            }
+        });
+
     }
-
-
 
     @Override
     public int getItemCount() {

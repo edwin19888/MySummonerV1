@@ -35,8 +35,10 @@
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvRecentSearch"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar2">
     </android.support.v7.widget.RecyclerView>
 
 

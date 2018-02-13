@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -24,12 +26,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
+import com.webin.mysummonerv1.Clases.Recent;
+import com.webin.mysummonerv1.adapter.RecentAdapter;
 import com.webin.mysummonerv1.request.ApiRequest;
+
+import java.util.ArrayList;
 
 public class OtherActivity extends AppCompatActivity{
 
     private ImageView ibBackActivity;
     private EditText edUserToSearch;
+    private RecyclerView rvRecentSearch;
     String[] summoner = new String[1];
 
     private RequestQueue queue;
@@ -85,6 +92,45 @@ public class OtherActivity extends AppCompatActivity{
             }
         });
 
+        rvRecentSearch = (RecyclerView) findViewById(R.id.rvRecentSearch);
+        rvRecentSearch.setLayoutManager(new LinearLayoutManager(this));
+
+        ConexionToSQLiteHelper cnx = new ConexionToSQLiteHelper(getApplicationContext(),ConexionToSQLiteHelper.DB_NAME,null,ConexionToSQLiteHelper.v_db);
+        SQLiteDatabase db = cnx.getWritableDatabase();
+
+        String[] campos = new String[] {"id","username","accountId","idplayer","profileIconId","summonerLevel","date_insert"};
+        String username = null,fecha=null;
+        int idTable = 0;
+        int accountId = 0,idplayer=0,profileIconId=0,summonerLevel=0;
+
+        Cursor c = db.query("busquedas", campos, "", null, null, null, null);
+
+        ArrayList<Recent> recentArrayList = new ArrayList<>();
+        //Nos aseguramos de que existe al menos un registro
+        if (c.moveToFirst()) {
+            //Recorremos el cursor hasta que no haya más registros
+            do {
+                idTable= c.getInt(0);
+                username = c.getString(1);
+                accountId = c.getInt(2);
+                idplayer = c.getInt(3);
+                profileIconId = c.getInt(4);
+                summonerLevel = c.getInt(5);
+                fecha = c.getString(6);
+                //Recent recent = new Recent(idTable,username,fecha);
+                //recentArrayList.add(recent);
+                Log.d("SQLite idTable=",idTable+"");
+                Log.d("SQLite username=",username+"");
+                Log.d("SQLite idplayer=",idplayer+"");
+                Log.d("SQLite profileIconId=",profileIconId+"");
+                Log.d("SQLite summonerLevel=",summonerLevel+"");
+                Log.d("SQLite fecha=",fecha+"");
+            } while(c.moveToNext());
+        }
+        db.close();
+
+        //RecentAdapter adapterRecent = new RecentAdapter(recentArrayList,getApplicationContext());
+        //rvRecentSearch.setAdapter(adapterRecent);
     }
 
     public void VolleyCheckUser(String usuario, ApiRequest request){
@@ -94,34 +140,24 @@ public class OtherActivity extends AppCompatActivity{
             public void onSuccess(String name,long accountId, long id, int profileIconId, long summonerLevel) {
 
                 String texto = name;
+                long accId = accountId;
+                long idplayer = id;
+                int profIconId = profileIconId;
+                long summLevel = summonerLevel;
 
                 ConexionToSQLiteHelper cnx = new ConexionToSQLiteHelper(getApplicationContext(),ConexionToSQLiteHelper.DB_NAME,null,ConexionToSQLiteHelper.v_db);
                 SQLiteDatabase db = cnx.getWritableDatabase();
 
 
                 ContentValues nuevo_registro = new ContentValues();
-                nuevo_registro.put("data",texto);
+                nuevo_registro.put("username",texto);
+                nuevo_registro.put("accountId",accId);
+                nuevo_registro.put("idplayer",idplayer);
+                nuevo_registro.put("profileIconId",profIconId);
+                nuevo_registro.put("summonerLevel",summLevel);
 
                 db.insert("busquedas",null,nuevo_registro);
 
-                String[] campos = new String[] {"id","data", "date_insert"};
-                String username = null,fecha=null;
-                int idUser = 0;
-
-                Cursor c = db.query("busquedas", campos, "", null, null, null, null);
-
-                //Nos aseguramos de que existe al menos un registro
-                if (c.moveToFirst()) {
-                    //Recorremos el cursor hasta que no haya más registros
-                    do {
-                        idUser= c.getInt(0);
-                        username = c.getString(1);
-                        fecha = c.getString(2);
-                        Log.d("SQLite idUser=",idUser+"");
-                        Log.d("SQLite username=",username+"");
-                        Log.d("SQLite fecha=",fecha+"");
-                    } while(c.moveToNext());
-                }
                 db.close();
 
 

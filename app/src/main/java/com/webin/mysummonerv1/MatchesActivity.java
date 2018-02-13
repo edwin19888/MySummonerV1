@@ -49,7 +49,7 @@ public class MatchesActivity extends AppCompatActivity {
     private ApiRequest request;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ImageView ivChampPointsFirst,ivProfileIcon;
-    private TextView tvDataNotFound,tvChampionLevel,tvPlayerName,tvRankedInfo,tvWinLosses,tvToolbarTitle;
+    private TextView tvDataNotFound,tvChampionLevel,tvRankedInfo,tvWinLosses,tvToolbarTitle;
     private AppBarLayout app_bar;
     private CollapsingToolbarLayout collapsing_toolbar;
     private ProgressBar progressBar;
@@ -85,7 +85,6 @@ public class MatchesActivity extends AppCompatActivity {
         ivProfileIcon = (ImageView) findViewById(R.id.ivProfileIcon);
         tvDataNotFound = (TextView) findViewById(R.id.tvDataNotFound);
         tvChampionLevel = (TextView) findViewById(R.id.tvChampionLevel);
-        tvPlayerName = (TextView) findViewById(R.id.tvPlayerName);
         tvRankedInfo = (TextView) findViewById(R.id.tvRankedInfo);
         tvWinLosses = (TextView) findViewById(R.id.tvWinLosses);
         app_bar = (AppBarLayout) findViewById(R.id.app_bar);
@@ -147,7 +146,6 @@ public class MatchesActivity extends AppCompatActivity {
                 Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+image).into(ivChampPointsFirst);
                 Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/profileicon/"+profileIconId+".png").into(ivProfileIcon);
                 tvChampionLevel.setText(String.valueOf(summonerLevel));
-                tvPlayerName.setText(playerName.toUpperCase());
                 int alphaAmount = 90; // some value 0-255 where 0 is fully transparent and 255 is fully opaque
                 ivChampPointsFirst.setAlpha(alphaAmount);
             }
@@ -272,9 +270,18 @@ public class MatchesActivity extends AppCompatActivity {
                 LlenarViewRecyler(8,matchesList.get(8),playerId,request);
                 LlenarViewRecyler(9,matchesList.get(9),playerId,request);
                 */
+        int total;
+        if(matchesList.size()>10){
+            total = 10;
+        }else{
+            total = matchesList.size();
+        }
 
-        for (int i = 0; i < matchesList.size()-10; i++) {
-            LlenarViewRecyler(i,matchesList.get(i),playerId,request);
+        if(total > 0){
+            for (int i = 0; i < total; i++) {
+                LlenarViewRecyler(i,total-1,matchesList.get(i),playerId,request);
+                Log.d("APP Match ",i+"");
+            }
         }
 
         /*
@@ -291,7 +298,7 @@ public class MatchesActivity extends AppCompatActivity {
         */
     }
 
-    private void LlenarViewRecyler(final int indice, final Long aLong, final long playerId, final ApiRequest request) {
+    private void LlenarViewRecyler(final int indice, final int total, final Long aLong, final long playerId, final ApiRequest request) {
 
         request.getHistoryMatchListsByMatchId(aLong, playerId, new ApiRequest.HistoryCallbackMatch() {
             @Override
@@ -301,7 +308,7 @@ public class MatchesActivity extends AppCompatActivity {
                 Collections.sort(listMatches);
                 AdapterHistory adapterHistory = new AdapterHistory(listMatches,getApplicationContext());
                 recyclerViewMatches.setAdapter(adapterHistory);
-                if(indice == 9) {
+                if(indice == total) {
 
                     app_bar.setVisibility(View.VISIBLE);
                     recyclerViewMatches.setVisibility(View.VISIBLE);

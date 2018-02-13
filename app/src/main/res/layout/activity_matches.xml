@@ -65,26 +65,17 @@
                     android:gravity="center"
                     android:text="10" />
 
-                <TextView
-                    android:id="@+id/tvPlayerName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/ivProfileIcon"
-                    android:layout_marginLeft="23dp"
-                    android:layout_marginStart="23dp"
-                    android:layout_marginTop="13dp"
-                    android:layout_toEndOf="@+id/ivProfileIcon"
-                    android:layout_toRightOf="@+id/ivProfileIcon"
-                    android:text="Player"
-                    android:textSize="20dp" />
 
                 <TextView
                     android:id="@+id/tvRankedInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/tvPlayerName"
-                    android:layout_alignStart="@+id/tvPlayerName"
-                    android:layout_below="@+id/tvPlayerName"
+                    android:layout_alignTop="@+id/ivProfileIcon"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginStart="23dp"
+                    android:layout_marginTop="23dp"
+                    android:layout_toEndOf="@+id/ivProfileIcon"
+                    android:layout_toRightOf="@+id/ivProfileIcon"
                     android:text="Unranked"
                     android:textSize="10dp" />
 
@@ -111,12 +102,6 @@
 
 
         </android.support.design.widget.CollapsingToolbarLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Historial"
-            android:textColor="#FFFFFF"
-            android:textSize="20dp"/>
 
     </android.support.design.widget.AppBarLayout>
 

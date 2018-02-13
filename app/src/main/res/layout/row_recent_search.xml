@@ -7,27 +7,46 @@
 
     <RelativeLayout
         android:id="@+id/RelativeLayoutMatch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp">
 
         <ImageView
             android:id="@+id/ivRSicon"
-            android:layout_marginTop="5dp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="5dp"/>
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="11dp"
+            android:layout_marginStart="11dp"
+            android:background="@drawable/ic_action_refresh" />
+
+        <TextView
+            android:id="@+id/tvRecentPlayer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ivRSicon"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/ivRSicon"
+            android:layout_toRightOf="@+id/ivRSicon"
+            android:text="Player" />
+
+        <ImageView
+            android:id="@+id/ivDeleteItem"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/ivRSicon"
+            android:layout_marginEnd="21dp"
+            android:layout_marginRight="21dp"
+            android:background="@drawable/ic_action_delete"/>
 
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="39dp"
-        android:layout_marginStart="39dp"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@+id/RelativeLayoutMatch"
-        android:layout_toRightOf="@+id/RelativeLayoutMatch"
-        android:text="xth3br4x" />
+
+
 
 </RelativeLayout>

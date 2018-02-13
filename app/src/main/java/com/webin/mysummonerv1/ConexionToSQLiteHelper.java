@@ -6,11 +6,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ConexionToSQLiteHelper extends SQLiteOpenHelper {
 
-    //String sql = "CREATE TABLE busquedas (id INTEGER PRIMARY KEY AUTOINCREMENT, data TEXT, date_insert DATETIME DEFAULT (datetime('now','localtime')))";
-    public static String DB_NAME = "BDRecentSearch";
+    //String sqlCreate = "CREATE TABLE busquedas (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, date_insert DATETIME DEFAULT (datetime('now','localtime')))";
+    public static String DB_NAME = "SQLiteRecentSearch";
     private final Context context;
     public static int v_db = 2;
-    String sqlCreate = "CREATE TABLE busquedas (id INTEGER PRIMARY KEY AUTOINCREMENT, data TEXT, date_insert DATETIME DEFAULT (datetime('now','localtime')))";
+    String sqlCreate = "CREATE TABLE busquedas (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, accountId INTEGER, idplayer INTEGER, profileIconId INTEGER, summonerLevel INTEGER, date_insert DATETIME DEFAULT (datetime('now','localtime')))";
     String sqlUpdate = "ALTER TABLE busquedas ADD COLUMN fecha TEXT";
 
     public ConexionToSQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
