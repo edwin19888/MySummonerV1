@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/thumb_img"
             android:layout_centerHorizontal="true"
-            android:background="#80000000"
+            android:background="#000000"
             android:padding="8dp"
             android:gravity="center"
             android:lines="1"

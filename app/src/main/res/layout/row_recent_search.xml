@@ -12,7 +12,7 @@
         android:layout_marginTop="5dp">
 
         <ImageView
-            android:id="@+id/ivRSicon"
+            android:id="@+id/ivRSrefresh"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentLeft="true"
@@ -22,16 +22,60 @@
             android:layout_marginStart="11dp"
             android:background="@drawable/ic_action_refresh" />
 
+        <ImageView
+            android:id="@+id/ivRSprofileIconId"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_toEndOf="@+id/ivRSrefresh"
+            android:layout_toRightOf="@+id/ivRSrefresh"
+            android:background="@drawable/profileicon" />
+
         <TextView
-            android:id="@+id/tvRecentPlayer"
+            android:id="@+id/tvRSPlayer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/ivRSicon"
+            android:layout_alignTop="@+id/ivRSrefresh"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
-            android:layout_toEndOf="@+id/ivRSicon"
-            android:layout_toRightOf="@+id/ivRSicon"
+            android:layout_toEndOf="@+id/ivRSprofileIconId"
+            android:layout_toRightOf="@+id/ivRSprofileIconId"
             android:text="Player" />
+
+        <TextView
+            android:id="@+id/tvRSsummonerLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tvRSPlayer"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/tvRSPlayer"
+            android:layout_toRightOf="@+id/tvRSPlayer"
+            android:text="40" />
+
+        <TextView
+            android:id="@+id/tvRSaccountId"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignTop="@+id/tvRSsummonerLevel"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/tvRSsummonerLevel"
+            android:layout_toRightOf="@+id/tvRSsummonerLevel"
+            android:visibility="invisible" />
+        <TextView
+            android:id="@+id/tvRSid"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignTop="@+id/tvRSaccountId"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/tvRSaccountId"
+            android:layout_toRightOf="@+id/tvRSaccountId"
+            android:visibility="invisible" />
+
 
         <ImageView
             android:id="@+id/ivDeleteItem"
@@ -39,7 +83,7 @@
             android:layout_height="20dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/ivRSicon"
+            android:layout_alignTop="@+id/ivRSrefresh"
             android:layout_marginEnd="21dp"
             android:layout_marginRight="21dp"
             android:background="@drawable/ic_action_delete"/>

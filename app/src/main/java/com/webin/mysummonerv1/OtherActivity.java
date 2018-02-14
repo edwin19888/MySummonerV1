@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -102,8 +103,10 @@ public class OtherActivity extends AppCompatActivity{
         String username = null,fecha=null;
         int idTable = 0;
         int accountId = 0,idplayer=0,profileIconId=0,summonerLevel=0;
+        String fecha_table = "date_insert"+ "DESC";
 
-        Cursor c = db.query("busquedas", campos, "", null, null, null, null);
+        //Cursor c = db.query("busquedas", campos, "", null, null, null, null);
+        Cursor c = db.rawQuery("SELECT id,username,accountId,idplayer,profileIconId,summonerLevel,MAX(date_insert) FROM busquedas GROUP BY username ORDER BY 7 DESC",new String[]{});
 
         ArrayList<Recent> recentArrayList = new ArrayList<>();
         //Nos aseguramos de que existe al menos un registro
@@ -117,10 +120,11 @@ public class OtherActivity extends AppCompatActivity{
                 profileIconId = c.getInt(4);
                 summonerLevel = c.getInt(5);
                 fecha = c.getString(6);
-                //Recent recent = new Recent(idTable,username,fecha);
-                //recentArrayList.add(recent);
+                Recent recent = new Recent(idTable,username,accountId,idplayer,profileIconId,summonerLevel,fecha);
+                recentArrayList.add(recent);
                 Log.d("SQLite idTable=",idTable+"");
                 Log.d("SQLite username=",username+"");
+                Log.d("SQLite accountId=",accountId+"");
                 Log.d("SQLite idplayer=",idplayer+"");
                 Log.d("SQLite profileIconId=",profileIconId+"");
                 Log.d("SQLite summonerLevel=",summonerLevel+"");
@@ -129,8 +133,8 @@ public class OtherActivity extends AppCompatActivity{
         }
         db.close();
 
-        //RecentAdapter adapterRecent = new RecentAdapter(recentArrayList,getApplicationContext());
-        //rvRecentSearch.setAdapter(adapterRecent);
+        RecentAdapter adapterRecent = new RecentAdapter(recentArrayList,getApplicationContext());
+        rvRecentSearch.setAdapter(adapterRecent);
     }
 
     public void VolleyCheckUser(String usuario, ApiRequest request){
