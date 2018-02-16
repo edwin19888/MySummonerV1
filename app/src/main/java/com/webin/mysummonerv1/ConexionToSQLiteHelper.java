@@ -7,11 +7,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class ConexionToSQLiteHelper extends SQLiteOpenHelper {
 
     //String sqlCreate = "CREATE TABLE busquedas (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, date_insert DATETIME DEFAULT (datetime('now','localtime')))";
-    public static String DB_NAME = "SQLiteRecentSearch";
+    public static String DB_NAME = "BDSQLiteRecent";
     private final Context context;
     public static int v_db = 2;
-    String sqlCreate = "CREATE TABLE busquedas (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, accountId INTEGER, idplayer INTEGER, profileIconId INTEGER, summonerLevel INTEGER, date_insert DATETIME DEFAULT (datetime('now','localtime')))";
-    String sqlUpdate = "ALTER TABLE busquedas ADD COLUMN fecha TEXT";
+    String sqlCreate = "CREATE TABLE busquedas (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, accountId INTEGER, idplayer INTEGER, profileIconId INTEGER, summonerLevel INTEGER, tier TEXT, rank TEXT, plataforma TEXT, region TEXT, date_insert DATETIME DEFAULT (datetime('now','localtime')))";
+    String sqlUpdate = "ALTER TABLE busquedas ADD COLUMN version_update DATETIME DEFAULT (datetime('now','localtime'))";
 
     public ConexionToSQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);

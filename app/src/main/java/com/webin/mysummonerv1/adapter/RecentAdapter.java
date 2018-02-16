@@ -1,5 +1,6 @@
 package com.webin.mysummonerv1.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,9 +20,14 @@ import com.squareup.picasso.Picasso;
 import com.webin.mysummonerv1.Clases.Recent;
 import com.webin.mysummonerv1.ConexionToSQLiteHelper;
 import com.webin.mysummonerv1.MatchesActivity;
+import com.webin.mysummonerv1.OtherActivity;
 import com.webin.mysummonerv1.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+
+import static java.security.AccessController.getContext;
 
 public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolderRecent> {
 
@@ -47,6 +54,40 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
         holder.tvRSid.setText(String.valueOf(recent.getIdplayer()));
         Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/profileicon/"+recent.getProfileIconId()+".png").into(holder.ivRSprofileIconId);
         holder.tvRSsummonerLevel.setText(String.valueOf(recent.getSummonerLevel()));
+        holder.tvPlataforma.setText(recent.getPlataforma());
+
+        if(position % 2 == 0)
+            holder.rvPlayerRecent.setBackgroundColor(context.getResources().getColor(R.color.color_par));
+        else
+            holder.rvPlayerRecent.setBackgroundColor(context.getResources().getColor(R.color.color_impar));
+
+        if(recent.getRank() == null){
+            holder.tvRSRank.setVisibility(View.INVISIBLE);
+        }
+
+        holder.tvRSTier.setText(recent.getTier());
+        holder.tvRSRank.setText(recent.getRank());
+        holder.tvRSRank.setVisibility(View.VISIBLE);
+
+        holder.rvDeleteItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(v.getContext(),"Usuario : "+holder.tvRSPlayer.getText(),Toast.LENGTH_LONG).show();
+                //Eliminar un registro con execSQL(), utilizando argumentos
+                ConexionToSQLiteHelper cnx = new ConexionToSQLiteHelper(context,ConexionToSQLiteHelper.DB_NAME,null,ConexionToSQLiteHelper.v_db);
+                SQLiteDatabase db = cnx.getWritableDatabase();
+
+                String[] args = new String[]{holder.tvRSid.getText().toString(), holder.tvPlataforma.getText().toString()};
+                int numregdelete =db.delete("busquedas",  "idplayer=? AND plataforma=?", args);
+
+                Log.d("SQLite numreg=",numregdelete+"");
+                db.close();
+
+                Intent i = new Intent(context,OtherActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+            }
+        });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,16 +96,15 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
 
                 ConexionToSQLiteHelper cnx = new ConexionToSQLiteHelper(context,ConexionToSQLiteHelper.DB_NAME,null,ConexionToSQLiteHelper.v_db);
                 SQLiteDatabase db = cnx.getWritableDatabase();
-
-                String[] campos = new String[] {"id","username","accountId","idplayer","profileIconId","summonerLevel","date_insert"};
-                String[] args = new String[] {holder.tvRSPlayer.getText().toString()};
-                String username = null,fecha=null;
+                String username = null,fecha=null,tier=null,rank=null;
                 int idTable = 0;
                 int accountId = 0,idplayer=0,profileIconId=0,summonerLevel=0;
+                String user = holder.tvRSPlayer.getText().toString();
+                String plat = holder.tvPlataforma.getText().toString();
 
-                Cursor c = db.query("busquedas", campos, "username=?", args, null, null, null);
+                Cursor c = db.rawQuery("SELECT id,username,accountId,idplayer,profileIconId,summonerLevel,tier,rank,plataforma,region,date_insert FROM busquedas WHERE username='"+user+"' AND plataforma='"+plat+"' ",new String[]{});
 
-                ArrayList<Recent> recentArrayList = new ArrayList<>();
+
                 //Nos aseguramos de que existe al menos un registro
                 if (c.moveToFirst()) {
                     //Recorremos el cursor hasta que no haya más registros
@@ -75,20 +115,13 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
                         idplayer = c.getInt(3);
                         profileIconId = c.getInt(4);
                         summonerLevel = c.getInt(5);
-                        fecha = c.getString(6);
-                        Recent recent = new Recent(idTable,username,accountId,idplayer,profileIconId,summonerLevel,fecha);
-                        recentArrayList.add(recent);
-                        Log.d("SQLite idTable=",idTable+"");
-                        Log.d("SQLite username=",username+"");
-                        Log.d("SQLite accountId=",accountId+"");
-                        Log.d("SQLite idplayer=",idplayer+"");
-                        Log.d("SQLite profileIconId=",profileIconId+"");
-                        Log.d("SQLite summonerLevel=",summonerLevel+"");
-                        Log.d("SQLite fecha=",fecha+"");
+                        tier = c.getString(6);
+                        rank = c.getString(7);
+                        fecha = c.getString(8);
+
                     } while(c.moveToNext());
                 }
                 db.close();
-
 
                 Log.d("CAT tvRSPlayer=",holder.tvRSPlayer.getText()+"");
                 Log.d("CAT tvRSaccountId=",holder.tvRSaccountId.getText()+"");
@@ -103,10 +136,8 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
                 bundle.putInt("PROFILEICONID",profileIconId);
                 bundle.putLong("SUMMONERLEVEL",summonerLevel);
                 intent.putExtras(bundle);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-
-
             }
         });
     }
@@ -118,8 +149,9 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
 
     public class ViewHolderRecent extends RecyclerView.ViewHolder {
 
-        TextView tvRSPlayer,tvRSsummonerLevel,tvRSaccountId,tvRSid;
-        ImageView ivRSprofileIconId;
+        TextView tvRSPlayer,tvRSsummonerLevel,tvRSaccountId,tvRSid,tvRSTier,tvRSRank,tvPlataforma;
+        ImageView ivRSprofileIconId,ivDeleteItem;
+        RelativeLayout rvDeleteItem,rvPlayerRecent;
 
         public ViewHolderRecent(View itemView) {
             super(itemView);
@@ -129,7 +161,11 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
             tvRSsummonerLevel = (TextView) itemView.findViewById(R.id.tvRSsummonerLevel);
             tvRSaccountId = (TextView) itemView.findViewById(R.id.tvRSaccountId);
             tvRSid = (TextView) itemView.findViewById(R.id.tvRSid);
-
+            tvRSTier = (TextView) itemView.findViewById(R.id.tvRSTier);
+            tvRSRank = (TextView) itemView.findViewById(R.id.tvRSRank);
+            rvDeleteItem = (RelativeLayout) itemView.findViewById(R.id.rvDeleteItem);
+            tvPlataforma = (TextView) itemView.findViewById(R.id.tvPlataforma);
+            rvPlayerRecent = (RelativeLayout) itemView.findViewById(R.id.rvPlayerRecent);
         }
     }
 

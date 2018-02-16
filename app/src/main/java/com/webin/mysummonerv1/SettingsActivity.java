@@ -72,6 +72,13 @@ public class SettingsActivity extends AppCompatActivity implements AlertDialogRa
                 openDialogServer();
             }
         });
+
+        textViewCurrentServer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialogServer();
+            }
+        });
     }
 
     public void openDialogServer() {

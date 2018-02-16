@@ -15,4 +15,7 @@
     <color name="lose_title">#F44336</color>
     <color name="background_color">#3e3e40</color>
     <color name="border_color">#210c0c</color>
+    <color name="color_impar">#f9f9f9</color>
+    <color name="color_par">#efefef</color>
+    <color name="color_demo">#e9e9e9</color>
 </resources>

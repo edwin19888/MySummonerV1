@@ -8,6 +8,7 @@ import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,8 +67,12 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
         });
         if (mostrarServer == 0) {
             openDialogServer();
+        }else{
+            CargarRss(rss);
         }
+    }
 
+    public void CargarRss(String rss){
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         ReadRss readRss = new ReadRss(this, recyclerView,rss);
         readRss.execute();
@@ -98,6 +103,7 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
 
         /** Instantiating the DialogFragment class */
         AlertDialogRadio alert = new AlertDialogRadio();
+        alert.setCancelable(false);
 
         /** Creating a bundle object to store the selected item's index */
         Bundle b  = new Bundle();
@@ -148,6 +154,7 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
         editor.putString("plataforma",plataforma);
         editor.putString("rss",rss);
         editor.commit();
+        CargarRss(rss);
     }
 
     @Override
@@ -155,7 +162,7 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
         this.position = 0;
         String plataforma = "la1",rss="lan";
 
-        Toast.makeText(HomeActivity.this,"Check: "+Android.code[this.position],Toast.LENGTH_SHORT).show();
+        //Toast.makeText(HomeActivity.this,"Check: "+Android.code[this.position],Toast.LENGTH_SHORT).show();
         /** Setting the selected android version in the textview */
         //tv.setText("Your Choice : " + Android.code[this.position]);
         String serverSelection = "Lationamerica Norte";
@@ -168,11 +175,13 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
         editor.putString("plataforma",plataforma);
         editor.putString("rss",rss);
         editor.commit();
+        CargarRss(rss);
     }
 
     @Override
     public void onBackPressed(){
         if (tiempoPrimerClick + INTERVALO > System.currentTimeMillis()){
+            Log.d("SALIO"," SUPUESTAMENTE DE TODO");
             super.onBackPressed();
             finish();
             return;

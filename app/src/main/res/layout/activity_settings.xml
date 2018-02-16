@@ -73,6 +73,7 @@
                 android:layout_marginRight="19dp"
                 android:layout_toLeftOf="@+id/imageViewCurrentServer"
                 android:layout_toStartOf="@+id/imageViewCurrentServer"
+                android:clickable="true"
                 android:text="LAS" />
 
             <ImageView

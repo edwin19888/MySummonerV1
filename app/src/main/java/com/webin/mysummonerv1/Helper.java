@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -58,15 +59,19 @@ public class Helper {
         return time;
     }
 
+
     public static String getDateOfLong(long input){
         Date date = new Date(input);
-        Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        Calendar cal = new GregorianCalendar(TimeZone.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         sdf.setCalendar(cal);
         cal.setTime(date);
         return sdf.format(date);
 
     }
+
+
+
 
     public static String getRedondear(int numero){
 

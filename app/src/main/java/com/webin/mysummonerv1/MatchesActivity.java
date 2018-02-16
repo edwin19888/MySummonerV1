@@ -1,10 +1,13 @@
 package com.webin.mysummonerv1;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.PorterDuff;
@@ -33,8 +36,10 @@ import com.squareup.picasso.Picasso;
 import com.webin.mysummonerv1.request.ApiRequest;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 
@@ -49,7 +54,7 @@ public class MatchesActivity extends AppCompatActivity {
     private ApiRequest request;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ImageView ivChampPointsFirst,ivProfileIcon;
-    private TextView tvDataNotFound,tvChampionLevel,tvRankedInfo,tvWinLosses,tvToolbarTitle;
+    private TextView tvDataNotFound,tvChampionLevel,tvRankedInfo,tvWinLosses,tvToolbarTitle,tvLeaguePoints,tvTitleLoading;
     private AppBarLayout app_bar;
     private CollapsingToolbarLayout collapsing_toolbar;
     private ProgressBar progressBar;
@@ -88,6 +93,8 @@ public class MatchesActivity extends AppCompatActivity {
         tvRankedInfo = (TextView) findViewById(R.id.tvRankedInfo);
         tvWinLosses = (TextView) findViewById(R.id.tvWinLosses);
         app_bar = (AppBarLayout) findViewById(R.id.app_bar);
+        tvLeaguePoints = (TextView) findViewById(R.id.tvLeaguePoints);
+        tvTitleLoading = (TextView) findViewById(R.id.tvTitleLoading);
 
         recyclerViewMatches = (RecyclerView) findViewById(R.id.RecyclerViewMatches);
         recyclerViewMatches.setLayoutManager(new LinearLayoutManager(this));
@@ -122,7 +129,11 @@ public class MatchesActivity extends AppCompatActivity {
             //Redireccionar a PirncipalActivity
         }
 
+        Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/profileicon/"+profileIconId+".png").into(ivProfileIcon);
+        tvChampionLevel.setText(String.valueOf(summonerLevel));
+
         progressBar = (ProgressBar) findViewById(R.id.prLoadingInfoPlayer);
+        //progressBar.setBackgroundColor(Color.BLACK);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 
             Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
@@ -144,8 +155,6 @@ public class MatchesActivity extends AppCompatActivity {
                 String image = champName.replace(".png","_0.jpg");
                 Picasso.with(getApplicationContext()).setLoggingEnabled(true);
                 Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+image).into(ivChampPointsFirst);
-                Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/profileicon/"+profileIconId+".png").into(ivProfileIcon);
-                tvChampionLevel.setText(String.valueOf(summonerLevel));
                 int alphaAmount = 90; // some value 0-255 where 0 is fully transparent and 255 is fully opaque
                 ivChampPointsFirst.setAlpha(alphaAmount);
             }
@@ -168,10 +177,11 @@ public class MatchesActivity extends AppCompatActivity {
             @Override
             public void onSuccess(ArrayList<Leagues> leaguesArrayList) {
 
-                String rank = "";
+                String rank = null;
                 String tier = "Unranked";
                 int wins = 0;
                 int losses = 0;
+                int leaguePoints = 0;
                 ArrayList<Leagues> leagues;
                 leagues = leaguesArrayList;
 
@@ -181,16 +191,40 @@ public class MatchesActivity extends AppCompatActivity {
                         tier = leagues.get(i).getTier();
                         wins = leagues.get(i).getWins();
                         losses = leagues.get(i).getLosses();
+                        leaguePoints = leagues.get(i).getLeaguePoints();
                     }
                 }
 
                 if(wins == 0 && losses == 0)
                     tvWinLosses.setVisibility(View.INVISIBLE);
 
-                tvRankedInfo.setText(tier+" "+rank);
-                tvWinLosses.setText(wins+"W "+losses+"L");
+                if(rank != null) {
+                    tvRankedInfo.setText(tier + " " + rank);
+                    tvWinLosses.setText(wins + "W " + losses + "L");
+                    tvLeaguePoints.setText(leaguePoints+" LP");
+
+                }else{
+                    tvLeaguePoints.setVisibility(View.INVISIBLE);
+                    tvRankedInfo.setText(tier);
+                }
                 //AdapterHistory adapterHistory = new AdapterHistory(listMatches,getApplicationContext());
                 //recyclerViewMatches.setAdapter(adapterHistory);
+
+                //Actualizar un registro
+                ConexionToSQLiteHelper cnx = new ConexionToSQLiteHelper(getApplicationContext(),ConexionToSQLiteHelper.DB_NAME,null,ConexionToSQLiteHelper.v_db);
+                SQLiteDatabase db = cnx.getWritableDatabase();
+                //db.execSQL("UPDATE busquedas SET tier='tier',rank='rank',date_insert='"+dateFormat.format(date)+" WHERE idplayer='playerId'");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = new Date();
+                String[] args = new String[] {String.valueOf(playerId)};
+                ContentValues valores = new ContentValues();
+                valores.put("tier",tier);
+                valores.put("rank",rank);
+                valores.put("date_insert", dateFormat.format(date));
+                //Actualizamos el registro en la base de datos
+                int numreg = db.update("busquedas", valores, "idplayer=?", args);
+                //Log.d("SQLite numreg=",numreg+"");
+                db.close();
 
             }
 
@@ -243,6 +277,7 @@ public class MatchesActivity extends AppCompatActivity {
                     msg = null;
                     tvDataNotFound.setVisibility(View.VISIBLE);
                     tvDataNotFound.setText("Partidas no encontradas");
+                    tvTitleLoading.setVisibility(View.INVISIBLE);
                     app_bar.setVisibility(View.VISIBLE);
                 }else if(message.equals("TimeoutError")){
                     msg = "Tiempo de espera agotado";
@@ -339,9 +374,10 @@ public class MatchesActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        finish();
         Intent intPrincipal = new Intent(MatchesActivity.this,HomeActivity.class);
+        intPrincipal.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intPrincipal);
+        finish();
     }
 
     public static ColorMatrixColorFilter brightIt(int fb) {

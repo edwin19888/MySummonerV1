@@ -88,6 +88,10 @@ public class AdapterHistory extends RecyclerView.Adapter<AdapterHistory.ViewHold
         if (dataKill != null) {
             holder.textViewTypeKills.setVisibility(View.VISIBLE);
             holder.textViewTypeKills.setText(dataKill);
+            if(oneMatch.getWin())
+                holder.textViewTypeKills.setBackgroundResource(R.drawable.br_typekills_win);
+            else
+                holder.textViewTypeKills.setBackgroundResource(R.drawable.br_typekills_lose);
         }else{
             holder.textViewTypeKills.setVisibility(View.INVISIBLE);
             holder.textViewTypeKills.setText("");

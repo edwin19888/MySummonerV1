@@ -31,6 +31,8 @@ import com.webin.mysummonerv1.Clases.Recent;
 import com.webin.mysummonerv1.adapter.RecentAdapter;
 import com.webin.mysummonerv1.request.ApiRequest;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class OtherActivity extends AppCompatActivity{
@@ -38,7 +40,9 @@ public class OtherActivity extends AppCompatActivity{
     private ImageView ibBackActivity;
     private EditText edUserToSearch;
     private RecyclerView rvRecentSearch;
+    private TextView tvNotDataRecent;
     String[] summoner = new String[1];
+    String plataforma;
 
     private RequestQueue queue;
     private ApiRequest request;
@@ -50,9 +54,8 @@ public class OtherActivity extends AppCompatActivity{
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//no girar activity
 
         SharedPreferences prefs = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
-        int mostrarServer = prefs.getInt("mostrarServer", 0);
-        String serverName = prefs.getString("serverName","Korea");
-        String plataforma = prefs.getString("plataforma","kr");
+        String serverName = prefs.getString("serverName","Lationamerica Norte");
+        plataforma = prefs.getString("plataforma","la1");
         int idServer = prefs.getInt("idServer",0);
 
         queue = MySingleton.getInstance(this).getRequestQueue();
@@ -77,36 +80,31 @@ public class OtherActivity extends AppCompatActivity{
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
                 if  ((actionId == EditorInfo.IME_ACTION_SEARCH)) {
-
-
                     summoner[0] = edUserToSearch.getText().toString();
                     if(summoner[0].length() > 0){
                         VolleyCheckUser(summoner[0],request);
-
                     }else{
                         Mensaje("Debe ingresar un usuario");
                     }
-
-
                 }
                 return false;
             }
         });
 
+
+        tvNotDataRecent = (TextView) findViewById(R.id.tvNotDataRecent);
         rvRecentSearch = (RecyclerView) findViewById(R.id.rvRecentSearch);
         rvRecentSearch.setLayoutManager(new LinearLayoutManager(this));
 
         ConexionToSQLiteHelper cnx = new ConexionToSQLiteHelper(getApplicationContext(),ConexionToSQLiteHelper.DB_NAME,null,ConexionToSQLiteHelper.v_db);
         SQLiteDatabase db = cnx.getWritableDatabase();
 
-        String[] campos = new String[] {"id","username","accountId","idplayer","profileIconId","summonerLevel","date_insert"};
-        String username = null,fecha=null;
+        String username=null,fecha=null,tier,rank,plat,reg;
         int idTable = 0;
         int accountId = 0,idplayer=0,profileIconId=0,summonerLevel=0;
-        String fecha_table = "date_insert"+ "DESC";
 
         //Cursor c = db.query("busquedas", campos, "", null, null, null, null);
-        Cursor c = db.rawQuery("SELECT id,username,accountId,idplayer,profileIconId,summonerLevel,MAX(date_insert) FROM busquedas GROUP BY username ORDER BY 7 DESC",new String[]{});
+        Cursor c = db.rawQuery("SELECT id,username,accountId,idplayer,profileIconId,summonerLevel,tier,rank,plataforma,region,MAX(date_insert) FROM busquedas WHERE plataforma='"+plataforma+"' GROUP BY username ORDER BY 11 DESC",new String[]{});
 
         ArrayList<Recent> recentArrayList = new ArrayList<>();
         //Nos aseguramos de que existe al menos un registro
@@ -119,22 +117,29 @@ public class OtherActivity extends AppCompatActivity{
                 idplayer = c.getInt(3);
                 profileIconId = c.getInt(4);
                 summonerLevel = c.getInt(5);
-                fecha = c.getString(6);
-                Recent recent = new Recent(idTable,username,accountId,idplayer,profileIconId,summonerLevel,fecha);
+                tier = c.getString(6);
+                rank = c.getString(7);
+                plat = c.getString(8);
+                reg = c.getString(9);
+                fecha = c.getString(10);
+                Recent recent = new Recent(idTable,username,accountId,idplayer,profileIconId,summonerLevel,tier,rank,plat,reg,fecha);
                 recentArrayList.add(recent);
-                Log.d("SQLite idTable=",idTable+"");
+
                 Log.d("SQLite username=",username+"");
-                Log.d("SQLite accountId=",accountId+"");
-                Log.d("SQLite idplayer=",idplayer+"");
-                Log.d("SQLite profileIconId=",profileIconId+"");
-                Log.d("SQLite summonerLevel=",summonerLevel+"");
                 Log.d("SQLite fecha=",fecha+"");
             } while(c.moveToNext());
         }
         db.close();
 
-        RecentAdapter adapterRecent = new RecentAdapter(recentArrayList,getApplicationContext());
-        rvRecentSearch.setAdapter(adapterRecent);
+        if(recentArrayList.size() > 0){
+            RecentAdapter adapterRecent = new RecentAdapter(recentArrayList,getApplicationContext());
+            rvRecentSearch.setAdapter(adapterRecent);
+            rvRecentSearch.setVisibility(View.VISIBLE);
+            tvNotDataRecent.setVisibility(View.INVISIBLE);
+        }else{
+            tvNotDataRecent.setVisibility(View.VISIBLE);
+        }
+
     }
 
     public void VolleyCheckUser(String usuario, ApiRequest request){
@@ -159,7 +164,7 @@ public class OtherActivity extends AppCompatActivity{
                 nuevo_registro.put("idplayer",idplayer);
                 nuevo_registro.put("profileIconId",profIconId);
                 nuevo_registro.put("summonerLevel",summLevel);
-
+                nuevo_registro.put("plataforma",plataforma);
                 db.insert("busquedas",null,nuevo_registro);
 
                 db.close();
@@ -168,11 +173,11 @@ public class OtherActivity extends AppCompatActivity{
 
                 Intent intent = new Intent(OtherActivity.this,MatchesActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("USUARIO",name);
-                bundle.putLong("ACCOUNTID",accountId);
-                bundle.putLong("ID",id);
-                bundle.putInt("PROFILEICONID",profileIconId);
-                bundle.putLong("SUMMONERLEVEL",summonerLevel);
+                bundle.putString("USUARIO",texto);
+                bundle.putLong("ACCOUNTID",accId);
+                bundle.putLong("ID",idplayer);
+                bundle.putInt("PROFILEICONID",profIconId);
+                bundle.putLong("SUMMONERLEVEL",summLevel);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 overridePendingTransition(R.anim.left_in, R.anim.left_out);

@@ -77,7 +77,7 @@
                     android:layout_toEndOf="@+id/ivProfileIcon"
                     android:layout_toRightOf="@+id/ivProfileIcon"
                     android:text="Unranked"
-                    android:textSize="10dp" />
+                    android:textSize="12dp" />
 
                 <TextView
                     android:id="@+id/tvWinLosses"
@@ -88,6 +88,16 @@
                     android:layout_below="@+id/tvRankedInfo"
                     android:textSize="10dp"
                     android:text="0W 0L" />
+
+                <TextView
+                    android:id="@+id/tvLeaguePoints"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/tvWinLosses"
+                    android:layout_alignStart="@+id/tvWinLosses"
+                    android:layout_centerVertical="true"
+                    android:textSize="10dp"
+                    android:text="0 LP" />
 
 
             </RelativeLayout>
@@ -111,14 +121,26 @@
         android:layout_marginTop="0dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ProgressBar
-            android:id="@+id/prLoadingInfoPlayer"
+        <TextView
+            android:id="@+id/tvTitleLoading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="150dp"
-            android:minWidth="150dp"
+            android:textColor="#FFFFFF"
+            android:layout_centerHorizontal="true"
+            android:text="Cargando"/>
+        <ProgressBar
+            android:id="@+id/prLoadingInfoPlayer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:max="100"
+            android:progress="50"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:padding="10dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:indeterminate="true"/>
+
         <TextView
             android:id="@+id/tvDataNotFound"
             android:layout_width="wrap_content"

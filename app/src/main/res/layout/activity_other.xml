@@ -34,13 +34,44 @@
             android:singleLine="true" />
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvRecentSearch"
+    <RelativeLayout
+        android:id="@+id/rlRecientes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="#e7e5e5"
         android:layout_below="@+id/toolbar2">
-    </android.support.v7.widget.RecyclerView>
 
+        <TextView
+            android:id="@+id/tvTitleRecent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="#FFFFFF"
+            android:textColor="#797878"
+            android:text="Busquedas recientes" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvRecentSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:visibility="invisible"
+            android:layout_below="@+id/tvTitleRecent">
+        </android.support.v7.widget.RecyclerView>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvNotDataRecent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlRecientes"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp"
+        android:text="No hay usuarios recientes"
+        android:visibility="invisible" />
 
 
 </RelativeLayout>
