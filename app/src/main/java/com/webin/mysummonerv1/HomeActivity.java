@@ -22,7 +22,7 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
     private long tiempoPrimerClick;
     int position = 0;
 
-    ImageView imageViewChampion,imageViewSetting;
+    ImageView imageViewChampion,imageViewSetting,ivCloseApp;
     RelativeLayout rlHome;
     RecyclerView recyclerView;
 
@@ -41,6 +41,13 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//no girar activity
 
         rlHome = (RelativeLayout) findViewById(R.id.rlHome);
+        ivCloseApp = (ImageView)  findViewById(R.id.ivCloseApp);
+        ivCloseApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CerrarApp();
+            }
+        });
 
         imageViewChampion = (ImageView) findViewById(R.id.ivChampions);
         imageViewChampion.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +77,11 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
         }else{
             CargarRss(rss);
         }
+    }
+
+    private void CerrarApp() {
+        super.onBackPressed();
+        finish();
     }
 
     public void CargarRss(String rss){

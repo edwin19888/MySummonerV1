@@ -39,7 +39,7 @@ public class ApiRequest {
 
     private RequestQueue queue;
     private Context context;
-    private static final String API_KEY = "RGAPI-b418a562-2b46-408e-8143-cb2bf019f9c8";
+    private static final String API_KEY = "RGAPI-63208080-f518-493e-8600-baeec5b26e01";
     private String region;
     private ArrayList<Matches> arrayListMatches = new ArrayList<>();
 
