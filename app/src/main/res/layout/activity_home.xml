@@ -35,7 +35,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="0dp"
             android:layout_toRightOf="@+id/ivCloseApp"
-            android:src="@drawable/icon_search"
+            android:src="@drawable/ic_home"
             android:focusable="true"
             android:clickable="true"/>
         <ImageView

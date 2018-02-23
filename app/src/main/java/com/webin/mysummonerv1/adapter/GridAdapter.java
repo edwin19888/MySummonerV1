@@ -1,6 +1,7 @@
 package com.webin.mysummonerv1.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.webin.mysummonerv1.HomeActivity;
 import com.webin.mysummonerv1.R;
 import com.webin.mysummonerv1.request.Champion;
 
@@ -20,6 +22,7 @@ public class GridAdapter extends BaseAdapter{
 
     private Context context;
     private List<Champion> championList = new ArrayList<>();
+
     LayoutInflater inflater;
 
     public GridAdapter(Context context, List<Champion> championList) {
@@ -62,7 +65,7 @@ public class GridAdapter extends BaseAdapter{
         }
 
         final Champion champion = championList.get(i);
-        Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/"+champion.getImageName()).into(myViewHolder.image);
+        Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/"+HomeActivity.versionActualString+"/img/champion/"+champion.getImageName()).into(myViewHolder.image);
         myViewHolder.name.setText(champion.getImageName().replace(".png",""));
 
         convertView.setOnClickListener(new View.OnClickListener() {

@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,8 +25,8 @@
         <activity android:name=".SettingsActivity" />
         <activity
             android:name=".MatchesActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".HomeActivity">
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeActivity" />
@@ -34,7 +35,9 @@
         <activity android:name=".ProfilePlayerActivity" />
         <activity android:name=".PrincipalProfileActivity" />
         <activity android:name=".OtherActivity" />
-        <activity android:name=".HomeActivity">
+        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".ActiveGamesActivity">
+
         </activity>
     </application>
 

@@ -1,8 +1,10 @@
 package com.webin.mysummonerv1;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -33,6 +35,8 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.squareup.picasso.Picasso;
+import com.webin.mysummonerv1.Clases.ActiveGames;
+import com.webin.mysummonerv1.adapter.GamesActiveAdapter;
 import com.webin.mysummonerv1.request.ApiRequest;
 
 
@@ -54,10 +58,13 @@ public class MatchesActivity extends AppCompatActivity {
     private ApiRequest request;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ImageView ivChampPointsFirst,ivProfileIcon;
-    private TextView tvDataNotFound,tvChampionLevel,tvRankedInfo,tvWinLosses,tvToolbarTitle,tvLeaguePoints,tvTitleLoading;
+    private TextView tvDataNotFound,tvChampionLevel,tvRankedInfo,tvWinLosses,tvToolbarTitle,tvLeaguePoints,tvTitleLoading,tvOnline;
     private AppBarLayout app_bar;
     private CollapsingToolbarLayout collapsing_toolbar;
     private ProgressBar progressBar;
+    public static ArrayList<ActiveGames> dataGames = new ArrayList<>();
+    public static List<String> datat100 = new ArrayList<>();
+    public static List<String> datat200 = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +102,7 @@ public class MatchesActivity extends AppCompatActivity {
         app_bar = (AppBarLayout) findViewById(R.id.app_bar);
         tvLeaguePoints = (TextView) findViewById(R.id.tvLeaguePoints);
         tvTitleLoading = (TextView) findViewById(R.id.tvTitleLoading);
+        tvOnline = (TextView) findViewById(R.id.tvOnline);
 
         recyclerViewMatches = (RecyclerView) findViewById(R.id.RecyclerViewMatches);
         recyclerViewMatches.setLayoutManager(new LinearLayoutManager(this));
@@ -104,6 +112,8 @@ public class MatchesActivity extends AppCompatActivity {
 
         queue = MySingleton.getInstance(this.getApplicationContext()).getRequestQueue();
         request = new ApiRequest(queue,this, plataforma);
+
+
 
         Bundle bundle = getIntent().getExtras();
 
@@ -121,7 +131,7 @@ public class MatchesActivity extends AppCompatActivity {
             }
 
 
-            collapsingToolbarLayout.setTitle(playerName.toUpperCase());
+            collapsingToolbarLayout.setTitle(playerName);
             //tvToolbarTitle.setText(playerName);
 
 
@@ -129,7 +139,59 @@ public class MatchesActivity extends AppCompatActivity {
             //Redireccionar a PirncipalActivity
         }
 
-        Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/profileicon/"+profileIconId+".png").into(ivProfileIcon);
+        tvOnline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final AlertDialog builder2;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder2 = new AlertDialog.Builder(MatchesActivity.this, android.R.style.Theme_Material_Dialog_Alert).create();
+                } else {
+                    builder2 = new AlertDialog.Builder(MatchesActivity.this).create();
+                }
+                builder2.setTitle("Información");
+                builder2.setMessage("Verificando ...");
+
+                builder2.setIcon(android.R.drawable.ic_dialog_alert);
+                builder2.show();
+
+                request.getActiveGames(playerId, new ApiRequest.CallbackActiveGames() {
+                    @Override
+                    public void onSuccess(ArrayList<ActiveGames> activeGamesArrayList, List<String> t100, List<String>t200) {
+                        dataGames = activeGamesArrayList;
+                        datat100 = t100;
+                        datat200 = t200;
+                        Intent intent = new Intent(MatchesActivity.this,ActiveGamesActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        builder2.dismiss();
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        builder2.dismiss();
+                        AlertDialog.Builder builder;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            builder = new AlertDialog.Builder(MatchesActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                        } else {
+                            builder = new AlertDialog.Builder(MatchesActivity.this);
+                        }
+                        builder.setTitle("Información");
+                        builder.setMessage("No se encuentra en una partida o no es espectable");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                            }
+                        });
+                        builder.setIcon(android.R.drawable.ic_dialog_alert);
+                        builder.show();
+
+                    }
+                });
+            }
+        });
+
+        Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/"+HomeActivity.versionActualString+"/img/profileicon/"+profileIconId+".png").into(ivProfileIcon);
         tvChampionLevel.setText(String.valueOf(summonerLevel));
 
         progressBar = (ProgressBar) findViewById(R.id.prLoadingInfoPlayer);
@@ -291,6 +353,26 @@ public class MatchesActivity extends AppCompatActivity {
         });
     }
 
+    public void MostrarAlert(String title, String message, String data){
+
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(MatchesActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(MatchesActivity.this);
+        }
+        builder.setTitle("Información");
+        builder.setMessage("El usuario no se encuentra en una partida");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                });
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.show();
+
+    }
+
     public void ViewRecycler(final List<Long> matchesList, final long playerId, final ApiRequest request){
 
                 /*
@@ -409,6 +491,7 @@ public class MatchesActivity extends AppCompatActivity {
         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
         return filter;
     }
+
 
 
 }

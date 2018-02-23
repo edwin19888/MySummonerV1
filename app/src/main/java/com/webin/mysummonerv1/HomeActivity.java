@@ -25,6 +25,8 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
     ImageView imageViewChampion,imageViewSetting,ivCloseApp;
     RelativeLayout rlHome;
     RecyclerView recyclerView;
+    public static String versionActualString;
+    public static String platCurrent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +36,11 @@ public class HomeActivity extends AppCompatActivity implements AlertDialogRadio.
         SharedPreferences prefs = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
         int mostrarServer = prefs.getInt("mostrarServer", 0);
         String serverName = prefs.getString("serverName","Lationamerica Norte");
-        final String plataforma = prefs.getString("plataforma","la1");
+        platCurrent = prefs.getString("plataforma","la1");
         int idServer = prefs.getInt("idServer",0);
         String rss = prefs.getString("rss","lan");
+        int versionActualInt = prefs.getInt("versionActualInt",841);
+        versionActualString = prefs.getString("versionActualString","8.4.1");
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//no girar activity
 

@@ -84,7 +84,7 @@ public class PrincipalProfileActivity extends AppCompatActivity {
         }
 
         Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+image).into(ivChampPointsFirst);
-        Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/profileicon/"+profileIconId+".png").into(ivProfileIcon);
+        Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/"+HomeActivity.versionActualString+"/img/profileicon/"+profileIconId+".png").into(ivProfileIcon);
         tvChampionLevel.setText(String.valueOf(summonerLevel));
         tvPlayerName.setText(playerName.toUpperCase());
         //ivChampPointsFirst.setColorFilter(brightIt(-10));
@@ -92,9 +92,9 @@ public class PrincipalProfileActivity extends AppCompatActivity {
         int alphaAmount = 90; // some value 0-255 where 0 is fully transparent and 255 is fully opaque
         ivChampPointsFirst.setAlpha(alphaAmount);
 
-        Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/"+firstChampion).into(ivFirstChampion);
-        Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/"+secondChampion).into(ivSecondChampion);
-        Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/"+thirdChampion).into(ivThirdChampion);
+        Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/"+HomeActivity.versionActualString+"/img/champion/"+firstChampion).into(ivFirstChampion);
+        Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/"+HomeActivity.versionActualString+"/img/champion/"+secondChampion).into(ivSecondChampion);
+        Picasso.with(getApplicationContext()).load("http://ddragon.leagueoflegends.com/cdn/"+HomeActivity.versionActualString+"/img/champion/"+thirdChampion).into(ivThirdChampion);
 
     }
 

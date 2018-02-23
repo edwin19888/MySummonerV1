@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#02111D"
+    android:visibility="visible"
+    android:id="@+id/rvActiveGames"
+    tools:context="com.webin.mysummonerv1.ActiveGamesActivity">
+
+    <TextView
+        android:id="@+id/tvMapInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:textColor="#FFFFFF"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:textSize="15dp"
+        android:text="SUMMONER'S RIFT"/>
+
+    <TextView
+        android:id="@+id/tvGameType"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:textSize="15dp"
+        android:layout_alignParentTop="true"
+        android:text="NORMAL 5V5 (BLIND PICK)" />
+
+
+    <RelativeLayout
+        android:id="@+id/rlTeam100"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tvMapInfo"
+        android:fitsSystemWindows="true">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/RecyclerViewGamesActiveTeam100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rvBannedChamps"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/rlTeam100">
+
+        <ImageView
+            android:id="@+id/ivBanTeam100Champ0"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="5dp"/>
+        <ImageView
+            android:id="@+id/ivBanTeam100Champ1"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/ivBanTeam100Champ0"/>
+        <ImageView
+            android:id="@+id/ivBanTeam100Champ2"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/ivBanTeam100Champ1"/>
+        <ImageView
+            android:id="@+id/ivBanTeam100Champ3"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/ivBanTeam100Champ2"/>
+        <ImageView
+            android:id="@+id/ivBanTeam100Champ4"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/ivBanTeam100Champ3"/>
+
+        <ImageView
+            android:id="@+id/ivBanTeam200Champ0"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="71dp"
+            android:layout_marginStart="71dp"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/ivBanTeam100Champ4"
+            android:layout_toRightOf="@+id/ivBanTeam100Champ4" />
+        <ImageView
+            android:id="@+id/ivBanTeam200Champ1"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/ivBanTeam200Champ0"/>
+        <ImageView
+            android:id="@+id/ivBanTeam200Champ2"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/ivBanTeam200Champ1"/>
+        <ImageView
+            android:id="@+id/ivBanTeam200Champ3"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/ivBanTeam200Champ2"/>
+        <ImageView
+            android:id="@+id/ivBanTeam200Champ4"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/ivBanTeam200Champ3"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rvBannedChamps"
+        android:layout_marginTop="15dp"
+        android:id="@+id/relativeLayout3">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/RecyclerViewGamesActiveTeam200"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <Chronometer
+        android:id="@+id/simpleChronometerActiveGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:textColor="#FFFFFF"
+        android:layout_marginEnd="33dp"
+        android:layout_marginRight="33dp" />
+
+
+</RelativeLayout>

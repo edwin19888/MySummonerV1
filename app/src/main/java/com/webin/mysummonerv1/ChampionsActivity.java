@@ -34,6 +34,7 @@ public class ChampionsActivity extends AppCompatActivity {
     private ApiRequest request;
     private GridAdapter gridAdapter;
     private Handler handler;
+    private ImageView ivCloseApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,8 @@ public class ChampionsActivity extends AppCompatActivity {
         String serverName = prefs.getString("serverName","Korea");
         String plataforma = prefs.getString("plataforma","kr");
         int idServer = prefs.getInt("idServer",0);
+        int versionActualInt = prefs.getInt("versionActualInt",841);
+        String versionActualString = prefs.getString("versionActualString","8.4.1");
 
 
         queue = MySingleton.getInstance(this).getRequestQueue();
@@ -57,6 +60,13 @@ public class ChampionsActivity extends AppCompatActivity {
         gridViewGallery = (GridView) findViewById(R.id.gv_ChampionGallery);
         progressBarLoader.setVisibility(View.VISIBLE);
         final RelativeLayout rlChampions = (RelativeLayout) findViewById(R.id.rlChampions);
+        ivCloseApp = (ImageView)  findViewById(R.id.ivCloseApp);
+        ivCloseApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CerrarApp();
+            }
+        });
 
         handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -109,7 +119,10 @@ public class ChampionsActivity extends AppCompatActivity {
 
     }
 
-
+    private void CerrarApp() {
+        super.onBackPressed();
+        finish();
+    }
 
     @Override
     public void onBackPressed(){

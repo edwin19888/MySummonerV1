@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
+
+    <RelativeLayout
+        android:id="@+id/rlRowPlayerInGame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/border_square_imageview">
+
+        <ImageView
+            android:id="@+id/ivActChamp"
+            android:layout_marginLeft="5dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:id="@+id/tvActPlayer"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@+id/ivActChamp"
+            android:layout_toEndOf="@+id/ivActChamp"
+            android:layout_toRightOf="@+id/ivActChamp"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:text="Player" />
+
+        <ImageView
+            android:id="@+id/ivActSpell1"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="3dp"
+            android:layout_toEndOf="@+id/tvActPlayer"
+            android:layout_toRightOf="@+id/tvActPlayer" />
+
+        <ImageView
+            android:id="@+id/ivActSpell2"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="3dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/ivActSpell1"
+            android:layout_toRightOf="@+id/ivActSpell1" />
+
+        <TextView
+            android:id="@+id/tvActCurrentSeason"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tvActPlayer"
+            android:layout_alignBottom="@+id/tvActPlayer"
+            android:layout_marginLeft="45dp"
+            android:layout_marginStart="45dp"
+            android:textColor="#FFFFFF"
+            android:layout_toEndOf="@+id/ivActSpell2"
+            android:layout_toRightOf="@+id/ivActSpell2"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

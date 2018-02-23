@@ -148,22 +148,16 @@ public class OtherActivity extends AppCompatActivity{
             @Override
             public void onSuccess(String name,long accountId, long id, int profileIconId, long summonerLevel) {
 
-                String texto = name;
-                long accId = accountId;
-                long idplayer = id;
-                int profIconId = profileIconId;
-                long summLevel = summonerLevel;
-
                 ConexionToSQLiteHelper cnx = new ConexionToSQLiteHelper(getApplicationContext(),ConexionToSQLiteHelper.DB_NAME,null,ConexionToSQLiteHelper.v_db);
                 SQLiteDatabase db = cnx.getWritableDatabase();
 
 
                 ContentValues nuevo_registro = new ContentValues();
-                nuevo_registro.put("username",texto);
-                nuevo_registro.put("accountId",accId);
-                nuevo_registro.put("idplayer",idplayer);
-                nuevo_registro.put("profileIconId",profIconId);
-                nuevo_registro.put("summonerLevel",summLevel);
+                nuevo_registro.put("username",name);
+                nuevo_registro.put("accountId",accountId);
+                nuevo_registro.put("idplayer",id);
+                nuevo_registro.put("profileIconId",profileIconId);
+                nuevo_registro.put("summonerLevel",summonerLevel);
                 nuevo_registro.put("plataforma",plataforma);
                 db.insert("busquedas",null,nuevo_registro);
 
@@ -173,11 +167,11 @@ public class OtherActivity extends AppCompatActivity{
 
                 Intent intent = new Intent(OtherActivity.this,MatchesActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("USUARIO",texto);
-                bundle.putLong("ACCOUNTID",accId);
-                bundle.putLong("ID",idplayer);
-                bundle.putInt("PROFILEICONID",profIconId);
-                bundle.putLong("SUMMONERLEVEL",summLevel);
+                bundle.putString("USUARIO",name);
+                bundle.putLong("ACCOUNTID",accountId);
+                bundle.putLong("ID",id);
+                bundle.putInt("PROFILEICONID",profileIconId);
+                bundle.putLong("SUMMONERLEVEL",summonerLevel);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 overridePendingTransition(R.anim.left_in, R.anim.left_out);

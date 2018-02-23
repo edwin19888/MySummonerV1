@@ -55,11 +55,11 @@ public class AdapterHistory extends RecyclerView.Adapter<AdapterHistory.ViewHold
         }
         //Log.d("Populating Inicio", oneMatch.getNameChamp());
         //Picasso.with(context).setLoggingEnabled(true);
-        Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/"+oneMatch.getNameChamp()).into(holder.imageViewChamp);
+        Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/"+HomeActivity.versionActualString+"/img/champion/"+oneMatch.getNameChamp()).into(holder.imageViewChamp);
         //Log.d("Populating Fin", oneMatch.getNameChamp());
         holder.textViewGameMode.setText(oneMatch.getQueueName());
-        Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/spell/"+oneMatch.getSpell1()).into(holder.imageViewSpell1);
-        Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/spell/"+oneMatch.getSpell2()).into(holder.imageViewSpell2);
+        Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/"+HomeActivity.versionActualString+"/img/spell/"+oneMatch.getSpell1()).into(holder.imageViewSpell1);
+        Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/"+HomeActivity.versionActualString+"/img/spell/"+oneMatch.getSpell2()).into(holder.imageViewSpell2);
 
         int kill = oneMatch.getKills();
         int deaths = oneMatch.getDeaths();

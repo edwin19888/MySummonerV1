@@ -1,7 +1,10 @@
 package com.webin.mysummonerv1.request;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
+import android.text.BoringLayout;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -18,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.webin.mysummonerv1.Clases.ActiveGames;
 import com.webin.mysummonerv1.Leagues;
 import com.webin.mysummonerv1.Matches;
 import com.webin.mysummonerv1.MatchesActivity;
@@ -39,7 +43,7 @@ public class ApiRequest {
 
     private RequestQueue queue;
     private Context context;
-    private static final String API_KEY = "RGAPI-63208080-f518-493e-8600-baeec5b26e01";
+    private static final String API_KEY = "RGAPI-db08ca81-5346-4d01-9f07-6c6391bcc959";
     private String region;
     private ArrayList<Matches> arrayListMatches = new ArrayList<>();
 
@@ -59,7 +63,7 @@ public class ApiRequest {
             @Override
             public void onResponse(JSONObject response) {
 
-                Log.d("APP", response.toString());
+                Log.d("APP checkPlayerName", response.toString());
 
                 try {
                     String name = response.getString("name");
@@ -141,9 +145,56 @@ public class ApiRequest {
         return json;
     }
 
+    public static String getJsonFileLocal(Context context, String filename){
+
+        String json = null;
+
+        try {
+            InputStream is = context.getAssets().open(filename);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return json;
+    }
+
     public String getChampionName(int champId) throws JSONException{
 
         String json = getJsonFile(context,"champion.json");
+        String champName = "Default";
+        JSONObject champ = null;
+
+        champ = new JSONObject(json);
+        JSONObject data = champ.getJSONObject("data");
+
+        Iterator<String> keys = data.keys();
+        while (keys.hasNext()){
+            String key = keys.next();
+            JSONObject inner = data.getJSONObject(key);
+            int id = inner.getInt("id");
+            JSONObject image = inner.getJSONObject("image");
+            String champImage = image.getString("full");
+            if(id == champId){
+                champName = champImage;
+                break;
+            }
+        }
+
+        return champName;
+
+    }
+
+    public static String getChampionNameLocal(Context context,int champId) throws JSONException{
+
+        String json = getJsonFileLocal(context,"champion.json");
         String champName = "Default";
         JSONObject champ = null;
 
@@ -293,7 +344,7 @@ public class ApiRequest {
                     callback.onError(error.getMessage());
                 }
 
-                Log.d("APP", "ERROR = " + error.getMessage());
+                Log.d("APP getHMAccoundId", "ERROR = " + error.getMessage());
 
             }
         });
@@ -482,9 +533,6 @@ public class ApiRequest {
                             teamLossers.add(champId);
                         }
 
-
-
-
                         String champName = getChampionName(champId);
                         String sum1Name = getSummonerSpellName(sum1);
                         String sum2Name = getSummonerSpellName(sum2);
@@ -496,7 +544,7 @@ public class ApiRequest {
 
 
                     } catch (JSONException e) {
-                        Log.d("APP:","EXEPTION HISTORY  2 = " + e);
+                        Log.d("APP getHMLByMatchId:","EXEPTION HISTORY  2 = " + e);
                         e.printStackTrace();
                         callback.onError("Error en Json");
                     }
@@ -515,7 +563,7 @@ public class ApiRequest {
                 }else  if(error instanceof AuthFailureError){
                     callback.onError("Expired Key");
                 }
-                Log.d("APP","ERROR FOUND = " + error);
+                Log.d("APP getHMLByMatchId","ERROR FOUND = " + error);
 
             }
 
@@ -573,14 +621,14 @@ public class ApiRequest {
                     e.printStackTrace();
                     callbackLeague.onUnranked(largo);
                 }
-                //Log.d("APP RESPONSE=",response+"");
+                Log.d("APP getPlayerLeague=",response+"");
                 //Log.d("APP largo=",largo+"");
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("APP ERROR=",error+"");
+                Log.d("APP getPlayerLeague=",error+"");
                 callbackLeague.onError("SinData");
             }
         });
@@ -628,14 +676,14 @@ public class ApiRequest {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     callbackChampMastery.onError("Error");
-
+                    Log.d("getPlayerChampMastery","Error en JSON");
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 callbackChampMastery.onError("Error");
-
+                Log.d("getPlayerChampMastery","Error en VolleyError");
             }
         });
 
@@ -647,6 +695,105 @@ public class ApiRequest {
     public interface CallbackChampMastery{
         void onSuccess( ArrayList<PlayerChampionMastery> arrayListPlayerChampMast);
         void onError(String messaje);
+    }
+
+    public void getActiveGames(long summonerId, final CallbackActiveGames callbackActiveGames){
+        String url = "https://"+region+".api.riotgames.com/lol/spectator/v3/active-games/by-summoner/"+summonerId+"?api_key="+API_KEY;
+
+        final ArrayList<ActiveGames> activeGamesArrayList = new ArrayList<>();
+        final List<String> team100 = new ArrayList<>();
+        final List<String> team200 = new ArrayList<>();
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                if (response.length() > 0){
+                    Log.d("APP GAMESACTIVE",response+"");
+                    try {
+                        long gameId = response.getLong("gameId");
+                        int mapId = response.getInt("mapId");
+                        String gameMode = response.getString("gameMode");
+                        String gameType =  response.getString("gameType");
+                        //long gameQueueConfigId = response.getLong("gameQueueConfigId");
+                        long gameStartTime = response.getLong("gameStartTime");
+                        long gameLength = response.getLong("gameLength");
+
+
+                        JSONArray bannedChampions = response.getJSONArray("bannedChampions");
+                        for (int b = 0; b < bannedChampions.length(); b++){
+                            JSONObject bannedChampionsTeam = bannedChampions.getJSONObject(b);
+                            int teamId = bannedChampionsTeam.getInt("teamId");
+                            if(teamId == 100){
+                                team100.add(getChampionName(bannedChampionsTeam.getInt("championId")));
+                            }else if(teamId == 200){
+                                team200.add(getChampionName(bannedChampionsTeam.getInt("championId")));
+                            }
+
+                        }
+
+                        JSONArray participants = response.getJSONArray("participants");
+
+                        for (int j = 0; j < participants.length(); j++){
+                            JSONObject participantTeam = participants.getJSONObject(j);
+                            long teamId = participantTeam.getLong("teamId");
+                            int spell1Id = participantTeam.getInt("spell1Id");
+                            int spell2Id = participantTeam.getInt("spell2Id");
+                            int championId = participantTeam.getInt("championId");
+                            long profileIconId = participantTeam.getLong("profileIconId");
+                            String summonerName = participantTeam.getString("summonerName");
+                            Boolean bot = participantTeam.getBoolean("bot");
+                            long summonerId = participantTeam.getLong("summonerId");
+
+                            String championName = getChampionName(championId);
+                            String spell1IdName = getSummonerSpellName(spell1Id);
+                            String spell2IdName = getSummonerSpellName(spell2Id);
+                            String mapName = getMapName(mapId);
+
+                            ActiveGames activeGames = new ActiveGames(gameId,mapId,gameStartTime,gameLength,summonerId,teamId,profileIconId,spell1Id,spell2Id,championId,gameMode,gameType,summonerName,championName,spell1IdName,spell2IdName,bot,mapName);
+                            activeGamesArrayList.add(activeGames);
+
+                        }
+                        callbackActiveGames.onSuccess(activeGamesArrayList,team100,team200);
+
+
+                    } catch (JSONException e) {
+                        callbackActiveGames.onError("getActiveGames = Error en JSON");
+
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if(error instanceof AuthFailureError){
+                    callbackActiveGames.onError("AuthFailureError");
+                }else if(error instanceof NetworkError){
+                    callbackActiveGames.onError("NetworkError");
+                }else if(error instanceof NoConnectionError){
+                    callbackActiveGames.onError("NoConnectionError");
+                }else if(error instanceof ParseError){
+                    callbackActiveGames.onError("ParseError");
+                }else if(error instanceof RedirectError){
+                    callbackActiveGames.onError("RedirectError");
+                }else if(error instanceof ServerError){
+                    callbackActiveGames.onError("ServerError");
+                }else if(error instanceof TimeoutError){
+                    callbackActiveGames.onError("TimeoutError");
+                }else {
+                    callbackActiveGames.onError(error.getMessage());
+                }
+
+                Log.d("APP", "ERROR = " + error.getMessage());
+            }
+        });
+
+        queue.add(request);
+
+    }
+
+    public interface CallbackActiveGames{
+        void onSuccess(ArrayList<ActiveGames> activeGamesArrayList, List<String> t100, List<String>t200);
+        void onError(String message);
     }
 
 }

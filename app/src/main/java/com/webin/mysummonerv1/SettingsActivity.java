@@ -17,7 +17,7 @@ public class SettingsActivity extends AppCompatActivity implements AlertDialogRa
 
     ImageView imageViewChampion,imageViewSearch;
     TextView textViewCurrentServer;
-    ImageView imageViewCurrentServer;
+    ImageView imageViewCurrentServer,ivCloseApp;
 
     int position = 0;
     private static final int INTERVALO = 2000; //2 segundos para salir
@@ -37,6 +37,14 @@ public class SettingsActivity extends AppCompatActivity implements AlertDialogRa
         String rss = prefs.getString("rss","lan");
 
         final RelativeLayout rlSettings = (RelativeLayout) findViewById(R.id.rlSettings);
+
+        ivCloseApp = (ImageView)  findViewById(R.id.ivCloseApp);
+        ivCloseApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CerrarApp();
+            }
+        });
         textViewCurrentServer = (TextView) findViewById(R.id.TextViewCurrenServer);
         textViewCurrentServer.setText(serverName);
 
@@ -79,6 +87,11 @@ public class SettingsActivity extends AppCompatActivity implements AlertDialogRa
                 openDialogServer();
             }
         });
+    }
+
+    private void CerrarApp() {
+        super.onBackPressed();
+        finish();
     }
 
     public void openDialogServer() {

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.webin.mysummonerv1.Clases.Recent;
 import com.webin.mysummonerv1.ConexionToSQLiteHelper;
+import com.webin.mysummonerv1.HomeActivity;
 import com.webin.mysummonerv1.MatchesActivity;
 import com.webin.mysummonerv1.OtherActivity;
 import com.webin.mysummonerv1.R;
@@ -52,7 +53,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
         holder.tvRSPlayer.setText(recent.getUsername());
         holder.tvRSaccountId.setText(String.valueOf(recent.getAccountId()));
         holder.tvRSid.setText(String.valueOf(recent.getIdplayer()));
-        Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/profileicon/"+recent.getProfileIconId()+".png").into(holder.ivRSprofileIconId);
+        Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/"+HomeActivity.versionActualString+"/img/profileicon/"+recent.getProfileIconId()+".png").into(holder.ivRSprofileIconId);
         holder.tvRSsummonerLevel.setText(String.valueOf(recent.getSummonerLevel()));
         holder.tvPlataforma.setText(recent.getPlataforma());
 

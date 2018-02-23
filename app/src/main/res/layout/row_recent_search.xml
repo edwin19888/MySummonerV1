@@ -57,6 +57,7 @@
             android:id="@+id/tvRSsummonerLevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
             android:layout_alignBottom="@+id/tvRSLabelLevel"
             android:layout_below="@+id/tvRSPlayer"
             android:layout_toEndOf="@+id/tvRSLabelLevel"
@@ -131,8 +132,5 @@
 
         </RelativeLayout>
     </RelativeLayout>
-
-
-
 
 </RelativeLayout>
