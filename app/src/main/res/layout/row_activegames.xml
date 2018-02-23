@@ -53,8 +53,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/tvActPlayer"
             android:layout_alignBottom="@+id/tvActPlayer"
-            android:layout_marginLeft="45dp"
-            android:layout_marginStart="45dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:textColor="#FFFFFF"
             android:layout_toEndOf="@+id/ivActSpell2"
             android:layout_toRightOf="@+id/ivActSpell2"/>

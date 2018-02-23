@@ -20,7 +20,7 @@ public class Helper {
 
         if(item != 0){
             //Picasso.with(context).setLoggingEnabled(true);
-            Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/8.1.1/img/item/"+item+".png ").error(R.drawable.empty).into(image);
+            Picasso.with(context).load("http://ddragon.leagueoflegends.com/cdn/"+HomeActivity.versionActualString+"/img/item/"+item+".png ").error(R.drawable.empty).into(image);
 
         }else{
             //Picasso.with(context).setLoggingEnabled(true);

@@ -43,7 +43,7 @@ public class ApiRequest {
 
     private RequestQueue queue;
     private Context context;
-    private static final String API_KEY = "RGAPI-db08ca81-5346-4d01-9f07-6c6391bcc959";
+    private static final String API_KEY = "RGAPI-f1c12ad3-888c-434f-940a-438aad99b010";
     private String region;
     private ArrayList<Matches> arrayListMatches = new ArrayList<>();
 
@@ -446,7 +446,13 @@ public class ApiRequest {
                             JSONObject parIdent = participantIdentities.getJSONObject(i);
                             int participantIdparIdent = parIdent.getInt("participantId");
                             JSONObject player = parIdent.getJSONObject("player");
-                            int summonerId = player.getInt("summonerId");
+                            int summonerId=0;
+                            try {
+                                summonerId = player.getInt("summonerId");
+                            }catch (Exception e){
+                                summonerId = 0;
+                            }
+
 
                             if(id == summonerId){
                                 summonerName = player.getString("summonerName");

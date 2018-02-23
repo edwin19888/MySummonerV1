@@ -52,7 +52,7 @@
         android:id="@+id/rvBannedChamps"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/rlTeam100">
 
         <ImageView
@@ -135,7 +135,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rvBannedChamps"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:id="@+id/relativeLayout3">
 
         <android.support.v7.widget.RecyclerView
