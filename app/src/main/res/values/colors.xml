@@ -18,4 +18,6 @@
     <color name="color_impar">#f9f9f9</color>
     <color name="color_par">#efefef</color>
     <color name="color_demo">#e9e9e9</color>
+    <color name="tvBlue">#255a8a</color>
+    <color name="tvRed">#751c1c</color>
 </resources>

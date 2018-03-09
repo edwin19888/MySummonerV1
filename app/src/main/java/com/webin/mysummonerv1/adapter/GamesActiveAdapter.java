@@ -57,14 +57,18 @@ public class GamesActiveAdapter extends RecyclerView.Adapter<GamesActiveAdapter.
         if(activeGames.getTeamId() == 100){
             if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                 holder.ivActChamp.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.border_square_blue));
+                holder.tvActPlayer.setTextColor(context.getResources().getColor(R.color.tvBlue));
             }else{
                 holder.ivActChamp.setBackground(context.getResources().getDrawable(R.drawable.border_square_blue));
+                holder.tvActPlayer.setTextColor(context.getResources().getColor(R.color.tvBlue));
             }
         }else if(activeGames.getTeamId() == 200){
             if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                 holder.ivActChamp.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.border_square_red));
+                holder.tvActPlayer.setTextColor(context.getResources().getColor(R.color.tvRed));
             }else{
                 holder.ivActChamp.setBackground(context.getResources().getDrawable(R.drawable.border_square_red));
+                holder.tvActPlayer.setTextColor(context.getResources().getColor(R.color.tvRed));
             }
         }
 
